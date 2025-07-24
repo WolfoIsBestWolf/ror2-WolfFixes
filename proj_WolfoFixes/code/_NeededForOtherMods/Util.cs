@@ -1,5 +1,6 @@
 ﻿using RoR2;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace WolfoFixes
 {
@@ -10,34 +11,36 @@ namespace WolfoFixes
         public static List<EquipmentIndex> GetEliteEquipment(bool droppableOnly = true)
         {
             List<EquipmentIndex> eliteEquips = new List<EquipmentIndex>();
-
-            for (int i = 0; i < EquipmentCatalog.equipmentDefs.Length; i++)
+            try
             {
-                EquipmentDef def = EquipmentCatalog.equipmentDefs[i];
-                if (def.passiveBuffDef && def.passiveBuffDef.eliteDef)
+                for (int i = 0; i < EquipmentCatalog.equipmentDefs.Length; i++)
                 {
-                    if (droppableOnly && def.dropOnDeathChance > 0 || !droppableOnly)
+                    EquipmentDef def = EquipmentCatalog.equipmentDefs[i];
+                    if (def.passiveBuffDef && def.passiveBuffDef.eliteDef)
                     {
-                        eliteEquips.Add(def.equipmentIndex);
+
+                        if ((def.dropOnDeathChance > 0 && (!Run.instance || !Run.instance.expansionLockedEquipment.Contains(def.equipmentIndex))) || !droppableOnly)
+                        {
+                            eliteEquips.Add(def.equipmentIndex);
+                        }
                     }
                 }
-            }
-            if (!droppableOnly)
-            {
-                eliteEquips.Remove(MissedContent.Equipment.EliteSecretSpeedEquipment.equipmentIndex);
-                eliteEquips.Remove(JunkContent.Equipment.EliteYellowEquipment.equipmentIndex);
-                eliteEquips.Remove(JunkContent.Equipment.EliteGoldEquipment.equipmentIndex);
-            }
 
+                if (!droppableOnly)
+                {
+                    eliteEquips.Remove(MissedContent.Equipment.EliteSecretSpeedEquipment.equipmentIndex);
+                    eliteEquips.Remove(JunkContent.Equipment.EliteYellowEquipment.equipmentIndex);
+                    eliteEquips.Remove(JunkContent.Equipment.EliteGoldEquipment.equipmentIndex);
+                }
+
+            }
+            catch (System.Exception e) 
+            { 
+                //This caused too many problems in the past might as well put it in try
+                Debug.LogWarning(e);
+            }
             return eliteEquips;
         }
-        /*public static List<EliteDef> GetEliteDefs(bool includeUnique)
-        {
-            List<EliteDef> eliteDefs = new List<EliteDef>();
-
-          
-            return eliteDefs;
-        }*/
 
     }
 

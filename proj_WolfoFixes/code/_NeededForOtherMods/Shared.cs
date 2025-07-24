@@ -87,13 +87,7 @@ namespace WolfoFixes
             }
             var list = ModUtil.GetEliteEquipment();
 
-            foreach (EquipmentIndex equipmentIndex in list)
-            {
-                if (run.expansionLockedEquipment.Contains(equipmentIndex))
-                {
-                    list.Remove(equipmentIndex);
-                }
-            }
+          
             float dropChance = (unbiasedByItemCount ? eliteEquipmentWeight / (float)list.Count : eliteEquipmentWeight);
             foreach (EquipmentIndex equipmentIndex in list)
             {

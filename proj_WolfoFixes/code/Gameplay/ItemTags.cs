@@ -154,8 +154,7 @@ namespace WolfoFixes
             ArrayUtils.ArrayAppend(ref RoR2Content.Items.SprintWisp.tags, ItemTag.AIBlacklist); //Cant use
             ArrayUtils.ArrayAppend(ref DLC1Content.Items.MinorConstructOnKill.tags, ItemTag.AIBlacklist);  //Cant use
             ArrayUtils.ArrayAppend(ref RoR2Content.Items.SiphonOnLowHealth.tags, ItemTag.AIBlacklist); //Already on BrotherBlacklist
-
-
+ 
             //Mithrix would also be affected by these tags so keep that in mind
             ArrayUtils.ArrayAppend(ref RoR2Content.Items.RoboBallBuddy.tags, NoMonsterScav); //Op Confusing
 
@@ -187,8 +186,6 @@ namespace WolfoFixes
             }
             #endregion
             #endregion
-
-
 
             #region Category stuff
             //General rule changes

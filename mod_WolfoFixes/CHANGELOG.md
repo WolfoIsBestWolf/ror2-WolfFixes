@@ -1,5 +1,8 @@
 ## Changelog:
 ```
+v1.1.16
+Fixed an issue with my custom droptables and disabling DLCs.
+
 v1.1.15
 Fixed various objects on Helminth not being pingable due to missing Null Check.
 Fixed mod unintentionally disabling Empathy Cores, Voidsent, Singularity and Ego for Phase 4 Mithrix.
