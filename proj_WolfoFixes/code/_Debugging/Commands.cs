@@ -415,7 +415,7 @@ namespace WolfoFixes.Testing
                     }
                 }
             }
-
+            GameObject.Destroy(args.senderMaster.GetComponent<MasterSuicideOnTimer>());
             ContagiousItemManager.originalToTransformed = Array.Empty<ItemIndex>();
             ContagiousItemManager.transformationInfos = Array.Empty<ContagiousItemManager.TransformationInfo>();
 

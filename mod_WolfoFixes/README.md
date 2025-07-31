@@ -8,8 +8,8 @@ Some fixes are Server Side, some are Client Side, some are Client Specific. Gene
 ### Fixes the following :
 
 ## Survivor Fixes
-Chef Boosted Ice Box not clearing properly.\
 Chef Cleaver Bonus Proc being 2.25 instead of 1.5.\
+Chef Boosted Ice Box not clearing properly.\
 Chef Boosted Sear Oil Puddles dealing 0% instead of 20% damage.\
 If OilSpill is cancelled, brief fall damage immunity is maintained.
 
@@ -141,6 +141,8 @@ Mithrix Hammer/Nothing pinging instead of the body.
 Lunar Exploder not having a subtitleToken.
 
 Halcyon Shrine often not having its tip golden due to a redundant check.
+
+Broken Flame Drones often spawning in the ground.
 
 ## Audio
 Void items not playing the drop sound.\

@@ -21,6 +21,9 @@ namespace WolfoFixes
             //For any mods adding extra seer stations.
             //Doubt it'd come up in vanilla.
             On.RoR2.SeerStationController.SetRunNextStageToTarget += BazaarDisableAllSeers;
+
+            //Disable iscFlameDrone rotation, so it no longer fucking clips in the ground all the god damn time.
+            Addressables.LoadAssetAsync<InteractableSpawnCard>(key: "592ddd0e913440844b42eff65663abda").WaitForCompletion().slightlyRandomizeOrientation = false;
         }
 
         private static void BazaarDisableAllSeers(On.RoR2.SeerStationController.orig_SetRunNextStageToTarget orig, SeerStationController self)

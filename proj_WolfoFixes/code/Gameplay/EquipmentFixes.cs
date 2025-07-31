@@ -74,7 +74,7 @@ namespace WolfoFixes
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<System.Func<EquipmentIndex, DamageInfo, EquipmentIndex>>((eq, damageInfo) =>
                 {
-                    Debug.Log(eq);
+                    //Debug.Log(eq);
                     if (damageInfo.inflictor.GetComponent<ThisIsASawmarang>())
                     {
                         //Coulndt find the bool ig

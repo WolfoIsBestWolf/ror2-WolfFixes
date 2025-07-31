@@ -1,5 +1,10 @@
 ## Changelog:
 ```
+v1.1.17
+Fixed log spam when using Sawmerang
+Fixed Ice Spear fix not actually going through due to wrong config val.
+Fixed Broken Flame Drones often clipping into the ground, sometimes being barley visible.
+
 v1.1.16
 Fixed an issue with my custom droptables and disabling DLCs.
 

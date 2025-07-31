@@ -15,11 +15,11 @@ namespace WolfoFixes
             IL.RoR2.Artifacts.SwarmsArtifactManager.OnSpawnCardOnSpawnedServerGlobal += SwarmsVengenceGooboFix;
 
 
-            if (WConfig.cfgSlayerScale.Value)
+            /* if (WConfig.cfgSlayerScale.Value)
             {
                 //Is this even a bug, probably not is it.
                 On.RoR2.HealthComponent.TakeDamageProcess += SlayerApplyingToProc;
-            }
+            }*/
 
             //Helminth Roost should realistically be blocked from Stage 1 in WeeklyRun specifically
             //But both of these should be allowed for RandomStage order

@@ -28,10 +28,7 @@ namespace WolfoFixes
         public static ConfigEntry<bool> cfgDevotionSpareDroneParts;
         public static ConfigEntry<bool> cfgXILaser;
         public static ConfigEntry<bool> cfgDisable;
-        public static ConfigEntry<bool> cfgSlayerScale;
-        public static ConfigEntry<bool> cfgFalseSonP2;
-        public static ConfigEntry<bool> cfgFunnyIceSpear;
-
+         
         public static ConfigEntry<bool> cfgTestMultiplayer;
         public static ConfigEntry<bool> cfgTestLogbook;
         public static ConfigEntry<bool> cfgLoadOrder;
@@ -54,12 +51,7 @@ namespace WolfoFixes
                "This bug happens because SetStateOnHurt consider Mithrixes health 0 for 1 frame and staggers him.\n\nOff by default due to feedback."
            );
             cfgMithrix4Skip.SettingChanged += BodyFixes.SetSkippable;
-            cfgFunnyIceSpear = ConfigFile_Client.Bind(
-               "Gameplay",
-               "Fix Ice Spear Physics",
-               true,
-               "This bug happens because Ice Spears physics layer was set incorrectly at some point."
-           );
+ 
             //Is he tho?
             /*cfgFalseSonP2 = ConfigFile_Client.Bind(
                 "Gameplay",
@@ -67,12 +59,7 @@ namespace WolfoFixes
                 true,
                 "False Son Phase 2 is intended to use the spike shotgun, but can't due to a bugged skill driver."
             );*/
-            cfgXILaser = ConfigFile_Client.Bind(
-                "Gameplay",
-                "Fix XI Laser",
-                true,
-                "This bug happens because the laser state just ends instead of checking what it should do next. \n\nProbably low on the priority which is why it has not been fixed."
-            );
+ 
             cfgItemTags = ConfigFile_Client.Bind(
                 "Gameplay",
                 "Item Tag Changes",
@@ -85,14 +72,7 @@ namespace WolfoFixes
                 true,
                 "Add the Devotion Tag to Devoted Lemurians which will make them work with Spare Drone Parts.\n\nThis is a intended synergy, they just put in the wrong Lemurian."
             );
-            cfgSlayerScale = ConfigFile_Client.Bind(
-                "Gameplay",
-                "Slayer scales Procs",
-                false,
-                "Slayer damage type scales proc damage\nMight not really be a bug."
-            );
-
-
+ 
             cfgDisable = ConfigFile_Client.Bind(
                           "Main",
                           "Disable everything except needed",

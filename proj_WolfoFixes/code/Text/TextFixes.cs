@@ -63,8 +63,7 @@ namespace WolfoFixes
 
             //Stacks as 2 + 1, 10m start
             LanguageAPI.Add("ITEM_INTERSTELLARDESKPLANT_DESC", "On kill, plant a <style=cIsHealing>healing</style> fruit seed that grows into a plant after <style=cIsUtility>5</style> seconds. \n\nThe plant <style=cIsHealing>heals</style> for <style=cIsHealing>10%</style> of <style=cIsHealing>maximum health</style> every second to all allies within <style=cIsHealing>10m</style> <style=cStack>(+5m per stack)</style>. Lasts <style=cIsUtility>10</style> seconds.", "en");
-            //Wrong radius
-            LanguageAPI.Add("ITEM_MUSHROOM_DESC", "After standing still for <style=cIsHealing>1</style> second, create a zone that <style=cIsHealing>heals</style> for <style=cIsHealing>4.5%</style> <style=cStack>(+2.25% per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>3.5m</style> <style=cStack>(+1.5m per stack)</style>.", "en");
+            
             //Wrong radius Stack
             LanguageAPI.Add("ITEM_BEHEMOTH_DESC", "All your <style=cIsDamage>attacks explode</style> in a <style=cIsDamage>4m </style><style=cStack>(+2.5m per stack)</style> radius for a bonus <style=cIsDamage>60%</style> TOTAL damage to nearby enemies.", "en");
 
@@ -74,9 +73,9 @@ namespace WolfoFixes
             LanguageAPI.Add("ITEM_BLEEDONHITANDEXPLODE_DESC", "Gain <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes bleed</style> enemies for <style=cIsDamage>240%</style> base damage. <style=cIsDamage>Bleeding</style> enemies <style=cIsDamage>explode</style> on death for <style=cIsDamage>400%</style> <style=cStack>(+400% per stack)</style> damage, plus an additional <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> of their maximum health.", "en");
 
             //16x not 15x // or Bonus +15, either way not mentioned correctly
-            LanguageAPI.Add("ITEM_GHOSTONKILL_DESC", "Killing enemies has a <style=cIsDamage>7%</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>1600%</style> damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.", "en");
+            LanguageAPI.Add("ITEM_GHOSTONKILL_DESC", "Killing enemies has a <style=cIsDamage>7%</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>+1500%</style> bonus damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.", "en");
 
-            if (!WolfoMain.riskyFixes)
+            if (!WolfoMain.riskyFixes) //This isn't a bug fix but RiskyFixes ig
             {
                 //First stack counts for cooldown reduction
                 LanguageAPI.Add("ITEM_BEARVOID_DESC", "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <style=cIsUtility>13.5 seconds</style> <style=cStack>(-10% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.", "en");
@@ -102,16 +101,26 @@ namespace WolfoFixes
             //LanguageAPI.Add("ITEM_METEORATTACKONHIGHDAMAGE_DESC", "<style=cIsDamage>3%</style> chance on hit to call a meteor strike, dealing <style=cIsDamage>2000%</style> base damage. Every <style=cIsDamage>100%</style> attack damage dealt increases the activation chance by <style=cIsDamage>3%</style> <style=cStack>(+3% per stack)</style> and damage by <style=cIsDamage>150%</style> <style=cStack>(+50% per stack)</style>. Cannot exceed 7500% damage and 50% chance.", "en");
             LanguageAPI.Add("ITEM_METEORATTACKONHIGHDAMAGE_DESC", "<style=cIsDamage>3%</style> chance on hit to call a meteor strike, dealing <style=cIsDamage>2000%</style> base damage. For every <style=cIsDamage>100%</style> attack damage, increase activation chance by <style=cIsDamage>3%</style> <style=cStack>(+3% per stack)</style> and damage by <style=cIsDamage>150%</style> <style=cStack>(+50% per stack)</style>. Maximum cap of <style=cIsDamage>7500%</style> damage and <style=cIsDamage>50%</style> chance.", "en");
 
+            //Does not mention that stacking makes you gain more XP + Red Downside
+            LanguageAPI.Add("ITEM_ONLEVELUPFREEUNLOCK_DESC", "<style=cIsUtility>On level up</style> gain 1 <style=cStack>(+1 per stack)</style> free purchases <style=cIsHealth>but all gold is converted to experience</style>. <style=cStack>Stacks increase experience gained.</style> Anything that costs gold is <style=cIsUtility>increased by 50%</style> <style=cStack>(+50% per stack)</style>.", "en");
+
+            //Downside isnt RED
+            LanguageAPI.Add("ITEM_LUNARDAGGER_DESC", "Increase base damage by <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style>. <style=cIsHealth>Reduce maximum health by 50%</style> <style=cStack>(+50% per stack)</style>.", "en");
+
             #endregion
             #region Equipment
             //Remove, removed Movement Speed Buff
             LanguageAPI.Add("EQUIPMENT_JETPACK_DESC", "Sprout wings and <style=cIsUtility>fly for 15 seconds</style>.", "en");
+            
             //Higher damage than stated
             LanguageAPI.Add("EQUIPMENT_BFG_DESC", "Fires preon tendrils, zapping enemies within 35m for up to <style=cIsDamage>1200% damage/second</style>. On contact, detonate in an enormous 20m explosion for <style=cIsDamage>8000% damage</style>.");
+            
             //Red downside text
             LanguageAPI.Add("EQUIPMENT_CRIPPLEWARD_DESC", "<color=#FF7F7F>ALL characters</color> within have their <style=cIsUtility>movement speed slowed by 100%</style> and have their <style=cIsDamage>armor reduced by 20</style>. Can place up to <style=cIsUtility>5</style>.", "en");
+            
             //Limit of 3
             LanguageAPI.Add("EQUIPMENT_DEATHPROJECTILE_DESC", "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>1</style> second for <style=cIsUtility>8</style> seconds. Cannot throw out more than <style=cIsUtility>3</style> dolls at a time.", "en");
+            
             //Yellow Item text
             LanguageAPI.Add("EQUIPMENT_BOSSHUNTER_DESC", "<style=cIsDamage>Execute</style> any enemy capable of spawning a <style=cIsTierBoss>unique reward</style>, and it will drop that <style=cIsDamage>item</style>. Equipment is <style=cIsUtility>consumed</style> on use.", "en");
             #endregion

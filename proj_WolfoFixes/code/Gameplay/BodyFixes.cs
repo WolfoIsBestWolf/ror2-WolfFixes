@@ -55,9 +55,6 @@ namespace WolfoFixes
                {
                    hurtBoxGroup.SetHurtboxesActive(false);
                }*/
-            CharacterBody DeathProjectile = Addressables.LoadAssetAsync<GameObject>(key: "1336d77e77299964884c3bd02757fde7").WaitForCompletion().GetComponent<CharacterBody>();
-            DeathProjectile.baseNameToken = "EQUIPMENT_DEATHPROJECTILE_NAME";
-            DeathProjectile.portraitIcon = Addressables.LoadAssetAsync<Texture2D>(key: "dda5febead506894fa6e053cea042ddc").WaitForCompletion();
 
 
             //bdLunarRuin
@@ -90,6 +87,10 @@ namespace WolfoFixes
 
         public static void Start()
         {
+            //Ice Spear wrong phys layer
+            Addressables.LoadAssetAsync<GameObject>(key: "7a5eecba2b015474dbed965c120860d0").WaitForCompletion().layer = 8;
+          
+
             SetSkippable(null, null);
             ChefFixes();
 
@@ -114,6 +115,7 @@ namespace WolfoFixes
             };
 
 
+            //Child shouldnt be burnable like Parents
             GameObject ChildBody = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC2/Child/ChildBody.prefab").WaitForCompletion();
             CharacterBody Child = ChildBody.GetComponent<CharacterBody>();
             if (!Child.bodyFlags.HasFlag(CharacterBody.BodyFlags.OverheatImmune))
@@ -122,10 +124,11 @@ namespace WolfoFixes
             }
 
 
+            //Forgive me Please marked as ???
+            CharacterBody DeathProjectile = Addressables.LoadAssetAsync<GameObject>(key: "1336d77e77299964884c3bd02757fde7").WaitForCompletion().GetComponent<CharacterBody>();
+            DeathProjectile.baseNameToken = "EQUIPMENT_DEATHPROJECTILE_NAME";
+            DeathProjectile.portraitIcon = Addressables.LoadAssetAsync<Texture2D>(key: "dda5febead506894fa6e053cea042ddc").WaitForCompletion();
 
-            //For testing ig but also it spams the console
-            IL.EntityStates.Commando.CommandoWeapon.FirePistol2.FixedUpdate += CommandoReloadStateRemove;
-            //Huntress issue only starts at 780% attack speed who cares really
 
             //Mushroom tree do not produce fruit or die or whatever 
             On.EntityStates.Fauna.HabitatFruitDeathState.OnEnter += FixDumbFruit;
@@ -135,20 +138,16 @@ namespace WolfoFixes
             HabitatFruitDeathState.fractionalHealing = 0.15f;
             HabitatFruitDeathState.scale = 1;
 
-
+            //Fix XI laser not exloding
             On.EntityStates.MajorConstruct.Weapon.FireLaser.OnExit += XI_LaserFix;
-
-            //Addressables.LoadAssetAsync<GameObject>(key: "cdbb41712e896454da142ab00d046d9f").WaitForCompletion().GetComponents<RoR2.CharacterAI.AISkillDriver>()[2].requiredSkill = null;
-
+ 
+            //Fix Captain Beacons not critting
             IL.EntityStates.CaptainSupplyDrop.HitGroundState.OnEnter += FixCaptainBeaconNoCrit;
 
-
-            if (WConfig.cfgFunnyIceSpear.Value)
-            {
-                //Ice Spear wrong phys layer
-                Addressables.LoadAssetAsync<GameObject>(key: "7a5eecba2b015474dbed965c120860d0").WaitForCompletion().layer = 8;
-
-            }
+ 
+            //For testing ig but also it spams the console
+            IL.EntityStates.Commando.CommandoWeapon.FirePistol2.FixedUpdate += CommandoReloadStateRemove;
+            //Huntress issue only starts at 780% attack speed who cares really
 
         }
 

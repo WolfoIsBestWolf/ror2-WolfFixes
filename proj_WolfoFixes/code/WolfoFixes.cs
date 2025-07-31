@@ -14,7 +14,7 @@ namespace WolfoFixes
     [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
     public class WolfoMain : BaseUnityPlugin
     {
-        const string version = "1.1.15";
+        const string version = "1.1.17";
 
         public static bool riskyFixes;
         public void Awake()
@@ -38,6 +38,7 @@ namespace WolfoFixes
             VoidSuppressor.SuppresedScrap();
             if (WConfig.cfgDisable.Value)
             {
+                Debug.Log("WolfoFixes disabled");
                 return;
             }
             VoidSuppressor.FixInteractable();
