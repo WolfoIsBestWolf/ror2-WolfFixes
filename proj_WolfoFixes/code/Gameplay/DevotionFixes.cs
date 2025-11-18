@@ -134,7 +134,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : CheckIfNullBody");
+                WolfFixes.log.LogWarning("IL Failed : CheckIfNullBody");
             }
         }
 
@@ -142,13 +142,13 @@ namespace WolfoFixes
         {
             ILCursor c = new ILCursor(il);
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchCallvirt("RoR2.Inventory", "GiveItem")))
+                x => x.MatchCallvirt("RoR2.Inventory", "GiveItemPermanent")))
             {
                 c.Prev.OpCode = OpCodes.Ldc_I4_0;
             }
             else
             {
-                Debug.LogWarning("IL Failed: FixOneBehindRemoveItemHerel");
+                WolfFixes.log.LogWarning("IL Failed: FixOneBehindRemoveItemHerel");
             }
         }
 

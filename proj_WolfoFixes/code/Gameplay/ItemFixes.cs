@@ -1,11 +1,9 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
 using RoR2.Navigation;
+using System;
+using UnityEngine;
 
 namespace WolfoFixes
 {
@@ -14,17 +12,65 @@ namespace WolfoFixes
     {
         public static void Start()
         {
-         
+
             // IL.RoR2.HealthComponent.TakeDamageProcess += FixEchoOSP;
             IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedEchoE8;
             IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedEchoNotUsingArmor;
             On.RoR2.CharacterBody.OnTakeDamageServer += WEchoFirstHitIntoDanger;
 
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixChargedPerferatorCrit;
-    
+
             //Checks for NetworkAuth instead of EffectiveAuth
+            //Antler does not work on Lemurians due to wrong Auth Check
+            //Antler does not work on Stationary Turrets / Flying Drones due to requiring normal character motor.
             IL.RoR2.CharacterBody.RpcRequestShardInfoClient += Antler_FixWrongAuth;
             On.RoR2.CharacterBody.RpcRequestShardInfoClient += Antler_FixNullRefOnNullMotor;
+
+            //Bandolier does not work on Lemurians and new Drones due to wrong Auth Check
+            IL.RoR2.SkillLocator.ApplyAmmoPack += Bandolier_WrongAuthCheck;
+
+            //I believe confirmed issue not 100%
+            IL.RoR2.HealthComponent.TakeDamageProcess += FixVoidsentNoLongerChaining;
+        }
+
+        private static void FixVoidsentNoLongerChaining(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            bool a = c.TryGotoNext(MoveType.After,
+            x => x.MatchLdsfld("RoR2.DLC1Content/Items", "ExplodeOnDeathVoid"));
+
+            if (a && c.TryGotoNext(MoveType.Before,
+            x => x.MatchLdflda("RoR2.DelayBlast", "procChainMask")))
+            {
+                c.RemoveRange(3);
+                c.TryGotoPrev(MoveType.Before,
+                x => x.MatchDup());
+                c.Remove();
+            }
+            else
+            {
+                WolfFixes.log.LogWarning("IL Failed : FixVoidsentNoLongerChaining");
+            }
+        }
+
+        private static void Bandolier_WrongAuthCheck(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            if (c.TryGotoNext(MoveType.After,
+            x => x.MatchCallvirt("UnityEngine.Networking.NetworkIdentity", "get_hasAuthority")//This will break like instantly on update but probably fine mods right idk
+           ))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<bool, SkillLocator, bool>>((has, skill) =>
+                {
+                    return skill.hasEffectiveAuthority;
+                });
+            }
+            else
+            {
+                WolfFixes.log.LogWarning("IL Failed : Bandolier_WrongAuthCheck");
+            }
         }
 
         private static void Antler_FixNullRefOnNullMotor(On.RoR2.CharacterBody.orig_RpcRequestShardInfoClient orig, CharacterBody self)
@@ -70,7 +116,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : Antler_FixWrongAuth");
+                WolfFixes.log.LogWarning("IL Failed : Antler_FixWrongAuth");
             }
         }
 
@@ -90,7 +136,7 @@ namespace WolfoFixes
 
             //WEchos first hit is rejected if OSP Happens
             //Because it happens during the OSPTimer that rejects ALL Damage
-            if(c.TryGotoNext(MoveType.After,
+            if (c.TryGotoNext(MoveType.After,
             x => x.MatchLdfld("RoR2.HealthComponent", "ospTimer")))
             {
                 c.Emit(OpCodes.Ldarg_1);
@@ -105,36 +151,42 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : WECHO dont delete first hit if OSPed");
+                WolfFixes.log.LogWarning("IL Failed : WECHO dont delete first hit if OSPed");
             }
 
             c.TryGotoNext(MoveType.After,
-            x => x.MatchLdsfld("RoR2.DLC2Content/Items","DelayedDamage"));
+            x => x.MatchLdsfld("RoR2.DLC2Content/Items", "DelayedDamage"));
 
             if (c.TryGotoNext(MoveType.After,
-           x => x.MatchLdloc(8) //This will break like instantly on update but probably fine mods right idk
+           //x => x.MatchLdloc(8) //This will break like instantly on update but probably fine mods right idk
+           x => x.MatchLdloc(10) //This will break like instantly on update but probably fine mods right idk
            ))
             {
                 //c.Next.Operand = 7; //Why does this not work?
                 //Testing
-                c.Emit(OpCodes.Ldloc, 7); 
+                //c.Emit(OpCodes.Ldloc, 7); 
+                c.Emit(OpCodes.Ldloc, 9);
                 c.EmitDelegate<Func<float, float, float>>((aaa, bbb) =>
                 {
-                    /*Debug.Log(aaa);
-                    Debug.Log(bbb);
-                    Debug.Log(bbb*0.8f);*/
+                    /*WolfoMain.Logger.LogMessage(aaa);
+                    WolfoMain.Logger.LogMessage(bbb);
+                    WolfoMain.Logger.LogMessage(bbb*0.8f);*/
                     return bbb;
                 });
             }
             else
             {
-                Debug.LogWarning("IL Failed : FixWarpedEchoNotUsingArmor");
+                WolfFixes.log.LogWarning("IL Failed : FixWarpedEchoNotUsingArmor");
             }
 
             //After 80%
-            if (c.TryGotoNext(MoveType.Before,
-           x => x.MatchStloc(50) //This will break like instantly on update but probably fine with other mods right idk
-           ))
+            //if (c.TryGotoNext(MoveType.Before, x => x.MatchStloc(57)))
+            if (c.TryGotoNext(MoveType.After,
+              //x => x.MatchStloc(50) //This will break like instantly on update but probably fine with other mods right idk
+              x => x.MatchLdcR4(0.8f),
+              x => x.MatchMul()
+              //x => x.MatchStloc(57) //This will break like instantly on update but probably fine with other mods right idk
+              ))
             {
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldarg_1);
@@ -142,7 +194,7 @@ namespace WolfoFixes
                 {
                     //I do not like copying it like this
                     //But I do not trust myself to do it in a more "official way" with breaks or moving pointers
-                    //Debug.Log("Pre" + damage);
+                    //WolfoMain.Logger.LogMessage("Pre" + damage);
                     if (self.body.hasOneShotProtection && (damageInfo.damageType & DamageType.BypassOneShotProtection) != DamageType.BypassOneShotProtection)
                     {
                         float maxDamageOSP = (self.fullCombinedHealth + self.barrier) * (1f - self.body.oneShotProtectionFraction);
@@ -151,11 +203,11 @@ namespace WolfoFixes
                         damage = Mathf.Min(damage, b); //This is what OSP does
                         if (damage != huh) //If you already took exactly 90% damage, dont do OSP (??)
                         {
-                            Debug.Log("Trigger Warped OSP");
-                            self.TriggerOneShotProtection(); 
+                            WolfFixes.log.LogMessage("Trigger Warped OSP");
+                            self.TriggerOneShotProtection();
                         }
                     }
-                    //Debug.Log("Post" + damage);
+                    //WolfoMain.Logger.LogMessage("Post" + damage);
 
                     return damage;
                 });
@@ -163,12 +215,12 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : WARPED OSP FIX");
+                WolfFixes.log.LogWarning("IL Failed : WARPED OSP FIX");
             }
 
-         
+
         }
- 
+
         private static void FixEchoOSP(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -209,11 +261,11 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : FixChargedPerferatorCrit");
+                WolfFixes.log.LogWarning("IL Failed : FixChargedPerferatorCrit");
             }
 
         }
- 
+
         public static void FixChargedPerferatorCrit(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -236,10 +288,10 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : FixChargedPerferatorCrit");
+                WolfFixes.log.LogWarning("IL Failed : FixChargedPerferatorCrit");
             }
         }
- 
+
         private static void FixWarpedEchoE8(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -261,12 +313,12 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : FixWarpedEchoE8");
+                WolfFixes.log.LogWarning("IL Failed : FixWarpedEchoE8");
             }
         }
- 
- 
+
+
 
     }
- 
+
 }

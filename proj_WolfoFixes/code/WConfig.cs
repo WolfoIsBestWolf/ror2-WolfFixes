@@ -1,4 +1,3 @@
-using BepInEx;
 using BepInEx.Configuration;
 using RiskOfOptions;
 using RiskOfOptions.Options;
@@ -11,27 +10,23 @@ namespace WolfoFixes
     internal class WConfig
     {
 
-        public static ConfigFile ConfigFile_Client = new ConfigFile(Paths.ConfigPath + "\\Wolfo.WolfoFixes.cfg", true);
+        //public static ConfigFile ConfigFile_Client = new ConfigFile(Paths.ConfigPath + "\\Wolfo.WolfoFixes.cfg", true);
+        public static ConfigFile ConfigFile_Client = WolfoLibrary.WConfig.ConfigFile;
 
-        public enum Mith4
-        {
-            Unchanged,
-            StealAfterStun,
-            Fix
-        }
 
-        public static ConfigEntry<bool> cfgTextItems;
-        public static ConfigEntry<bool> cfgTextCharacters;
+        public static ConfigEntry<bool> cfgLava;
+        public static ConfigEntry<float> cfgStage1Weight;
+        public static ConfigEntry<bool> cfgLoopSeers;
+
+        public static ConfigEntry<bool> cfgTextFixes;
+
         public static ConfigEntry<bool> cfgMithrix4Skip;
 
         public static ConfigEntry<bool> cfgItemTags;
         public static ConfigEntry<bool> cfgDevotionSpareDroneParts;
-        public static ConfigEntry<bool> cfgXILaser;
+
         public static ConfigEntry<bool> cfgDisable;
-         
-        public static ConfigEntry<bool> cfgTestMultiplayer;
-        public static ConfigEntry<bool> cfgTestLogbook;
-        public static ConfigEntry<bool> cfgLoadOrder;
+
 
         public static void Awake()
         {
@@ -44,6 +39,21 @@ namespace WolfoFixes
         public static void InitConfig()
         {
 
+            cfgStage1Weight = ConfigFile_Client.Bind(
+             "Config",
+             "Plains Roost weight",
+             0.75f,
+             "They are counted as 2 stages due to the 2 variants, so they essentially have double the weight."
+          );
+            cfgLoopSeers = ConfigFile_Client.Bind(
+               "Config",
+               "Remove Pre Loop Destination from Seers during loops",
+               true,
+               "You can get PreLoop variants of stages that have loop variants as Lunar Seer Destinations.\nVanilla : True\nAt least a dev thought it was a funny quirk but still just feels like a bug."
+            );
+
+
+
             cfgMithrix4Skip = ConfigFile_Client.Bind(
                "Gameplay",
                "Fix Mithrix P4 Skip",
@@ -51,7 +61,7 @@ namespace WolfoFixes
                "This bug happens because SetStateOnHurt consider Mithrixes health 0 for 1 frame and staggers him.\n\nOff by default due to feedback."
            );
             cfgMithrix4Skip.SettingChanged += BodyFixes.SetSkippable;
- 
+
             //Is he tho?
             /*cfgFalseSonP2 = ConfigFile_Client.Bind(
                 "Gameplay",
@@ -59,7 +69,7 @@ namespace WolfoFixes
                 true,
                 "False Son Phase 2 is intended to use the spike shotgun, but can't due to a bugged skill driver."
             );*/
- 
+
             cfgItemTags = ConfigFile_Client.Bind(
                 "Gameplay",
                 "Item Tag Changes",
@@ -72,47 +82,22 @@ namespace WolfoFixes
                 true,
                 "Add the Devotion Tag to Devoted Lemurians which will make them work with Spare Drone Parts.\n\nThis is a intended synergy, they just put in the wrong Lemurian."
             );
- 
+
             cfgDisable = ConfigFile_Client.Bind(
                           "Main",
                           "Disable everything except needed",
                           false,
                           "Disable all changes except things needed for mod compatibility and debugging tools"
             );
-            cfgTextItems = ConfigFile_Client.Bind(
+            cfgTextFixes = ConfigFile_Client.Bind(
                 "Main",
-                "Fixed Item Descriptions",
+                "Fixed Descriptions",
                 true,
-                "Updated and fixed descriptions for items. Disable if other mods change stats or items."
+                "Updated and fixed descriptions for items and survivors. Disable if other mods change stats or items."
             );
 
-            cfgTextCharacters = ConfigFile_Client.Bind(
-                "Main",
-                "Fixed Survivor Descriptions",
-                true,
-                "Updated and fixed descriptions for character. Disable if other mods change stats or items."
-            );
 
-            #region Test
-            cfgTestLogbook = ConfigFile_Client.Bind(
-               "Testing",
-               "Everything Logbook",
-               false,
-               "Add all items, equipments and mobs to logbook, including untiered and cut."
-            );
-            cfgTestMultiplayer = ConfigFile_Client.Bind(
-                "Testing",
-                "Multiplayer Test",
-                false,
-                "Allows you to join yourself via connect localhost:7777"
-            );
-            cfgLoadOrder = ConfigFile_Client.Bind(
-                 "Testing",
-                 "Debugging",
-                 false,
-                 "Log prints when certain events happen"
-             );
-            #endregion
+
         }
 
 
@@ -137,7 +122,7 @@ namespace WolfoFixes
                 }
                 else
                 {
-                    Debug.LogWarning("Could not add config " + entry.Definition.Key + " of type : " + entry.SettingType);
+                    WolfFixes.log.LogWarning("Could not add config " + entry.Definition.Key + " of type : " + entry.SettingType);
                 }
             }
 

@@ -1,38 +1,18 @@
 ﻿using EntityStates.Fauna;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using RoR2;
 using RoR2.Projectile;
+using RoR2.Skills;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 
 namespace WolfoFixes
 {
-    internal class MithrixPhase4Fix : MonoBehaviour
-    {
-        public bool stoleItems = false;
-        public void Start()
-        {
-            //-> PreAwake Fix Hurtable in body prefab
-            //-> Awake does his thing
-            //-> Start, we need to turn them on again if he's not doing the animation.
-            SetStateOnHurt component = this.GetComponent<SetStateOnHurt>();
-            if (component)
-            {
-                component.canBeHitStunned = true;
-            }
-            HurtBoxGroup hurtBoxGroup = this.GetComponent<HurtBoxGroup>();
-            if (hurtBoxGroup)
-            {
-                //Debug.Log(component.hurtBoxesDeactivatorCounter);
-                if (hurtBoxGroup.hurtBoxesDeactivatorCounter == 0)
-                {
-                    hurtBoxGroup.SetHurtboxesActive(true);
-                }
-            }
-        }
-    }
+
     internal class BodyFixes
     {
         public static void SetSkippable(object sender, System.EventArgs e)
@@ -88,13 +68,14 @@ namespace WolfoFixes
         public static void Start()
         {
             //Ice Spear wrong phys layer
-            Addressables.LoadAssetAsync<GameObject>(key: "7a5eecba2b015474dbed965c120860d0").WaitForCompletion().layer = 8;
-          
+            //Addressables.LoadAssetAsync<GameObject>(key: "7a5eecba2b015474dbed965c120860d0").WaitForCompletion().layer = 8;
 
-            SetSkippable(null, null);
-            ChefFixes();
 
-            On.EntityStates.Merc.WhirlwindBase.OnEnter += WhirlwindBase_OnEnter;
+            //SetSkippable(null, null);
+            // ChefFixes();
+
+            //Added in AC
+            //On.EntityStates.Merc.WhirlwindBase.OnEnter += WhirlwindBase_OnEnter;
 
             On.EntityStates.Croco.Spawn.OnEnter += (orig, self) =>
             {
@@ -115,13 +96,8 @@ namespace WolfoFixes
             };
 
 
-            //Child shouldnt be burnable like Parents
-            GameObject ChildBody = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC2/Child/ChildBody.prefab").WaitForCompletion();
-            CharacterBody Child = ChildBody.GetComponent<CharacterBody>();
-            if (!Child.bodyFlags.HasFlag(CharacterBody.BodyFlags.OverheatImmune))
-            {
-                Child.bodyFlags |= CharacterBody.BodyFlags.OverheatImmune;
-            }
+
+
 
 
             //Forgive me Please marked as ???
@@ -130,58 +106,163 @@ namespace WolfoFixes
             DeathProjectile.portraitIcon = Addressables.LoadAssetAsync<Texture2D>(key: "dda5febead506894fa6e053cea042ddc").WaitForCompletion();
 
 
-            //Mushroom tree do not produce fruit or die or whatever 
+            #region Mushroom tree do not produce fruit or die or whatever 
             On.EntityStates.Fauna.HabitatFruitDeathState.OnEnter += FixDumbFruit;
 
             HabitatFruitDeathState.deathSoundString = "Play_jellyfish_death";
             HabitatFruitDeathState.healPackMaxVelocity = 60;
             HabitatFruitDeathState.fractionalHealing = 0.15f;
             HabitatFruitDeathState.scale = 1;
+            #endregion
 
-            //Fix XI laser not exloding
-            On.EntityStates.MajorConstruct.Weapon.FireLaser.OnExit += XI_LaserFix;
- 
             //Fix Captain Beacons not critting
             IL.EntityStates.CaptainSupplyDrop.HitGroundState.OnEnter += FixCaptainBeaconNoCrit;
 
- 
+
             //For testing ig but also it spams the console
             IL.EntityStates.Commando.CommandoWeapon.FirePistol2.FixedUpdate += CommandoReloadStateRemove;
             //Huntress issue only starts at 780% attack speed who cares really
+
+            #region XI 
+            //Fix Ghost XI not spawning Ghosts
+            //Fix Elite XI not spawning Elites
+            //Hopoo forgor
+            On.RoR2.NetworkedBodySpawnSlot.OnSpawnedServer += XI_GhostEliteMinionFix;
+            //Fix XI Tail lagging
+            GameObject MegaConstructBody = Addressables.LoadAssetAsync<GameObject>(key: "64b97b2c7e3e0d949b41abbe57bf3c2d").WaitForCompletion();
+            MegaConstructBody.transform.Find("Model Base/mdlMegaConstruct/MegaConstructArmature/ROOT/base/body.1").GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Extrapolate;
+
+            //EntityStates.MegaConstruct.ExitShield has wrong field name, leading to it being skipped
+            Addressables.LoadAssetAsync<EntityStateConfiguration>(key: "04deef0aeeb41dc4aa4ad14f7f967526").WaitForCompletion().serializedFieldsCollection.serializedFields[3].fieldName = "baseDuration"; //Is Duration instead of Base
+            #endregion
+            #region CHEF
+            //BoostedSearFireballProjectile has childDmgCoeff of 0 resulting in 0 damage Oil Pools
+            //Oil pools normally do 20% damage 
+            Addressables.LoadAssetAsync<GameObject>(key: "c00152ae354576245849336ff7e67ba6").WaitForCompletion().GetComponent<ProjectileExplosion>().childrenDamageCoefficient = 2f / 70f;
+            #endregion
+
+            #region ScavLunar
+
+            //Twisted Scavengers are final bosses
+            //Final bosses are *meant* to be immune to Newly Hatched Zoea
+            //Hopoo forgor
+
+            Addressables.LoadAssetAsync<GameObject>(key: "746b53f076ca9af4d89f67c981d2bbf9").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
+            Addressables.LoadAssetAsync<GameObject>(key: "a0a8fa4272069874b9e538c59bbda5ed").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
+            Addressables.LoadAssetAsync<GameObject>(key: "7dfb4548829852a49a4b2840046787ed").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
+            Addressables.LoadAssetAsync<GameObject>(key: "769510dc6be546b40aa3aca3cf93945c").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
+            #endregion
+
+
+            DLC3Fixes();
+        }
+
+        public static void DLC3Fixes()
+        {
+            //Broke close to launch; No longer gets into position and just fucking sucks because of it.
+            SkillDef DroneJailerTrapSkillDef = Addressables.LoadAssetAsync<SkillDef>(key: "1df669ea25cc9cc408ff56b4a2571af9").WaitForCompletion();
+            DroneJailerTrapSkillDef.activationState.typeName = "EntityStates.Drone.DroneJailer.AssumePosition";
+
+            //Fucked up pathing or smth I don't really know much about it
+            Hook hook = new Hook(typeof(CharacterBody).GetProperty("footPosition", BindingFlags.Instance | BindingFlags.Public).GetGetMethod(), FuckedUpFootPosition);
+
+            On.RoR2.CharacterBody.CheckDroneHasItems += CharacterBody_CheckDroneHasItems;
+
+
+        }
+
+
+
+        private static bool CharacterBody_CheckDroneHasItems(On.RoR2.CharacterBody.orig_CheckDroneHasItems orig, CharacterBody self)
+        {
+            bool item = orig(self);
+            /*if (!self.IsDrone && (self.bodyFlags & CharacterBody.BodyFlags.Mechanical) > CharacterBody.BodyFlags.None)
+            {
+                List<ItemIndex> itemAcquisitionOrder = self.inventory.itemAcquisitionOrder;
+                for (int i = 0; i < itemAcquisitionOrder.Count; i++)
+                {
+                    if (!ItemCatalog.GetItemDef(itemAcquisitionOrder[i]).ContainsTag(ItemTag.HiddenForDroneBuffIcon))
+                    {
+                        self.bodyFlags |= CharacterBody.BodyFlags.DroneHasItems;
+                        item = true;
+                    }
+                }
+            }*/
+            if ((self.bodyFlags & CharacterBody.BodyFlags.Mechanical) > CharacterBody.BodyFlags.None)
+            {
+                if (self.inventory.GetItemCountPermanent(RoR2Content.Items.CaptainDefenseMatrix) > 0 ||
+                    self.inventory.GetItemCountPermanent(DLC1Content.Items.DroneWeaponsBoost) > 0 ||
+                    self.inventory.GetItemCountPermanent(DLC3Content.Items.DronesDropDynamite) > 0 ||
+                    self.inventory.GetItemCountPermanent(DLC3Content.Items.TransferDebuffOnHit) > 0
+                    )
+                {
+                    self.bodyFlags |= CharacterBody.BodyFlags.DroneHasItems;
+                    item = true;
+                }
+            }
+            if (!item && self.bodyFlags.HasFlag(CharacterBody.BodyFlags.DroneHasItems))
+            {
+                self.bodyFlags &= ~CharacterBody.BodyFlags.DroneHasItems;
+            }
+            return item;
+        }
+
+        public delegate Vector3 orig_footPosition(CharacterBody self);
+        public static Vector3 FuckedUpFootPosition(BodyFixes.orig_footPosition orig, CharacterBody self)
+        {
+            Vector3 a = orig(self);
+            if (self.characterMotor)
+            {
+                a.y += self.characterMotor.capsuleYOffset;
+            }
+            return a;
+        }
+
+        public static void CallLate()
+        {
+            //Makes artifact borderline unusable, but probably overstepping fix territory
+            //CU8Content.BodyPrefabs.DevotedLemurianBody.bodyFlags |= CharacterBody.BodyFlags.ImmuneToLava;
+            //CU8Content.BodyPrefabs.DevotedLemurianBruiserBody.bodyFlags |= CharacterBody.BodyFlags.ImmuneToLava;
+            //Child shouldnt be burnable like Parents
+            DLC2Content.BodyPrefabs.ChildBody.bodyFlags |= CharacterBody.BodyFlags.OverheatImmune;
+
+        }
+
+        public static void XI_GhostEliteMinionFix(On.RoR2.NetworkedBodySpawnSlot.orig_OnSpawnedServer orig, NetworkedBodySpawnSlot self, GameObject ownerBodyObject, SpawnCard.SpawnResult spawnResult, System.Action<MasterSpawnSlotController.ISlot, SpawnCard.SpawnResult> callback)
+        {
+            orig(self, ownerBodyObject, spawnResult, callback);
+            if (spawnResult.success && spawnResult.spawnedInstance && ownerBodyObject)
+            {
+                CharacterBody ownerBody = ownerBodyObject.GetComponent<CharacterBody>();
+                Inventory component = spawnResult.spawnedInstance.GetComponent<Inventory>();
+                if (component)
+                {
+                    component.CopyEquipmentFrom(ownerBody.inventory);
+                    if (ownerBody.inventory.GetItemCount(RoR2Content.Items.Ghost) > 0)
+                    {
+                        component.GiveItem(RoR2Content.Items.Ghost, 1);
+                        component.GiveItem(RoR2Content.Items.HealthDecay, 30);
+                        component.GiveItem(RoR2Content.Items.BoostDamage, 150);
+                    }
+                }
+            }
 
         }
 
         public static void ChefFixes()
         {
-            //Boosted Icebox fix
-            Addressables.LoadAssetAsync<RoR2.Skills.SkillDef>(key: "6870bda0b12690048a9701539d1e2285").WaitForCompletion().activationState = Addressables.LoadAssetAsync<RoR2.Skills.SkillDef>(key: "c97062b172b41af4ebdb42c312ac1989").WaitForCompletion().activationState;
-            On.EntityStates.Chef.IceBox.OnEnter += IceBox_OnEnter;
 
-            On.RoR2.Projectile.CleaverProjectile.ChargeCleaver += CleaverProjectile_ChargeCleaver;
             //ChefDiceEnhanced Boosted Projectile needs to be changed seperately
-            Addressables.LoadAssetAsync<GameObject>(key: "a327aaf45e7e3b44f8b0bcc20c7eacfa").WaitForCompletion().GetComponent<ProjectileOverlapAttack>().overlapProcCoefficient = 1;
+            //I told them like 4 times so this has to just be intentional at this point
+            //Addressables.LoadAssetAsync<GameObject>(key: "a327aaf45e7e3b44f8b0bcc20c7eacfa").WaitForCompletion().GetComponent<ProjectileOverlapAttack>().overlapProcCoefficient = 1;
 
             //Might need to adjust this
-            On.EntityStates.Chef.OilSpillBase.OnExit += FallDamageImmunityOnOilSpillCancel;
+            //On.EntityStates.Chef.OilSpillBase.OnExit += FallDamageImmunityOnOilSpillCancel;
 
-            //BoostedSearFireballProjectile has childDmgCoeff of 0 resulting in 0 damage Oil Pools
-            //Oil pools normally do 20% damage 
-            Addressables.LoadAssetAsync<GameObject>(key: "c00152ae354576245849336ff7e67ba6").WaitForCompletion().GetComponent<ProjectileExplosion>().childrenDamageCoefficient = 2f / 70f;
 
         }
 
-        public static void CallLate()
-        {
-            //Fix Back-Up drones not scaling with level
-            Addressables.LoadAssetAsync<GameObject>(key: "3a44327eee358a74ba0580dbca78897e").WaitForCompletion().AddComponent<GivePickupsOnStart>().itemDefInfos = new GivePickupsOnStart.ItemDefInfo[]
-            {
-                new GivePickupsOnStart.ItemDefInfo
-                {
-                    itemDef = RoR2Content.Items.UseAmbientLevel,
-                    count = 1,
-                }
-            };
-        }
+
 
         private static void FallDamageImmunityOnOilSpillCancel(On.EntityStates.Chef.OilSpillBase.orig_OnExit orig, EntityStates.Chef.OilSpillBase self)
         {
@@ -207,7 +288,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : FixCaptainBeaconNoCrit");
+                WolfFixes.log.LogWarning("IL Failed : FixCaptainBeaconNoCrit");
             }
         }
 
@@ -220,10 +301,13 @@ namespace WolfoFixes
 
 
 
-        public static GameObject JellyfishDeath;
+        //public static GameObject JellyfishDeath;
         private static void FixDumbFruit(On.EntityStates.Fauna.HabitatFruitDeathState.orig_OnEnter orig, EntityStates.Fauna.HabitatFruitDeathState self)
         {
-            Transform Fruit = self.gameObject.transform.GetChild(1).GetChild(3);
+            //self.outer.SetNextState(new EntityStates.Fauna.VultureEggDeathState());
+            
+            orig(self);
+            Transform Fruit = self.characterBody.mainHurtBox.transform;
             EffectManager.SimpleImpactEffect(Addressables.LoadAssetAsync<GameObject>(key: "RoR2/Base/Jellyfish/JellyfishDeath.prefab").WaitForCompletion(), Fruit.position, Vector3.up, false);
             if (NetworkServer.active)
             {
@@ -235,27 +319,10 @@ namespace WolfoFixes
                 gameObject.GetComponent<Rigidbody>().AddForce(UnityEngine.Random.insideUnitSphere * HabitatFruitDeathState.healPackMaxVelocity, ForceMode.VelocityChange);
                 NetworkServer.Spawn(gameObject);
             }
-            orig(self);
+           
         }
 
-        private static void IceBox_OnEnter(On.EntityStates.Chef.IceBox.orig_OnEnter orig, EntityStates.Chef.IceBox self)
-        {
-            orig(self);
-            if (self.hasBoost)
-            {
-                self.attackSoundString = "Play_Chef_Secondary_IceBox_Boosted_Fire";
-                Util.PlaySound(self.blizzardSFXString, self.gameObject);
-            }
-        }
 
-        private static void CleaverProjectile_ChargeCleaver(On.RoR2.Projectile.CleaverProjectile.orig_ChargeCleaver orig, RoR2.Projectile.CleaverProjectile self)
-        {
-            orig(self);
-            if (self.charged)
-            {
-                self.projectileOverlapAttack.overlapProcCoefficient = 1f;
-            }
-        }
 
 
         public static void CommandoReloadStateRemove(ILContext il)
@@ -271,7 +338,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : CommandoReloadStateRemove");
+                WolfFixes.log.LogWarning("IL Failed : CommandoReloadStateRemove");
             }
         }
 
@@ -286,5 +353,29 @@ namespace WolfoFixes
         }
     }
 
+    internal class MithrixPhase4Fix : MonoBehaviour
+    {
+        public bool stoleItems = false;
+        public void Start()
+        {
+            //-> PreAwake Fix Hurtable in body prefab
+            //-> Awake does his thing
+            //-> Start, we need to turn them on again if he's not doing the animation.
+            SetStateOnHurt component = this.GetComponent<SetStateOnHurt>();
+            if (component)
+            {
+                component.canBeHitStunned = true;
+            }
+            HurtBoxGroup hurtBoxGroup = this.GetComponent<HurtBoxGroup>();
+            if (hurtBoxGroup)
+            {
+                //WolfoMain.Logger.LogMessage(component.hurtBoxesDeactivatorCounter);
+                if (hurtBoxGroup.hurtBoxesDeactivatorCounter == 0)
+                {
+                    hurtBoxGroup.SetHurtboxesActive(true);
+                }
+            }
+        }
+    }
 
 }

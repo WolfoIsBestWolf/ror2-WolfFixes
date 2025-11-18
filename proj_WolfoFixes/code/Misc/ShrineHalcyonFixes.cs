@@ -11,7 +11,7 @@ namespace WolfoFixes
         public static void Start()
         {
             //Running Host only code on Client
-            On.RoR2.CombatDirector.SpendAllCreditsOnMapSpawns += CombatDirector_SpendAllCreditsOnMapSpawns;
+            On.RoR2.CombatDirector.SpendAllCreditsOnMapSpawns_Transform += CombatDirector_SpendAllCreditsOnMapSpawns;
             On.RoR2.CombatDirector.HalcyoniteShrineActivation += CombatDirector_HalcyoniteShrineActivation;
             On.RoR2.HalcyoniteShrineInteractable.IsDraining += HalcyoniteShrineInteractable_IsDraining;
 
@@ -20,7 +20,7 @@ namespace WolfoFixes
             On.RoR2.HalcyoniteShrineInteractable.Start += MoreValuesClient2;
 
             //QoL
-            IL.RoR2.PortalSpawner.Start += DelayThunderMessage;
+            //IL.RoR2.PortalSpawner.Start += DelayThunderMessage;
             IL.EntityStates.ShrineHalcyonite.ShrineHalcyoniteBaseState.ModifyVisuals += FixVisualsBeingInconsistent;
         }
 
@@ -41,7 +41,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed: FixVisualsBeingInconsistent");
+                WolfFixes.log.LogWarning("IL Failed: FixVisualsBeingInconsistent");
             }
         }
 
@@ -60,11 +60,11 @@ namespace WolfoFixes
                     }
                     return target;
                 });
-                ///Debug.Log("IL Found: Delay Thunder Message");
+                ///WolfoMain.Logger.LogMessage("IL Found: Delay Thunder Message");
             }
             else
             {
-                Debug.LogWarning("IL Failed: Delay Thunder Message");
+                WolfFixes.log.LogWarning("IL Failed: Delay Thunder Message");
             }
         }
 
@@ -88,11 +88,11 @@ namespace WolfoFixes
             orig(self, drainingActive);
         }
 
-        private static void CombatDirector_SpendAllCreditsOnMapSpawns(On.RoR2.CombatDirector.orig_SpendAllCreditsOnMapSpawns orig, CombatDirector self, Transform mapSpawnTarget)
+        private static void CombatDirector_SpendAllCreditsOnMapSpawns(On.RoR2.CombatDirector.orig_SpendAllCreditsOnMapSpawns_Transform orig, CombatDirector self, Transform mapSpawnTarget)
         {
             if (!NetworkServer.active)
             {
-                Debug.LogWarning("CombatDirector_SpendAllCreditsOnMapSpawns | This isn't meant to run on Client, Gearbox Software");
+                WolfFixes.log.LogWarning("CombatDirector_SpendAllCreditsOnMapSpawns | This isn't meant to run on Client, Gearbox Software");
                 return;
             }
             orig(self, mapSpawnTarget);
@@ -102,7 +102,7 @@ namespace WolfoFixes
         {
             if (!NetworkServer.active)
             {
-                Debug.LogWarning("CombatDirector_HalcyoniteShrineActivation | This isn't meant to run on Client, Gearbox Software");
+                WolfFixes.log.LogWarning("CombatDirector_HalcyoniteShrineActivation | This isn't meant to run on Client, Gearbox Software");
                 return;
             }
             orig(self, monsterCredit, chosenDirectorCard, difficultyLevel, shrineTransform);

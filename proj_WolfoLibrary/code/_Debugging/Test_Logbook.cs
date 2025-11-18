@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 
-namespace WolfoFixes.Testing
+namespace WolfoLibrary.Testing
 {
 
     internal class Test_Logbook
@@ -29,6 +29,15 @@ namespace WolfoFixes.Testing
             On.RoR2.UI.LogBook.LogBookController.GetMonsterStatus += LogBookController_GetMonsterStatus;
             On.RoR2.UI.LogBook.LogBookController.GetStageStatus += LogBookController_GetStageStatus;
 
+            On.RoR2.UI.LogBook.PageBuilder.AddSimpleBody += PageBuilder_AddSimpleBody;
+
+        }
+
+        private static void PageBuilder_AddSimpleBody(On.RoR2.UI.LogBook.PageBuilder.orig_AddSimpleBody orig, PageBuilder self, CharacterBody bodyPrefabComponent)
+        {
+            self.AddSimpleTextPanel(bodyPrefabComponent.name);
+            self.AddSimpleTextPanel(bodyPrefabComponent.baseNameToken);
+            orig(self, bodyPrefabComponent);
         }
 
         private static bool LogBookController_IsEntryBodyWithoutLore(On.RoR2.UI.LogBook.LogBookController.orig_IsEntryBodyWithoutLore orig, ref Entry entry)
@@ -54,7 +63,7 @@ namespace WolfoFixes.Testing
                              select characterBody).Select(delegate (CharacterBody characterBody)
                              {
                                  Entry entry2 = new Entry();
-                                 //Debug.Log(characterBody);
+                                 //WolfoMain.Logger.LogMessage(characterBody);
                                  entry2.nameToken = characterBody.baseNameToken;
                                  entry2.color = ColorCatalog.GetColor(ColorCatalog.ColorIndex.HardDifficulty);
                                  entry2.iconTexture = characterBody.portraitIcon;

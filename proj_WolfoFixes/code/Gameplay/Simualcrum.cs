@@ -3,6 +3,7 @@ using MonoMod.Cil;
 using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using WolfoLibrary;
 
 namespace WolfoFixes
 {
@@ -20,6 +21,14 @@ namespace WolfoFixes
             FogDamageController InfiniteTowerFogDamager = Addressables.LoadAssetAsync<GameObject>(key: "9c7ca1b454882464f90010d3a68b6795").WaitForCompletion().GetComponent<FogDamageController>();
             InfiniteTowerFogDamager.healthFractionRampIncreaseCooldown = 0;
 
+            //Technicallity
+            SceneList.itGolemPlains.requiredExpansion = DLCS.DLC1;
+            SceneList.itGoolake.requiredExpansion = DLCS.DLC1;
+            SceneList.itAncientLoft.requiredExpansion = DLCS.DLC1;
+            SceneList.itFrozenwall.requiredExpansion = DLCS.DLC1;
+            SceneList.itDampCave.requiredExpansion = DLCS.DLC1;
+            SceneList.itSkyMeadow.requiredExpansion = DLCS.DLC1;
+            SceneList.itMoon.requiredExpansion = DLCS.DLC1;
         }
 
 
@@ -39,6 +48,7 @@ namespace WolfoFixes
 
         private static void ForceSotVOn(On.RoR2.InfiniteTowerRun.orig_OverrideRuleChoices orig, InfiniteTowerRun self, RuleChoiceMask mustInclude, RuleChoiceMask mustExclude, ulong runSeed)
         {
+            //Technicallity but does break Augment of Void reward if SotV isnt on.
             orig(self, mustInclude, mustExclude, runSeed);
             RuleDef ruleDef = RuleCatalog.FindRuleDef("Expansions.DLC1");
             RuleChoiceDef ruleChoiceDef = (ruleDef != null) ? ruleDef.FindChoice("On") : null;
@@ -54,7 +64,10 @@ namespace WolfoFixes
         {
             orig(self);
 
-            //Client fix??
+            //Client fix
+            //Fix SafeWardController being unset for Clients
+            //This is needed for Teleport location
+            //Without it, clients teleport to the wrong location.
             InfiniteTowerRun run = Run.instance.GetComponent<InfiniteTowerRun>();
             if (!run.safeWardController)
             {
@@ -77,7 +90,7 @@ namespace WolfoFixes
                 {
                     if (wave.combatSquad.readOnlyMembersList.Count == 0)
                     {
-                        Debug.Log("Couln't do indicators the normal way");
+                        WolfFixes.log.LogMessage("Couln't do indicators the normal way");
                         for (int i = 0; wave.combatSquad.membersList.Count > i; i++)
                         {
                             wave.RequestIndicatorForMaster(wave.combatSquad.membersList[i]);
@@ -85,11 +98,11 @@ namespace WolfoFixes
                     }
                     return wave;
                 });
-                Debug.Log("IL Found : IL.RoR2.InfiniteTowerWaveController.FixedUpdate");
+                //WolfFixes.Logger.LogMessage("IL Found : IL.RoR2.InfiniteTowerWaveController.FixedUpdate");
             }
             else
             {
-                Debug.LogWarning("IL Failed : IL.RoR2.InfiniteTowerWaveController.FixedUpdate");
+                WolfFixes.log.LogWarning("IL Failed : IL.RoR2.InfiniteTowerWaveController.FixedUpdate");
             }
         }
 

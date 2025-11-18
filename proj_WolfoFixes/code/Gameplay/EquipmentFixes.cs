@@ -1,8 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -13,19 +11,29 @@ namespace WolfoFixes
     {
         public static void Start()
         {
-            Addressables.LoadAssetAsync<GameObject>(key: "9ca7d392fa3bb444b827d475b36b9253").WaitForCompletion().AddComponent<ThisIsASawmarang>();
-            Addressables.LoadAssetAsync<EquipmentDef>(key: "f2ddbb7586240e648945ad494ebe3984").WaitForCompletion().cooldown = 0; //Why does this have a cooldown it just fucks you up when buying shops quickly
-            IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixSawmarang;
- 
-            On.RoR2.Util.HealthComponentToTransform += FixTwisteds_NotWorkingOnPlayers;
+            //MultiShopCard having a 0.1 cooldown is irrelevant for actual gameplay
+            //It just fucks you over randomly when spamming E.
+            Addressables.LoadAssetAsync<EquipmentDef>(key: "f2ddbb7586240e648945ad494ebe3984").WaitForCompletion().cooldown = 0;
 
+
+            //Why does this have a cooldown it just fucks you up when buying shops quickly
+            //Sawmerang checks for Sawmerang Equip which isnt logical at all lol.
+            Addressables.LoadAssetAsync<GameObject>(key: "9ca7d392fa3bb444b827d475b36b9253").WaitForCompletion().AddComponent<ThisIsASawmarang>();
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixSawmarang;
+
+            //Random Nullref or smth
+            //On.RoR2.Util.HealthComponentToTransform += FixTwisteds_NotWorkingOnPlayers;
+
+            //Always keep Wings to avoid confusion
             On.RoR2.JetpackController.SetupWings += BugWingsAlways_SetupWings;
             On.RoR2.JetpackController.OnDisable += BugWingsAlways_OnDisable;
- 
-            //Needed for SimuAdds
+
+
+            //If Volatile Battery attempts to explode without a item display, it just looks bad and confusing
+            //This only happens with Engi Turrets in vanilla.
             On.EntityStates.QuestVolatileBattery.CountDown.OnEnter += FallbackIfNoItemDisplay;
         }
- 
+
         private static void FallbackIfNoItemDisplay(On.EntityStates.QuestVolatileBattery.CountDown.orig_OnEnter orig, EntityStates.QuestVolatileBattery.CountDown self)
         {
             orig(self);
@@ -53,7 +61,9 @@ namespace WolfoFixes
                 }
             }
         }
- 
+
+        /*
+        Fixed in MISC FIXES
         private static Transform FixTwisteds_NotWorkingOnPlayers(On.RoR2.Util.orig_HealthComponentToTransform orig, HealthComponent healthComponent)
         {
             if (healthComponent && healthComponent.body && healthComponent.body.mainHurtBox)
@@ -61,8 +71,8 @@ namespace WolfoFixes
                 return healthComponent.body.mainHurtBox.transform;
             }
             return orig(healthComponent);
-        }
- 
+        }*/
+
         private static void FixSawmarang(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -74,7 +84,7 @@ namespace WolfoFixes
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<System.Func<EquipmentIndex, DamageInfo, EquipmentIndex>>((eq, damageInfo) =>
                 {
-                    //Debug.Log(eq);
+                    //WolfoMain.Logger.LogMessage(eq);
                     if (damageInfo.inflictor.GetComponent<ThisIsASawmarang>())
                     {
                         //Coulndt find the bool ig
@@ -85,7 +95,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : FixSawmarang");
+                WolfFixes.log.LogWarning("IL Failed : FixSawmarang");
             }
         }
 
@@ -144,15 +154,15 @@ namespace WolfoFixes
     internal class DontDestroyIfJetpack : MonoBehaviour
     {
         public CharacterModel characterModel;
-  
+
         public CharacterModel.ParentedPrefabDisplay storedDisplay;
         public EquipmentIndex index;
 
         public void Setup()
         {
             index = RoR2Content.Equipment.Jetpack.equipmentIndex;
- 
-   
+
+
             for (int i = characterModel.parentedPrefabDisplays.Count - 1; i >= 0; i--)
             {
                 if (characterModel.parentedPrefabDisplays[i].equipmentIndex == index)
@@ -162,7 +172,7 @@ namespace WolfoFixes
                     break;
                 }
             }
- 
+
         }
         public void UnSetup()
         {

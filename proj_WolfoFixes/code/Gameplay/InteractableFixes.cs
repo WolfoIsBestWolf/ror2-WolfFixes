@@ -1,9 +1,8 @@
-﻿using HG;
-using RoR2;
-using UnityEngine.AddressableAssets;
-using UnityEngine;
-using MonoMod.Cil;
+﻿using RoR2;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 
 namespace WolfoFixes
 {
@@ -22,8 +21,32 @@ namespace WolfoFixes
             //Doubt it'd come up in vanilla.
             On.RoR2.SeerStationController.SetRunNextStageToTarget += BazaarDisableAllSeers;
 
-            //Disable iscFlameDrone rotation, so it no longer fucking clips in the ground all the god damn time.
+            //Disable Broken Missile & FlameDrone rotation, so it no longer fucking clips in the ground all the god damn time.
+            Addressables.LoadAssetAsync<InteractableSpawnCard>(key: "749e2ff7e1839074885efb0f82197ba7").WaitForCompletion().slightlyRandomizeOrientation = false;
             Addressables.LoadAssetAsync<InteractableSpawnCard>(key: "592ddd0e913440844b42eff65663abda").WaitForCompletion().slightlyRandomizeOrientation = false;
+
+            On.EntityStates.DroneCombiner.DroneCombinerCombining.OnDeserialize += FixBrokenAH_DroneCombinerCombining_OnDeserialize;
+        }
+
+        private static void FixBrokenAH_DroneCombinerCombining_OnDeserialize(On.EntityStates.DroneCombiner.DroneCombinerCombining.orig_OnDeserialize orig, EntityStates.DroneCombiner.DroneCombinerCombining self, NetworkReader reader)
+        {
+            //NetworkServer.FindLocalObject, on Client
+            //This always results in Null
+            //Idk how to fix it better
+            NetworkInstanceId netId = reader.ReadNetworkId();
+            NetworkInstanceId netId2 = reader.ReadNetworkId();
+            GameObject gameObject = ClientScene.FindLocalObject(netId);
+            GameObject gameObject2 = ClientScene.FindLocalObject(netId2);
+            if (gameObject)
+            {
+                self.toUpgrade = gameObject.GetComponent<CharacterBody>();
+            }
+            if (gameObject2)
+            {
+                self.toDestroy = gameObject2.GetComponent<CharacterBody>();
+            }
+
+            self._controller = self.gameObject.GetComponent<DroneCombinerController>();
         }
 
         private static void BazaarDisableAllSeers(On.RoR2.SeerStationController.orig_SetRunNextStageToTarget orig, SeerStationController self)
@@ -48,7 +71,7 @@ namespace WolfoFixes
                 if (seer.targetSceneDefIndex != -1)
                 {
                     string a = SceneCatalog.indexToSceneDef[seer.targetSceneDefIndex].baseSceneName;
-                    //Debug.Log(a);
+                    //WolfoMain.Logger.LogMessage(a);
                     if (takenBaseScenes.Contains(a))
                     {
                         seersToFix.Add(seer);
@@ -76,7 +99,7 @@ namespace WolfoFixes
                         {
                             if (!takenBaseScenes.Contains(sceneDef.baseSceneName))
                             {
-                               // Debug.Log(sceneDef);
+                                // WolfoMain.Logger.LogMessage(sceneDef);
                                 list.Add(sceneDef);
                             }
                         }
@@ -94,10 +117,10 @@ namespace WolfoFixes
                     }
                 }
             }
- 
+
         }
-  
+
     }
-    
+
 
 }

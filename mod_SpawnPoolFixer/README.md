@@ -1,5 +1,5 @@
 
-The following bugs are fixed:
+The following is fixed:
 ```
 - Treeborn Canopy   Radar Scanner being blocked by Aphelian Sanctuary Log.
 - Golden Dieback    Radar Scanner being blocked by Aphelian Sanctuary Log.
@@ -10,6 +10,10 @@ The following bugs are fixed:
 - Simu-Sanctuary & Simu-Commencement not being able to spawn Lunar Buds which would still take credits.
 
 - Lunar Golems being unable to spawn unless there is a Ceiling. (Bad for Dissonance, strange in general)
+
+- Gip having a placeholder cost of 40. 
+
+- Hermit Crab not being in the Dissonance spawn pool.
 ```
 
 The other changes are not necessarily bugs, some can be disabled.
@@ -20,7 +24,7 @@ People have been asking the devs about it a lot, they are aware of it.
 
 
 ```
-Reduced weight of Titanic Plains and Distant Roost because they count as 2 stages.
+Makes Titanic Plains & Distant Roost not twice as common as other stage 1s.
 -Vanilla counts as 2 weight, now counts as 1.5 weight.
 
 Limits Radar Scanners & Altar of Gold to 1 per stage.

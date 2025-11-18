@@ -15,6 +15,7 @@ namespace WolfoFixes
     {
         public static void Start()
         {
+
             GameObject DevotedLemurian = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/CU8/DevotedLemurianBody.prefab").WaitForCompletion();
             GameObject DevotedLemurianElder = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/CU8/DevotedLemurianBruiserBody.prefab").WaitForCompletion();
             DevotedLemurian.GetComponent<DeathRewards>().logUnlockableDef = null;
@@ -22,11 +23,10 @@ namespace WolfoFixes
 
             On.RoR2.Stats.StatManager.OnServerGameOver += CountEclipseSimuAsWins;
 
-            //NewtShrine missing in Log
-            LegacyResourcesAPI.Load<SceneDef>("SceneDefs/bazaar").dioramaPrefab.AddComponent<ModelPanelParameters>().gameObject.AddComponent<ModelPanelParameters>();
 
             //VoidMegaCrab too zoomed in
             Addressables.LoadAssetAsync<GameObject>(key: "097b0e271757ce24581d4a8983d2c941").WaitForCompletion().transform.GetChild(0).GetChild(3).GetComponent<ModelPanelParameters>().maxDistance = 40;
+            Addressables.LoadAssetAsync<GameObject>(key: "285347cf04a9df04b9dada8fed09832f").WaitForCompletion().transform.GetChild(0).GetChild(3).GetComponent<ModelPanelParameters>().maxDistance = 40;
 
 
             //Sulfur Pools Diagram is Red instead of Yellow ???
@@ -56,7 +56,7 @@ namespace WolfoFixes
 
         private static void CountEclipseSimuAsWins(On.RoR2.Stats.StatManager.orig_OnServerGameOver orig, Run run, GameEndingDef gameEndingDef)
         {
-            orig(run,gameEndingDef);
+            orig(run, gameEndingDef);
             if (gameEndingDef.isWin && run.GetType() != typeof(Run) && run.GetType() != typeof(WeeklyRun))
             {
                 foreach (PlayerStatsComponent playerStatsComponent in PlayerStatsComponent.instancesList)

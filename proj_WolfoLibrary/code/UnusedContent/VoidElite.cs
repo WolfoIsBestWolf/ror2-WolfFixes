@@ -1,9 +1,8 @@
-﻿using R2API;
-using RoR2;
+﻿using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace WolfoFixes
+namespace WolfoLibrary
 {
 
     internal static class VoidElite
@@ -14,9 +13,13 @@ namespace WolfoFixes
             //Used by couple mods
             //Harmless for Vanilla
             EquipmentDef VoidAffix = Addressables.LoadAssetAsync<EquipmentDef>(key: "RoR2/DLC1/EliteVoid/EliteVoidEquipment.asset").WaitForCompletion();
-            GameObject VoidAffixDisplay = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/EliteVoid/DisplayAffixVoid.prefab").WaitForCompletion(), "PickupAffixVoidW", false);
+            GameObject VoidAffixDisplay = R2API.PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/EliteVoid/DisplayAffixVoid.prefab").WaitForCompletion(), "PickupAffixVoidW", false);
 
-            VoidAffixDisplay.transform.GetChild(0).GetChild(1).SetAsFirstSibling();
+            //Eye
+            //Flesh
+            //Metal
+
+            VoidAffixDisplay.transform.GetChild(0).GetChild(2).SetAsFirstSibling();
             VoidAffixDisplay.transform.GetChild(1).localPosition = new Vector3(0f, 0.7f, 0f);
             VoidAffixDisplay.transform.GetChild(1).GetChild(0).localPosition = new Vector3(0, -0.5f, -0.6f);
             VoidAffixDisplay.transform.GetChild(1).GetChild(0).localScale = new Vector3(1.5f, 1.5f, 1.5f);
@@ -29,6 +32,7 @@ namespace WolfoFixes
             HG.ArrayUtils.ArrayRemoveAtAndResize(ref display.rendererInfos, 4);
             VoidAffixDisplay.AddComponent<ModelPanelParameters>();
 
+            VoidAffix.pickupModelReference = new AssetReferenceT<GameObject>("");
             VoidAffix.pickupModelPrefab = VoidAffixDisplay;
         }
 

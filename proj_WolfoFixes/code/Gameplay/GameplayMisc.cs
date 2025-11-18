@@ -1,5 +1,6 @@
 ﻿using MonoMod.Cil;
 using RoR2;
+using RoR2.Projectile;
 using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -11,15 +12,10 @@ namespace WolfoFixes
         public static void Start()
         {
             //Set destination beforehand so the process can't be skipped accidentally
-            On.RoR2.SceneExitController.OnEnable += PathOfColossusSkipFix;
+            //On.RoR2.SceneExitController.OnEnable += PathOfColossusSkipFix;
             IL.RoR2.Artifacts.SwarmsArtifactManager.OnSpawnCardOnSpawnedServerGlobal += SwarmsVengenceGooboFix;
 
 
-            /* if (WConfig.cfgSlayerScale.Value)
-            {
-                //Is this even a bug, probably not is it.
-                On.RoR2.HealthComponent.TakeDamageProcess += SlayerApplyingToProc;
-            }*/
 
             //Helminth Roost should realistically be blocked from Stage 1 in WeeklyRun specifically
             //But both of these should be allowed for RandomStage order
@@ -30,13 +26,19 @@ namespace WolfoFixes
             scene.validForRandomSelection = true;
 
             //Halcyon Shrine drop table no longer split between NoSotS/YesSots just Any/YesSots which seems wrong.
-            Addressables.LoadAssetAsync<BasicPickupDropTable>(key: "e291748f54c927a47ad44789d295c39f").WaitForCompletion().bannedItemTags = new ItemTag[] { ItemTag.HalcyoniteShrine };
+            //Addressables.LoadAssetAsync<BasicPickupDropTable>(key: "e291748f54c927a47ad44789d295c39f").WaitForCompletion().bannedItemTags = new ItemTag[] { ItemTag.HalcyoniteShrine };
 
 
-            //Needed for SimuAdds
-            IL.RoR2.HealthComponent.ServerFixedUpdate += AllowGhostsToSuicideProperly;
+
+
+            //Tanker Grease always leaves the puddle, regardless if it hit anything or not
+            //This leads to it spawning in sky boxes which is ugly
+            //This happens because ProjectileSimple.lifetime < ProjectileImpactExplosion.lifetime
+            GameObject TankerAccelerantProjectile = Addressables.LoadAssetAsync<GameObject>(key: "e075b1933eaeb214180184c6d242f13a").WaitForCompletion();
+            TankerAccelerantProjectile.GetComponent<ProjectileSimple>().lifetime = 3;
+
         }
-
+        //Fixed in AC
         public static void AllowGhostsToSuicideProperly(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -54,7 +56,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : HealthComponent_ServerFixedUpdateHealthComponent_Suicide1");
+                WolfFixes.log.LogWarning("IL Failed : HealthComponent_ServerFixedUpdateHealthComponent_Suicide1");
             }
         }
 
@@ -80,31 +82,10 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed: SwarmsArtifactManager_OnSpawnCardOnSpawnedServerGlobal");
+                WolfFixes.log.LogWarning("IL Failed: SwarmsArtifactManager_OnSpawnCardOnSpawnedServerGlobal");
             }
         }
 
-
-
-
-        public static void SlayerApplyingToProc(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo)
-        {
-            if ((damageInfo.damageType & DamageType.BonusToLowHealth) > 0UL)
-            {
-                damageInfo.damage *= Mathf.Lerp(3f, 1f, self.combinedHealthFraction);
-                damageInfo.damageType &= ~DamageType.BonusToLowHealth;
-            }
-            orig(self, damageInfo);
-        }
-
-        private static void PathOfColossusSkipFix(On.RoR2.SceneExitController.orig_OnEnable orig, SceneExitController self)
-        {
-            orig(self);
-            if (self.isColossusPortal && self.isAlternatePath)
-            {
-                self.destinationScene = self.GetDestinationSceneToPreload();
-            }
-        }
     }
 
 

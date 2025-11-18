@@ -1,8 +1,10 @@
 ﻿using EntityStates;
+using HarmonyLib;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace WolfoFixes
 {
@@ -12,33 +14,10 @@ namespace WolfoFixes
         public static void Start()
         {
 
-            //Fix error spam on Captain Spawn
-            //Still needed?
-            /*On.RoR2.CaptainDefenseMatrixController.TryGrantItem += (orig, self) =>
-            {
-                orig(self);
-                CaptainSupplyDropController supplyController = self.characterBody.GetComponent<CaptainSupplyDropController>();
-                if (supplyController)
-                {
-                    supplyController.CallCmdSetSkillMask(3);
-                }
-            };*/
 
             On.RoR2.PortalStatueBehavior.PreStartClient += NewtAvailableFix12;
             On.RoR2.TeleporterInteraction.OnSyncShouldAttemptToSpawnShopPortal += NewtAvailableFix2;
 
-            //What the fuck is this for
-            /*On.RoR2.ShopTerminalBehavior.UpdatePickupDisplayAndAnimations += (orig, self) =>
-            {
-                if (self.pickupIndex == PickupIndex.none && self.GetComponent<PurchaseInteraction>().available)
-                {
-                    self.hasStarted = false;
-                    orig(self);
-                    self.hasStarted = true;
-                    return;
-                }
-                orig(self);
-            };*/
 
             //Some interactables have empty holograms
             On.RoR2.PurchaseInteraction.ShouldDisplayHologram += DisableEmptyHologram;
@@ -46,10 +25,65 @@ namespace WolfoFixes
 
             On.EntityStates.VagrantNovaItem.ChargeState.OnExit += ChargeState_OnExit;
 
-            IL.RoR2.IncreaseDamageOnMultiKillItemDisplayUpdater.SetVisibleHologram += FixChronocDisplayNullRefOnCorpse;
-
             IL.RoR2.PingerController.GeneratePingInfo += FixUnpingableHelminthRocks;
+
+            //Always open chat when a chat message is sent inbetween stages
+            On.RoR2.UI.ChatBox.Awake += ChatBox_Awake;
+            Chat.onChatChanged += Chat_onChatChanged;
+
+            //Always update hud if rebuild cards
+            On.RoR2.ClassicStageInfo.RebuildCards += MarkHudAsDirtyForKin;
+
+            Addressables.LoadAssetAsync<GameObject>(key: "525b404e87c469f4ab8034de0913d11a").WaitForCompletion().transform.GetChild(4).gameObject.SetActive(false);
+
+            IL.RoR2.UI.ScrapperInfoPanelHelper.AddQuantityToPickerButton += ScrapperInfoPanelHelper_AddQuantityToPickerButton;
         }
+
+        private static void ScrapperInfoPanelHelper_AddQuantityToPickerButton(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            if (c.TryGotoNext(MoveType.Before,
+            x => x.MatchCallvirt("RoR2.Inventory", "GetItemCountEffective")
+            ))
+            {
+
+                c.Next.Operand = AccessTools.Method(typeof(Inventory), nameof(Inventory.GetItemCountPermanent), new[] { typeof(ItemIndex) });
+            }
+            else
+            {
+                WolfFixes.log.LogWarning("IL Failed : ScrapperInfoPanelHelper_AddQuantityToPickerButton");
+            }
+        }
+
+        private static void MarkHudAsDirtyForKin(On.RoR2.ClassicStageInfo.orig_RebuildCards orig, ClassicStageInfo self, DirectorCardCategorySelection forcedMonsterCategory, DirectorCardCategorySelection forcedInteractableCategory)
+        {
+            orig(self, forcedMonsterCategory, forcedInteractableCategory);
+            RoR2.UI.EnemyInfoPanel.MarkDirty();
+        }
+
+        private unsafe static void Chat_onChatChanged()
+        {
+            if (RoR2.UI.ChatBox.instance == null)
+            {
+                displayChat = true;
+            }
+            else
+            {
+                displayChat = false;
+            }
+        }
+
+        private static void ChatBox_Awake(On.RoR2.UI.ChatBox.orig_Awake orig, RoR2.UI.ChatBox self)
+        {
+            orig(self);
+            if (displayChat)
+            {
+                self.OnChatChangedHandler();
+            }
+        }
+
+        public static bool displayChat = false;
+
 
         private static void FixUnpingableHelminthRocks(ILContext il)
         {
@@ -72,7 +106,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : PingerController_GeneratePingInfo");
+                WolfFixes.log.LogWarning("IL Failed : PingerController_GeneratePingInfo");
             }
         }
 
@@ -97,7 +131,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : IncreaseDamageOnMultiKillItemDisplayUpdater");
+                WolfFixes.log.LogWarning("IL Failed : IncreaseDamageOnMultiKillItemDisplayUpdater");
             }
         }
 

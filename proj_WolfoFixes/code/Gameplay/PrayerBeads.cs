@@ -62,7 +62,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : PrayerAttemptToFixClients");
+                WolfFixes.log.LogWarning("IL Failed : PrayerAttemptToFixClients");
             }
 
             if (c.TryGotoNext(MoveType.After,
@@ -84,7 +84,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : PrayerAttemptToFixClients2");
+                WolfFixes.log.LogWarning("IL Failed : PrayerAttemptToFixClients2");
             }
         }
 

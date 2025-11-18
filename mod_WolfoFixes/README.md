@@ -1,80 +1,95 @@
-Various bug or overseight fixes that I found.
- 
-Better to keep it bundled in it's own mod
+Bug fix pack that should be rather light on gameplay and includes some visual/audio fixes.
 
 Some fixes are Server Side, some are Client Side, some are Client Specific. Generally recommended for everyone.
+
+Also technically is a library mod.
 
 #
 ### Fixes the following :
 
-## Survivor Fixes
-Chef Cleaver Bonus Proc being 2.25 instead of 1.5.\
-Chef Boosted Ice Box not clearing properly.\
-Chef Boosted Sear Oil Puddles dealing 0% instead of 20% damage.\
-If OilSpill is cancelled, brief fall damage immunity is maintained.
 
-Mercenary sometimes breaking his legs with M2.
-
-Artificers Ice Spear throwing enemies around.
-
-Acrid not having spawn invulnerability.
-
-Captain Beacons being unable to crit.
-
- 
-## Monster Fixes
-Child being burnable by the sun.
-
-XI Construct Laser not exploding at the end.
- 
-(Off by default)\
-Mithrix Phase 4 being skipable because the game thinks he has 0 health.
 
 ## Item Fixes
 Corrects various wrong item descriptions.
 
+Warped Echo blocking Eclipse 8 curse.\
 Warped Echo ignoring Armor.\
-Warped Echo ignoring OneShotProtection\
+Warped Echo ignoring OneShotProtection.\
+Warped Echos first hit no longer putting you into danger.
 Warped Echos first hit being ignored if OSP was triggered.\
-Warped Echos first hit no longer putting you into danger.\
-Warped Echo no longer inflicting Eclipse 8 curse.
 
-Elusive Antler producing an Error instead of working for Stationary Engi Turrets.\
-Elusive Antler not working on Devoted Lemurians due to wrong check.
+Elusive Antler producing errors on things that move differently. (Stationary Turrets, RemoteOp Drones)\
+Elusive Antler not working on Devoted Lemurians due to wrong authority check.
 
-Happiest Mask Ghosts not triggering OnDeath effects. (Ice Explosion, Healing Core, Malachite Urchin)
-
+Bandolier not working on some drones due to wrong authority check.
+ 
 Charged Perferator rolling for crit instead of inheriting like other procs.
 
-Some item tags were changed.
+Regenerative Scrap being scrappable
+
+Some item tags were adjusted, to better match.
+- Equipment items unblacklisted for Scavs.
+- Nkuhanas Opinion blacklisted for all monsters.
+- Egocentrism blacklisted for Mithrix.
 - Hunters Harpoon missing OnKill.
-- Bison Steak still being OnKill.
-- Planula still being Damage.
-- Infusion & Nkuhanas AIBlacklisted
+
+
+## Survivor Fixes
+Chef Boosted Sear Oil Puddles dealing 0% instead of 20% damage.   
+ 
+Acrid now has spawn invulnerability.  
+
+Captain Beacons being unable to crit. 
+ 
+## Monster Fixes
+
+
+XI Construct Elites not spawning Elite Minions.  
+XI Construct Ghosts not spawning Ghost Minions.  
+XI Construct Exit Shield state not playing.  
+XI Construct Tail being incredibly disjointed on higher framerates.  
+ 
+Lunar Golems having strange unneeded spawn restrictions. 
+*(Often prevents them from spawning with Dissonance)*
+
+Child now immune to the sun. *(Like Parents)*
+
+Twisted Scavs now immune to Void Implosions. 
+*(Like other final bosses)*
+
+Hermit Crabs not being in the Dissonance spawn pool.
+
+Solus Scorchers no longer Grease no longer spawns midair if shot into the sky.  
+Solus Extractor legs are now elite colored.
 
 ## Equipment Fixes
-Back-Up Drones not scaling with ambient level like other drones.
- 
-Executive Card no longer fails if buying multi shops really quickly.
-
-Twisted Elites not being able to give armor to some enemies and all players.
+Executive Card no longer fails if you open Multi Shops *too quickly*.
 
 For Retool, Enigma, Bottled Chaos
 - Sawmerang not bleeding if you don't have the equipment.
 - Milky Chrysalis flight will always have wings.
 
 ## Misc Gameplay Fixes
-Simulacrums Fog ramping up 25x slower than what is intended.
 
-Removed Chance Doll from Simulacrum, as there are no Shrine of Chance. (Unless SimulacrumAdditions is installed)
+Distant Roost & Titanic Plains are no longer twice as likely as other Stage 1s. (1.5x now)
+Verdant Falls is no longer half as likely as other Stage 1s.
 
-
-Being able to skip right to Prime Meridian by entering 2 portals at the same time.
+Lava Damage lowered to 2% for allies, when 10% seems intended for players only.
+ 
+Bazaar Seers being able to select Pre-Loop variants, Post-Loop.
+Bazaar Seers being able to select 2 Plains/2 Roosts.
 
 Newt Altars will no longer purchasable after Teleporter. (Like pre SotS)\
 Newt Altars will not be purchasable if Teleporter starts with Blue Orb.
 
-Bazaar Seers being able to select 2 Plains/2 Roosts.
+
+Simulacrums Fog ramping up 25x slower than what is intended.
+
+Removed Chance Doll from Simulacrum, as there are no Shrine of Chance. (Unless SimulacrumAdditions is installed)
+
+ 
+
+
 
 Fixes Vengence + Swarms spawning one of them as not an Umbra/Without any items.
 
@@ -89,11 +104,35 @@ Fixed 10 bugs or errors with Artifact of Devotion leading to :
 - - They just put it on the normal Lemurians instead of the Devoted ones.
 
 
-Treeborn Canopy & Helminth Hatchery being blacklisted from Random Stage Order.
 
-## Client specific fixes
-Prevents Halcyon Shrine entityState nullref on Client.\
-Removes the log spam from Halcyon Shrines on Client.
+ 
+
+## Spawn Pool fixes
+
+A Bulwarks ambry using the wrong dlc1 spawn pool
+A Bulwarks ambry spawning the wrong Alpha Construct
+A Bulwarks ambry spawning the wrong XI Construct
+
+Limits Altar of Gold to 1 per stage.
+
+Drone Combiner no longer spawns with Devotion.  
+Drone Shop can now spawn with Sacrifice.
+
+Child & Grandparent not spawning during Parent family event.
+
+- Simu-Sanctuary & Simu-Commencement not being able to spawn Lunar Buds which would still take credits.
+
+ 
+ 
+ 
+  
+
+ 
+
+
+## Multiplayer / Client fixes
+Prevents Halcyon Shrine entityState nullref on client.\
+Removes the log spam from Halcyon Shrines on client.
 
 Aurelionite Fragments & Potentials now spin for clients.\
 Prayer Beads desyncing for clients, leading to various issues.\
@@ -105,8 +144,8 @@ Simulacrum not pointing out enemies at the end of waves for Clients.
 
 ## Visual
 Adds various missing item displays :
+- Elite Displays for XI Constructs, Mithrix.
 - Perfected Elite Displays for all Monsters
-- Elite Displays for XI Construct, Mithrix.
 - Fuel Array Display for Engineer Turrets.
  
 Fixes some monsters not slowly appearing during their spawn animation:
@@ -116,39 +155,35 @@ Fixes some monsters not slowly appearing during their spawn animation:
 - Engineer Turret, Walker
 - Vagrant
 
-Defense Nucleus Alpha Constructs no longer being Gold.
-
 Gilded Elite corpses no longer look like blazing elite corpses.
 
 REXs flower vines disappearing quickly
 
 Mercurias Rachis visual radius not matching the actual buff radius.
 
-Deskplant Visual being made too small after being too big.
+Deskplant Visual being too small.
 
 Railgunners Scope being more opaque than in the past
 
 Void Command Essence not having particles.\
 Deep Void Signals Beam being flat.
 
-Shrine of Shaping and Seed of Life not using the revive effect. (Instead of failing to spawn a unfinished object)
+Shrine of Shaping and Seed of Life not using the revive effect. (They attempt to spawn a unfinished object)
 
 Artifact of Glass will now make you and minions appear as glass.
 
 Stone Titan pinging the particles instead of the body.\
 Mithrix Hammer/Nothing pinging instead of the body.
+//Most mobs not having "Full Body Ping" enabled.
 
 Lunar Exploder not having a subtitleToken.
 
 Halcyon Shrine often not having its tip golden due to a redundant check.
 
-Broken Flame Drones often spawning in the ground.
+Broken Flame & Missile Drones often spawning in the ground.
 
 ## Audio
-Void items not playing the drop sound.\
-Scrappers not playing sound.\
 REX m1 not playing impact sound.
-
 
 War Bonds should no longer play the Horn if 0 missiles would be fired.
 
@@ -159,32 +194,31 @@ Soup not playing their Soup sound
 ## Misc
 Log Fixes : 
 - Eclipse not incrementing Wins / (Thus not unlocking logs)
-- Bazaar Diorama being empty
 - Sulfur Pools Diorama having a red base.
 - Void Locust Diorama, Void Devastator being too zoomed in.
 - Nkuhanas Opinion being too zoomed out.
 - Devoted Lemurians being in log instead of wild.
  
 
-Adds 'simu_softlock' softlock command to forcefully end wave and start next, or otherwise spawns Portal.
-
+ 
 Green Orb message will now pop up as you load into the stage so you can actually see it.
 
-NullRef from Corpses with Chronic Expansion
+ 
+Golden Diebacks Mushruum Fruit not dropping healing orbs or playing effects.
 
-Golden Diebacks fruits not dropping healing orbs or playing effects.
 
-Regenerative Scrap being scrapable
-
-Invincibility and Chef Boost showing stacks of the buff.
+Chef Boost showing stacks of the buff, despite not functioning as such.
 
 Item/Survivor description fixes can be turned off in case you play with rebalance mods.\
 But should work fine even if you don't.
- 
+
+
+Treeborn Canopy & Helminth Hatchery being blacklisted from Random Stage Order.
+
+
 ## For Other Mods
-
-Glass Mithrix is Glass again instead of naked.
-
+Fixes up some unused content, should have no impact on regular gameplay.
+ 
 Void Eradicators are less unfinished:
 - Enables some particles
 - Adds price transform
@@ -192,13 +226,11 @@ Void Eradicators are less unfinished:
 - Doesnt vanish when too close to camera
 - Suppresed Scrap is tiered and usable, but kept hidden from log.
 - Suppresed Items tab wider so item icons arent clipping
-
-Multiple of my mods have Perfected nonLunar enemies or add Void Suppressors and rely on better AIBlacklist.\
-But those changes dont affect vanilla much, if at all.
-
+ 
 ## Commands
  
 Testing Commands
+- simu_softlock
 - scanner | Radar Scanner equip + 100 BoostEquipRecharge
 - godenemy | Sets enemy level absurdly high making them basically unkillable.
 - goto_boss | Teleports you to Mithrix/FalseSon/Teleporter

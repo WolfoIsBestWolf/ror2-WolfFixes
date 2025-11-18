@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 namespace WolfoFixes
 {
 
-   internal class OptionPickupStuff
+    internal class OptionPickupStuff
     {
         public static void Start()
         {
@@ -46,6 +46,7 @@ namespace WolfoFixes
                                 newOrb.GetComponent<ParticleSystem>().startColor = ColorCatalog.GetColor(ColorCatalog.ColorIndex.VoidItem);
                                 index.pickupDisplay.voidParticleEffect = newVoidParticle;
                             }
+                             
                         }
                     }
                 }
@@ -54,7 +55,7 @@ namespace WolfoFixes
                     //Command does not Spin
                     //Fix spinning on client.
                     PickupDisplay pickupDisplay = self.transform.GetChild(0).GetComponent<PickupDisplay>();
-                    pickupDisplay.pickupIndex = index.pickupIndex;
+                    pickupDisplay.pickupState = index.pickupState;
                     pickupDisplay.modelObject = self.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
                     self.GetComponent<Highlight>().pickupIndex = index.pickupIndex;
                     self.GetComponent<Highlight>().isOn = true;

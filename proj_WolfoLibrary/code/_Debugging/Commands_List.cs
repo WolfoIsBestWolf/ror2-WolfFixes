@@ -7,44 +7,55 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace WolfoFixes.Testing
+namespace WolfoLibrary.Testing
 {
     class Commands_Lists
     {
         [ConCommand(commandName = "list_mystats", flags = ConVarFlags.None, helpText = "List all StatDefs")]
         public static void CCList_CurrentStats(ConCommandArgs args)
         {
-            if (PlayerCharacterMasterController.instances.Count == 0)
+            StatSheet stats = null;
+            if (PlayerCharacterMasterController.instances.Count != 0)
+            {
+                stats = PlayerCharacterMasterController.instances[0].master.playerStatsComponent.currentStats;
+                ;
+            }
+            else
+            {
+                var a = LocalUserManager.GetFirstLocalUser();
+                var b = a.userProfile;
+                stats = b.statSheet;
+            }
+            if (stats == null)
             {
                 Debug.Log("No Players");
                 return;
             }
             string log = "";
-            var aa = PlayerCharacterMasterController.instances[0].master.playerStatsComponent.currentStats;
-            for (int i = 0; i < aa.fields.Length; i++)
+            for (int i = 0; i < stats.fields.Length; i++)
             {
-                StatDef def = aa.fields[i].statDef;
+                StatDef def = stats.fields[i].statDef;
                 if (def.dataType == StatDataType.ULong)
                 {
-                    if (aa.fields[i].ulongValue > 0)
+                    if (stats.fields[i].ulongValue > 0)
                     {
                         log += string.Format("\n[{0}] {1} | {2}", new object[]
                         {
                             i,
                             def.name,
-                             aa.fields[i].ulongValue
+                             stats.fields[i].ulongValue
                         });
                     }
                 }
                 else if (def.dataType == StatDataType.Double)
                 {
-                    if (aa.fields[i].doubleValue > 0)
+                    if (stats.fields[i].doubleValue > 0)
                     {
                         log += string.Format("\n[{0}] {1} | {2}", new object[]
                         {
                             i,
                             def.name,
-                             aa.fields[i].doubleValue
+                             stats.fields[i].doubleValue
                         });
                     }
                 }
@@ -63,7 +74,7 @@ namespace WolfoFixes.Testing
             }
             Debug.Log(log);
         }
-        
+
         [ConCommand(commandName = "list_sceneDefColors", flags = ConVarFlags.None, helpText = "List all StatDefs")]
         public static void CCList_SceneDef(ConCommandArgs args)
         {
@@ -77,7 +88,7 @@ namespace WolfoFixes.Testing
             }
             Debug.Log(log);
         }
-        
+
         [ConCommand(commandName = "dccs_catPercent", flags = ConVarFlags.None, helpText = "List all StatDefs")]
         public static void CCListCategoriesInPercent(ConCommandArgs args)
         {
@@ -251,7 +262,8 @@ namespace WolfoFixes.Testing
                 }
 
 
-            };
+            }
+            ;
             Debug.Log(logHiddenBuffs);
             Debug.Log(logNectar);
             Debug.Log(logNoxBlacklist);
@@ -260,6 +272,7 @@ namespace WolfoFixes.Testing
         [ConCommand(commandName = "list_bodyflags", flags = ConVarFlags.None, helpText = "List all bodies and their body flags")]
         public static void CCList_BodyFlags(ConCommandArgs args)
         {
+            string log = string.Empty;
             foreach (CharacterBody body in BodyCatalog.bodyPrefabBodyComponents)
             {
                 Debug.LogFormat("\n{0}\n{1}", new object[]
@@ -267,7 +280,9 @@ namespace WolfoFixes.Testing
                     body.name,
                     body.bodyFlags,
                 });
-            };
+            }
+            ;
+            Debug.LogFormat(log);
         }
 
         [ConCommand(commandName = "list_simuwaves", flags = ConVarFlags.None, helpText = "Simple info dump of Simulacrum waves")]

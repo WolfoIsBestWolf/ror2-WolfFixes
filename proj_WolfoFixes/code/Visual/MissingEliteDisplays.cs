@@ -2,7 +2,7 @@ using R2API;
 using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using static WolfoFixes.MissedContent.Equipment;
+using static WolfoLibrary.MissedContent.Equipment;
 
 namespace WolfoFixes
 {
@@ -1135,7 +1135,7 @@ namespace WolfoFixes
 
             AddDisplay(XI, EliteEarthEquipment, earth1XI_drg, EliteEarthHorn, false);
             AddDisplay(XI, DLC1Content.Equipment.EliteVoidEquipment, voidXI_drg, EliteVoid, false);
-            AddDisplay(XI, MissedContent.Equipment.EliteSecretSpeedEquipment, rabbit4XI_drg, EliteRabbitEars, false);
+            AddDisplay(XI, EliteSecretSpeedEquipment, rabbit4XI_drg, EliteRabbitEars, false);
 
             AddDisplay(XI, DLC2Content.Equipment.EliteAurelioniteEquipment, aur1XI_drg, EliteAurCrown, false);
             AddDisplay(XI, DLC2Content.Equipment.EliteBeadEquipment, bead4XI_drg, EliteBeadSpike, false);

@@ -1,11 +1,10 @@
 ﻿//using System;
-using R2API;
 using RoR2;
 using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace WolfoFixes
+namespace WolfoLibrary
 {
 
     internal class VoidSuppressor
@@ -56,7 +55,7 @@ namespace WolfoFixes
             GameObject Hud = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/Base/UI/HUDSimple.prefab").WaitForCompletion();
             try
             {
-                Transform SuprresedItems = Hud.transform.GetChild(0).GetChild(8).GetChild(2).GetChild(8).GetChild(0).GetChild(3);
+                Transform SuprresedItems = Hud.GetComponent<ChildLocator>().FindChild("ScoreboardPanel").Find("Container/SuppressedItems");
                 SuprresedItems.GetComponent<UnityEngine.UI.LayoutElement>().minHeight = 96;
                 SuprresedItems.GetComponent<RoR2.UI.ItemInventoryDisplay>().verticalMargin = 16;
             }
@@ -65,17 +64,17 @@ namespace WolfoFixes
                 Debug.LogException(ex);
             }
 
-            LanguageAPI.Add("VOID_SUPPRESSOR_DESCRIPTION", "Eradicate the shown item from existence, preventing it from appearing again for the current run. Existing copies of the item will be scrapped instantly.");
-            InspectDef inspectDef = ScriptableObject.CreateInstance<InspectDef>();
-            inspectDef.name = "VoidSuppressorInspectDef";
-            var Inspect = new RoR2.UI.InspectInfo();
-            Inspect.TitleToken = "VOID_SUPPRESSOR_NAME";
-            Inspect.DescriptionToken = "VOID_SUPPRESSOR_DESCRIPTION";
-            Inspect.FlavorToken = "VOID_SUPPRESSOR_DESCRIPTION";
-            Inspect.Visual = Addressables.LoadAssetAsync<InspectDef>(key: "RoR2/DLC1/VoidChest/VoidChestInspectDef.asset").WaitForCompletion().Info.Visual;
-            inspectDef.Info = Inspect;
-            var InspectInfo = VoidSuppressor.AddComponent<GenericInspectInfoProvider>();
-            InspectInfo.InspectInfo = inspectDef;
+            /*LanguageAPI.Add("VOID_SUPPRESSOR_DESCRIPTION", "Eradicate the shown item from existence, preventing it from appearing again for the current run. Existing copies of the item will be scrapped instantly.");
+           InspectDef inspectDef = ScriptableObject.CreateInstance<InspectDef>();
+           inspectDef.name = "VoidSuppressorInspectDef";
+           var Inspect = new RoR2.UI.InspectInfo();
+           Inspect.TitleToken = "VOID_SUPPRESSOR_NAME";
+           Inspect.DescriptionToken = "VOID_SUPPRESSOR_DESCRIPTION";
+           Inspect.FlavorToken = "VOID_SUPPRESSOR_DESCRIPTION";
+           Inspect.Visual = Addressables.LoadAssetAsync<InspectDef>(key: "RoR2/DLC1/VoidChest/VoidChestInspectDef.asset").WaitForCompletion().Info.Visual;
+           inspectDef.Info = Inspect;
+           var InspectInfo = VoidSuppressor.AddComponent<GenericInspectInfoProvider>();
+           InspectInfo.InspectInfo = inspectDef;*/
 
             On.RoR2.VoidSuppressorBehavior.PreStartClient += AddPriceHologram;
             On.RoR2.VoidSuppressorBehavior.RefreshPickupDisplays += FixPickupDisplayTooSmallDueToLossyScale;

@@ -12,7 +12,7 @@ namespace WolfoFixes
         public static void Start()
         {
 
-            IL.RoR2.EquipmentSlot.FireHealAndRevive += ShrineRezEffect; //Use Seed
+            //IL.RoR2.EquipmentSlot.FireHealAndRevive += ShrineRezEffect; //Use Seed
             IL.RoR2.CharacterMaster.RespawnExtraLifeHealAndRevive += ShrineRezEffect; //Use Seed already dead
             IL.RoR2.CharacterMaster.RespawnExtraLifeShrine += ShrineRezEffect; //Rev from Shrine already dead
 
@@ -30,7 +30,7 @@ namespace WolfoFixes
                 {
                     if (body)
                     {
-                        //Debug.Log(body + " : " + body.transform.position);
+                        //WolfoMain.Logger.LogMessage(body + " : " + body.transform.position);
                         GameObject gameObject = LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/HippoRezEffect");
                         EffectManager.SpawnEffect(gameObject, new EffectData
                         {
@@ -44,7 +44,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : bro they forgot to make a rez effect2");
+                WolfFixes.log.LogWarning("IL Failed : bro they forgot to make a rez effect2");
             }
         }
 
@@ -59,7 +59,7 @@ namespace WolfoFixes
             }
             else
             {
-                Debug.LogWarning("IL Failed : bro they forgot to make a rez effect");
+                WolfFixes.log.LogWarning("IL Failed : bro they forgot to make a rez effect");
             }
         }
 

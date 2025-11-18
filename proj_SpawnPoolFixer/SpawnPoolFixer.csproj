@@ -21,6 +21,11 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\proj_WolfoLibrary\WolfoLibrary.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
     <Reference Include="WolfoFixes">
       <HintPath>..\proj_WolfoFixes\obj\Debug\netstandard2.1\WolfoFixes.dll</HintPath>
     </Reference>

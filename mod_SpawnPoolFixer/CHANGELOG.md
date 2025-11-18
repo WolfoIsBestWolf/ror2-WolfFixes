@@ -1,5 +1,10 @@
 ## Changelog:
 ```
+v1.3.5
+Made Gip not use placeholder cost of 40 because Hopoo didnt expect it to be used.
+Added missing Hermit Crab to Dissonance spawn pool.
+Removed DLC limit of 2.
+
 v1.3.4
 Fixed an issue preventing LunarGolems from spawning on ITMoon and other maps with Dissonance.
 

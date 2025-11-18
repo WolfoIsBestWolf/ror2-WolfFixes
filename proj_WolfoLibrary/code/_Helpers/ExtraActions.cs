@@ -1,9 +1,9 @@
-using RoR2;
-using UnityEngine;
-using System;
 using MonoMod.Cil;
+using RoR2;
+using System;
+using UnityEngine;
 
-namespace WolfoFixes
+namespace WolfoLibrary
 {
     public static class ExtraActions
     {
@@ -11,6 +11,7 @@ namespace WolfoFixes
         public static Action onVoidlingPhase1;
         public static Action onFalseSonPhase1;
         public static Action onSolusWing;
+        public static Action onSolusHeart;
         public static Action<DirectorCardCategorySelection> onMonsterDCCS;
 
         public static void Start()
@@ -18,8 +19,33 @@ namespace WolfoFixes
             On.EntityStates.Missions.BrotherEncounter.Phase1.OnEnter += BrotherPhase1;
             On.RoR2.VoidRaidGauntletController.Start += VoidlingStart;
             On.EntityStates.MeridianEvent.Phase1.OnEnter += FalseSonPhase1;
+            On.EntityStates.SolusWing2.Mission1Tunnel.OnExit += Mission1Tunnel_OnExit;
+            On.EntityStates.SolusHeart.CutsceneTransformation.OnEnter += CutsceneTransformation_OnEnter;
 
             IL.RoR2.ClassicStageInfo.RebuildCards += MonsterDCCSGenerateHook;
+
+        }
+
+        private static void CutsceneTransformation_OnEnter(On.EntityStates.SolusHeart.CutsceneTransformation.orig_OnEnter orig, EntityStates.SolusHeart.CutsceneTransformation self)
+        {
+            orig(self);
+            Action action = onSolusHeart;
+            if (action == null)
+            {
+                return;
+            }
+            action();
+        }
+
+        private static void Mission1Tunnel_OnExit(On.EntityStates.SolusWing2.Mission1Tunnel.orig_OnExit orig, EntityStates.SolusWing2.Mission1Tunnel self)
+        {
+            orig(self);
+            Action action = onSolusWing;
+            if (action == null)
+            {
+                return;
+            }
+            action();
         }
 
         private static void VoidlingStart(On.RoR2.VoidRaidGauntletController.orig_Start orig, VoidRaidGauntletController self)
@@ -51,7 +77,7 @@ namespace WolfoFixes
                         {
                             action(dccs);
                         }
-                    }         
+                    }
                     return dccs;
                 });
             }

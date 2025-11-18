@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WolfoFixes
+namespace WolfoLibrary
 {
     public class AdvancedPickupDropTable : BasicPickupDropTable
     {
@@ -12,21 +12,20 @@ namespace WolfoFixes
         public bool clearAfterGenerating;
         public bool unbiasedByItemCount = false;
 
-        public override PickupIndex GenerateDropPreReplacement(Xoroshiro128Plus rng)
+        public override UniquePickup GeneratePickupPreReplacement(Xoroshiro128Plus rng)
         {
             RegenerateReal();
-            return GenerateDropFromWeightedSelection(rng, this.selector);
+            return PickupDropTable.GeneratePickupFromWeightedSelection(rng, this.selector);
         }
-        public override PickupIndex[] GenerateUniqueDropsPreReplacement(int maxDrops, Xoroshiro128Plus rng)
+        public override void GenerateDistinctPickupsPreReplacement(List<UniquePickup> dest, int desiredCount, Xoroshiro128Plus rng)
         {
             RegenerateReal();
-            return GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, this.selector);
+            PickupDropTable.GenerateDistinctFromWeightedSelection<UniquePickup>(dest, desiredCount, rng, this.selector);
         }
 
         public override void Regenerate(Run run)
         {
             generated = false;
-            selector.Clear();
         }
         public void RegenerateReal()
         {
@@ -73,7 +72,10 @@ namespace WolfoFixes
             {
                 if (!this.IsFilterRequired() || this.PassesFilter(pickupIndex))
                 {
-                    this.selector.AddChoice(pickupIndex, chanceDiv);
+                    this.selector.AddChoice(new UniquePickup
+                    {
+                        pickupIndex = pickupIndex
+                    }, chance);
                 }
             }
         }
@@ -87,11 +89,14 @@ namespace WolfoFixes
             }
             var list = ModUtil.GetEliteEquipment();
 
-          
+
             float dropChance = (unbiasedByItemCount ? eliteEquipmentWeight / (float)list.Count : eliteEquipmentWeight);
             foreach (EquipmentIndex equipmentIndex in list)
             {
-                selector.AddChoice(PickupCatalog.FindPickupIndex(equipmentIndex), dropChance);
+                this.selector.AddChoice(new UniquePickup
+                {
+                    pickupIndex = PickupCatalog.FindPickupIndex(equipmentIndex)
+                }, dropChance);
             }
         }
 
@@ -108,48 +113,6 @@ namespace WolfoFixes
         }
     }
 
-    public static class Shared
-    {
-        public static BasicPickupDropTable dtAllTier
-        {
-            get
-            {
-                if (!_dtAllTier)
-                {
-                    SetupShared();
-                }
-                return _dtAllTier;
-            }
-        }
-        public static BasicPickupDropTable _dtAllTier;
-
-        public static void SetupShared()
-        {
-            if (_dtAllTier)
-            {
-                return;
-            }
-            //Normal
-            //W80, G20, R1
-
-            AdvancedPickupDropTable dtAllTier = ScriptableObject.CreateInstance<AdvancedPickupDropTable>();
-            dtAllTier.name = "dtAllTier";
-            dtAllTier.tier1Weight = 160;
-            dtAllTier.tier2Weight = 40;
-            dtAllTier.tier3Weight = 4;
-            dtAllTier.bossWeight = 4;
-            dtAllTier.equipmentWeight = 20;
-            dtAllTier.lunarItemWeight = 15;
-            dtAllTier.voidTier1Weight = 60;
-            dtAllTier.voidTier2Weight = 30;
-            dtAllTier.voidTier3Weight = 15;
-            dtAllTier.voidBossWeight = 15;
-            dtAllTier.lunarEquipmentWeight = 5;
-            dtAllTier.eliteEquipmentWeight = 5;
-            _dtAllTier = dtAllTier;
-
-        }
-
-    }
+   
 
 }

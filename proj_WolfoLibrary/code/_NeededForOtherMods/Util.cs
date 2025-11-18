@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WolfoFixes
+namespace WolfoLibrary
 {
 
     public static class ModUtil
@@ -34,14 +34,41 @@ namespace WolfoFixes
                 }
 
             }
-            catch (System.Exception e) 
-            { 
+            catch (System.Exception e)
+            {
                 //This caused too many problems in the past might as well put it in try
                 Debug.LogWarning(e);
             }
             return eliteEquips;
         }
 
+
+        public enum SkinVariant
+        {
+            Default,
+            Snow,
+            Sand,
+        }
+        public static SkinVariant GetInteractableSkinFromStage(SceneDef scene)
+        {
+            switch (scene.baseSceneName)
+            {
+                case "snowyforest":
+                case "nest":
+                case "frozenwall":
+                case "itfrozenwall":
+                    return SkinVariant.Snow;
+                case "goolake":
+                case "itgoolake":
+                case "lemuriantemple":
+                case "ironalluvium":
+                case "ironalluvium2":
+                case "repurposedcrater":
+                    return SkinVariant.Sand;
+
+            }
+            return SkinVariant.Default;
+        }
     }
 
 }

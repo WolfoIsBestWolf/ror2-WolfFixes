@@ -1,48 +1,41 @@
 ﻿using BepInEx;
-using HG;
-using MonoMod.Cil;
+using BepInEx.Logging;
 using R2API.Utils;
 using RoR2;
 using UnityEngine;
-using WolfoFixes.Testing;
+using UnityEngine.AddressableAssets;
+using WolfoLibrary;
 
 namespace WolfoFixes
 {
-    
+
     [BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("Early.Wolfo.WolfFixes", "WolfoBugFixes", version)]
+    [BepInPlugin("com.Wolfo.WolfFixes", "WolfoBugFixes", "1.2.0")]
     [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
-    public class WolfoMain : BaseUnityPlugin
+    public class WolfFixes : BaseUnityPlugin
     {
-        const string version = "1.1.17";
+        public static ManualLogSource log;
 
         public static bool riskyFixes;
         public void Awake()
         {
             WConfig.Awake();
-            
+            log = base.Logger;
+            Assets.Init(base.Info);
         }
 
- 
+
         public void Start()
         {
-            if (WConfig.cfgLoadOrder.Value)
-            {
-                TestLoadOrder.Logger = base.Logger;
-            }
-            Commands.Start();
-            Test.Start();
+            log.LogMessage("Start");
             RoR2Application.onLoad += addRiskConfigLatest;
-
-            riskyFixes = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyFixes");
-            VoidSuppressor.SuppresedScrap();
             if (WConfig.cfgDisable.Value)
             {
-                Debug.Log("WolfoFixes disabled");
+                WolfFixes.log.LogMessage("WolfoFixes disabled");
                 return;
             }
-            VoidSuppressor.FixInteractable();
-            VoidElite.VoidAffix();
+
+            riskyFixes = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyFixes");
 
             BodyFixes.Start();
             DevotionFixes.Start();
@@ -50,24 +43,30 @@ namespace WolfoFixes
             InteractableFixes.Start();
             ItemFixes.Start();
             EquipmentFixes.Start();
-            ItemTags.Start();
+            DCCS_SpawnPool.Main();
+
             PrayerBeads.Start();
             Simualcrum.Start();
-
+            Visuals.Start();
+            TextFixes.Start();
             Audio.Start();
             RandomFixes.Start();
-   
+
             LogFixes.Start();
- 
+
             OptionPickupStuff.Start();
             SkinFixes.Start();
-            Visuals.Start();
+
             EquipmentCatalog.availability.CallWhenAvailable(MissingEliteDisplays.Start);
 
             GameModeCatalog.availability.CallWhenAvailable(ModSupport_CallLate);
             ExtraActions.Start();
+
+
+
+
         }
- 
+
         void addRiskConfigLatest()
         {
             RoR2Application.onLoad -= addRiskConfigLatest;
@@ -76,9 +75,7 @@ namespace WolfoFixes
             {
                 WConfig.RiskConfig();
             }
-            EntityStates.FalseSon.LaserFather.laserPrefab = null;
- 
-            DLC2Content.Items.SpeedBoostPickup.tags = DLC2Content.Items.SpeedBoostPickup.tags.Remove(ItemTag.DevotionBlacklist);
+
         }
 
         internal static void ModSupport_CallLate()
@@ -88,22 +85,33 @@ namespace WolfoFixes
                 return;
             }
 
-
-            //The later the better because first come first serve with LanguageAPI
-            //Tho could do it with a language file I guess?
-            TextFixes.CallLate();
-            ItemTags.CallLate();
-            BodyFixes.CallLate();
-            Simualcrum.CallLate();
-
-            RoR2Content.Buffs.HiddenInvincibility.canStack = false;
+            //Only ever possible to get 1 stack so shouldn't show x1.
             DLC2Content.Buffs.Boosted.canStack = false;
-            
+
+            //Dont allow in Tinker, because they do NOT do anything.
+            DLC3Content.Buffs.AccelerantIgnited.flags = 0;
+            DLC3Content.Buffs.Electrocuted.flags = 0;
+            DLC3Content.Buffs.Conductive.flags = 0;
+
+            //Fix missing sprite
+            DLC3Content.Buffs.EliteCollective.iconSprite = Addressables.LoadAssetAsync<Sprite>(key: "17a3451326822bf45b656c26443cb530").WaitForCompletion();
+
+
+
+
             RoR2.Stats.StatDef.highestLunarPurchases.displayToken = "STATNAME_HIGHESTLUNARPURCHASES";
             RoR2.Stats.StatDef.highestBloodPurchases.displayToken = "STATNAME_HIGHESTBLOODPURCHASES";
 
             //Prevent scrapping regen scrap.
-            HG.ArrayUtils.ArrayAppend(ref DLC1Content.Items.RegeneratingScrap.tags, ItemTag.Scrap);
+            Tags.AddTag(DLC1Content.Items.RegeneratingScrap, ItemTag.Scrap);
+
+            ItemTags.CallLate();
+
+            Simualcrum.CallLate();
+
+            //Fix color having alpha of 0.
+            RoR2Content.DroneDefs.MissileDrone.bodyPrefab.GetComponent<CharacterBody>().bodyColor.a = 1;
+            RoR2Content.DroneDefs.MissileDrone.remoteOpBody.GetComponent<CharacterBody>().bodyColor.a = 1;
 
         }
 

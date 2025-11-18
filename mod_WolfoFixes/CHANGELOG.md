@@ -1,5 +1,84 @@
 ## Changelog:
+
+##v1.2.0
+
+
+The developers are aware of these issues, things just slip through the cracks or kinda broke randomly close to when release builds needed to be finalized.
+
+###DLC3 Fixes:
+####Gameplay:
+
+
+- AC making Verdant Falls half as likely as a Stage 1
+- Voidsent Flame not chain-proccing more Voidsent Flames on other full health enemies.
+- Bandolier not working on new drones/devoted lemurians.  *(Wrong auth check*
+
+
+- Jailer Drones not assuming position before firing. (Late into dev got messed up)
+ 
+
+- Access Node on Repurposed Crater not spawning if Solus Wing was defeated prior.
+- Drone Combiner spawning with Devotion.
+- Drone Shop not spawning with Sacrifice.
+- Iron Aurura not having Solus Amalgamator in the spawnpool.
+	-*Is a Loop Boss on Iron Alluvium, but thats replace by the night variant, which they forgot to add it to*
+
+####Visual:
+
+- Faraday Spur visual radius being half of the attack radius.
+- Tier2 Drones using the wrong color. (Blazing instead of Magenta)
+- "BuffedDrone" arrow not appearing for Turrets/Mechanical allies, despite those being affected as well.
+- "BuffedDrone" arrow not disappearing when items disappear
+- Collective Elite Buff missing sprite.
+- Collective Elite bubbles being less visible from inside on specifically PC
+- Elite Extractors not having elite colored legs.
+- Scorcher Grease will no longer get stuch in the skybox.
+- Solus Distributors not casting shadows.
+- Temp Distributers having 1 misaligned item.
+- "Vehicle Seats", such as Drifter showing up on Scanners as ?
+- Most creatures not using full body pings.
+- Scrapper Quantity showing "Temp+Perm" instead of just Permament
+- Drone Combiner lacking some visuals/outputting errors in log for Clients
+
+ 
+#### General fixes
+
+False Son Death quote being the wrong ones since launch SotS.
+
+XI Shield Exit not animation not playing since launch SotV.
+XI Ghosts not spawning Ghost Alphas
+XI Elites not spawning Elite Alphas
+XI's lower half rotating wildly since Devotion
+
+Twisted Scavs immune to Void Implosions *(Like other final bosses)*
+
+-Removed strange white effect from Void Portals. (Introduced in SotS)
+-Fixed Celestial Orb overlapping with Void Orb.
+-Broken Missile Drone often clipping into the ground.
+ 
+-Grandparent & Child now spawn during Parent family event.
+
+All portal messages will now open chat.
+Removed Family event announcements from Dissonance, because they're overwritten.
+
+
+Dissolved SpawnPoolFixer mod.
+- SotV enemy removals now in LittleGameplayTweaks
+- Higher Radar Scanner chance now in WQoL
+
+
+AiBlacklisted Egocentrism from Mithrix;
+- *To match other opressive Anti-Melee items being banned*.
+
+Evolution-Blacklisted Kinetic Dampner;
+- *Because damage reflection items can make the game unplayable*.
+
+UnBlacklisted Equipment Items from Scavs:
+- *Holdover from old versions*.
+
+ 
 ```
+
 v1.1.17
 Fixed log spam when using Sawmerang
 Fixed Ice Spear fix not actually going through due to wrong config val.
@@ -147,3 +226,12 @@ v1.0.0
 Split from WQoL
 Moved some Simu fixes from SimuAdds
 Children immune to the Sun
+```
+```
+
+(TODO)Prestige not spawning a teleporter on Conduit Canyon
+(TODO)Teleproter music after solus haunt fucked up
+(TODO)Brass no longer intterupt itself
+(TODO)All Habitat fruits fucking exploding on stage load
+
+```
