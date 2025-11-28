@@ -29,6 +29,11 @@ namespace WolfoFixes
         {
             log.LogMessage("Start");
             RoR2Application.onLoad += addRiskConfigLatest;
+
+            //POT MOBILE JUMP SCARE
+            Addressables.LoadAssetAsync<GameObject>(key: "525b404e87c469f4ab8034de0913d11a").WaitForCompletion().transform.GetChild(4).gameObject.SetActive(false);
+
+
             if (WConfig.cfgDisable.Value)
             {
                 WolfFixes.log.LogMessage("WolfoFixes disabled");

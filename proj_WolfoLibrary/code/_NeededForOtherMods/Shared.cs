@@ -48,18 +48,19 @@ namespace WolfoLibrary
         private void GenerateUnbiased(Run run)
         {
             this.selector.Clear();
-            this.Add(run.availableTier1DropList, this.tier1Weight);
-            this.Add(run.availableTier2DropList, this.tier2Weight);
-            this.Add(run.availableTier3DropList, this.tier3Weight);
-            this.Add(run.availableBossDropList, this.bossWeight);
-            this.Add(run.availableLunarItemDropList, this.lunarItemWeight);
-            this.Add(run.availableLunarEquipmentDropList, this.lunarEquipmentWeight);
-            this.Add(run.availableLunarCombinedDropList, this.lunarCombinedWeight);
-            this.Add(run.availableEquipmentDropList, this.equipmentWeight);
-            this.Add(run.availableVoidTier1DropList, this.voidTier1Weight);
-            this.Add(run.availableVoidTier2DropList, this.voidTier2Weight);
-            this.Add(run.availableVoidTier3DropList, this.voidTier3Weight);
-            this.Add(run.availableVoidBossDropList, this.voidBossWeight);
+            this.AddUnbiased(run.availableTier1DropList, this.tier1Weight);
+            this.AddUnbiased(run.availableTier2DropList, this.tier2Weight);
+            this.AddUnbiased(run.availableTier3DropList, this.tier3Weight);
+            this.AddUnbiased(run.availableBossDropList, this.bossWeight);
+            this.AddUnbiased(run.availableLunarItemDropList, this.lunarItemWeight);
+            this.AddUnbiased(run.availableLunarEquipmentDropList, this.lunarEquipmentWeight);
+            this.AddUnbiased(run.availableLunarCombinedDropList, this.lunarCombinedWeight);
+            this.AddUnbiased(run.availableEquipmentDropList, this.equipmentWeight);
+            this.AddUnbiased(run.availableVoidTier1DropList, this.voidTier1Weight);
+            this.AddUnbiased(run.availableVoidTier2DropList, this.voidTier2Weight);
+            this.AddUnbiased(run.availableVoidTier3DropList, this.voidTier3Weight);
+            this.AddUnbiased(run.availableVoidBossDropList, this.voidBossWeight);
+            this.AddUnbiased(run.availableFoodTierDropList, this.foodTierWeight);
         }
         private void AddUnbiased(List<PickupIndex> sourceDropList, float chance)
         {

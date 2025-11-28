@@ -85,7 +85,7 @@ namespace WolfoFixes
         //Loop Variants are rare enough as is so it's just kinda annoying.
         public static bool NoPreLoopPostLoop(On.RoR2.BazaarController.orig_IsUnlockedBeforeLooping orig, BazaarController self, SceneDef sceneDef)
         {
-            if (WConfig.cfgLoopSeers.Value == true)
+            if (WConfig.cfgLoopSeers.Value)
             {
                 if (sceneDef.loopedSceneDef && Run.instance.stageClearCount >= 5)
                 {

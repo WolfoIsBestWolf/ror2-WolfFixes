@@ -153,6 +153,7 @@ namespace WolfoFixes
             Addressables.LoadAssetAsync<GameObject>(key: "769510dc6be546b40aa3aca3cf93945c").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
             #endregion
 
+            Addressables.LoadAssetAsync<GameObject>(key: "8684165ea0542bf4bae1eea1f5865386").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
 
             DLC3Fixes();
         }

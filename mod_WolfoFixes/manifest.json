@@ -1,6 +1,6 @@
 {
     "name": "WolfFixes",
-    "version_number": "1.2.0",
+    "version_number": "1.2.2",
     "website_url": "https://github.com/WolfoIsBestWolf/ror2-WolfFixes",
     "description": "Mod focused on fixing confirmed gameplay bugs, like Warped Echo. Includes various visual, text and audio fixes.",
     "dependencies": [
@@ -8,6 +8,6 @@
 		"RiskofThunder-R2API_Networking-1.0.3",
 		"score-MiscFixes-1.3.3",
 		"Goorakh-VFiX-1.0.3",
-		"LordVGames-GildedChunkSpamFix-1.0.1",
+		"LordVGames-GildedChunkSpamFix-1.0.1"
     ]
 }

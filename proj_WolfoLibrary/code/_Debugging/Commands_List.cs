@@ -207,11 +207,12 @@ namespace WolfoLibrary.Testing
             for (int i = 0; i < PickupCatalog.entries.Length; i++)
             {
                 PickupDef def = PickupCatalog.entries[i];
-                debug += string.Format("{0} | <color=#{2}>{1}</color>\n", new object[]
+                debug += string.Format("{3}|{0} | <color=#{2}>{1}</color>\n", new object[]
                  {
                     def.internalName,
                     Language.GetString(def.nameToken),
                     ColorUtility.ToHtmlStringRGB(def.baseColor),
+                    i,
                  });
             }
             Debug.Log(debug);

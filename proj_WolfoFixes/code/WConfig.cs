@@ -40,14 +40,14 @@ namespace WolfoFixes
         {
 
             cfgStage1Weight = ConfigFile_Client.Bind(
-             "Config",
+             "Main",
              "Plains Roost weight",
              0.75f,
              "They are counted as 2 stages due to the 2 variants, so they essentially have double the weight."
           );
             cfgLoopSeers = ConfigFile_Client.Bind(
-               "Config",
-               "Remove Pre Loop Destination from Seers during loops",
+               "Main",
+               "No Pre-Loop Stage Seers during loops",
                true,
                "You can get PreLoop variants of stages that have loop variants as Lunar Seer Destinations.\nVanilla : True\nAt least a dev thought it was a funny quirk but still just feels like a bug."
             );
@@ -55,29 +55,21 @@ namespace WolfoFixes
 
 
             cfgMithrix4Skip = ConfigFile_Client.Bind(
-               "Gameplay",
+               "Main",
                "Fix Mithrix P4 Skip",
                false,
                "This bug happens because SetStateOnHurt consider Mithrixes health 0 for 1 frame and staggers him.\n\nOff by default due to feedback."
            );
             cfgMithrix4Skip.SettingChanged += BodyFixes.SetSkippable;
-
-            //Is he tho?
-            /*cfgFalseSonP2 = ConfigFile_Client.Bind(
-                "Gameplay",
-                "Fix False Son P2 Shotgun",
-                true,
-                "False Son Phase 2 is intended to use the spike shotgun, but can't due to a bugged skill driver."
-            );*/
-
+ 
             cfgItemTags = ConfigFile_Client.Bind(
-                "Gameplay",
+                "Main",
                 "Item Tag Changes",
                 true,
-                "AIBlacklist Nkuhanas Opinion and Infusion.\nMoves around certain categories on items.\nBug fixes like Harpoon not being tagged as OnKill still happen even if turned of"
+                "This may slightly affect balance of Mithrix Phase 4, if you think playing around items that should be blacklisted is fun then go ahead and disable it.\n\nAIBlacklist Nkuhanas Opinion and Infusion.\nMoves around certain categories on items.\nBug fixes like Harpoon not being tagged as OnKill still happen even if turned of"
             );
             cfgDevotionSpareDroneParts = ConfigFile_Client.Bind(
-                "Gameplay",
+                "Main",
                 "Devotion Tag",
                 true,
                 "Add the Devotion Tag to Devoted Lemurians which will make them work with Spare Drone Parts.\n\nThis is a intended synergy, they just put in the wrong Lemurian."
@@ -85,9 +77,9 @@ namespace WolfoFixes
 
             cfgDisable = ConfigFile_Client.Bind(
                           "Main",
-                          "Disable everything except needed",
+                          "Disable all fixes",
                           false,
-                          "Disable all changes except things needed for mod compatibility and debugging tools"
+                          "Disable all fixes leaving the mod as just a library mod to be used for my other mods and debugging purposes."
             );
             cfgTextFixes = ConfigFile_Client.Bind(
                 "Main",
@@ -107,18 +99,19 @@ namespace WolfoFixes
             ModSettingsManager.SetModIcon(Addressables.LoadAssetAsync<Sprite>(key: "8d5cb4f0268083645999f52a10c6904b").WaitForCompletion());
             ModSettingsManager.SetModDescription("Random assortment of fixes for bugs that bothered me.");
 
-            List<ConfigEntry<bool>> noResetB = new List<ConfigEntry<bool>>()
-            {
-                cfgMithrix4Skip
-            };
-
+ 
             ConfigEntryBase[] entries = ConfigFile_Client.GetConfigEntries();
             foreach (ConfigEntryBase entry in entries)
             {
                 if (entry.SettingType == typeof(bool))
                 {
                     var temp = (ConfigEntry<bool>)entry;
-                    ModSettingsManager.AddOption(new CheckBoxOption(temp, !noResetB.Contains(temp)));
+                    ModSettingsManager.AddOption(new CheckBoxOption(temp,true));
+                }
+                 if (entry.SettingType == typeof(float))
+                {
+                    var temp = (ConfigEntry<float>)entry;
+                    ModSettingsManager.AddOption(new FloatFieldOption(temp, true));
                 }
                 else
                 {

@@ -19,6 +19,11 @@ namespace WolfoLibrary
     }
     public static class SceneList
     {
+        public static SceneDef Blackbeach = Addressables.LoadAssetAsync<SceneDef>(key: "c129d2b9e62c31b4ba165091d1ae2c50").WaitForCompletion();
+        public static SceneDef Blackbeach2 = Addressables.LoadAssetAsync<SceneDef>(key: "f87198140bf9b5a4f82e206231df9091").WaitForCompletion();
+        public static SceneDef Golemplains = Addressables.LoadAssetAsync<SceneDef>(key: "8ba24a95e46b3944280a4b66afd0c4dc").WaitForCompletion();
+        public static SceneDef Golemplains2 = Addressables.LoadAssetAsync<SceneDef>(key: "657a62eb3e4c409429c91ba6fdb7d921").WaitForCompletion();
+        
         public static SceneDef SulfurPools = Addressables.LoadAssetAsync<SceneDef>(key: "796f9b67682b3db4c8c5af7294d0490c").WaitForCompletion();
         public static SceneDef RootJungle = Addressables.LoadAssetAsync<SceneDef>(key: "ced489f798226594db0d115af2101a9b").WaitForCompletion();
         public static SceneDef Habitat = Addressables.LoadAssetAsync<SceneDef>(key: "0b33829c6cdfad34a8160c6ae17edfcc").WaitForCompletion();
@@ -31,6 +36,11 @@ namespace WolfoLibrary
         public static SceneDef itDampCave = Addressables.LoadAssetAsync<SceneDef>(key: "c33b24f6ebf27db49a5cfb88dbe9b8ff").WaitForCompletion();
         public static SceneDef itSkyMeadow = Addressables.LoadAssetAsync<SceneDef>(key: "6a2712b5c8cf36f44b34c128f2759522").WaitForCompletion();
         public static SceneDef itMoon = Addressables.LoadAssetAsync<SceneDef>(key: "RoR2/DLC1/itmoon/itmoon.asset").WaitForCompletion();
+
+        public static SceneDef Moon2 = Addressables.LoadAssetAsync<SceneDef>(key: "5d69f3396feb7ba428d1e53a44479594").WaitForCompletion();
+        public static SceneDef MysterySpace = Addressables.LoadAssetAsync<SceneDef>(key: "1303cd0450cbaf140970e7afd5162314").WaitForCompletion();
+        public static SceneDef VoidStage = Addressables.LoadAssetAsync<SceneDef>(key: "66e0cfba315981a40afae481363ea0da").WaitForCompletion();
+        public static SceneDef VoidRaid = Addressables.LoadAssetAsync<SceneDef>(key: "223a0f0a86052654a9e473d13f77cb41").WaitForCompletion();
 
 
     }
@@ -69,6 +79,7 @@ namespace WolfoLibrary
         public static class Elites
         {
             public static EliteDef edSecretSpeed = Addressables.LoadAssetAsync<EliteDef>(key: "9752d818bdea9b449845fc4df8aed07a").WaitForCompletion();
+            public static EliteDef CollectiveWeak = Addressables.LoadAssetAsync<EliteDef>(key: "5834fbe05a0d4ce4eae57f87aae57920").WaitForCompletion();
         }
     }
 

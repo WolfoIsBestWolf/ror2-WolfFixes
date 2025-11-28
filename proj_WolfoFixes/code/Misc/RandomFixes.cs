@@ -34,8 +34,7 @@ namespace WolfoFixes
             //Always update hud if rebuild cards
             On.RoR2.ClassicStageInfo.RebuildCards += MarkHudAsDirtyForKin;
 
-            Addressables.LoadAssetAsync<GameObject>(key: "525b404e87c469f4ab8034de0913d11a").WaitForCompletion().transform.GetChild(4).gameObject.SetActive(false);
-
+            
             IL.RoR2.UI.ScrapperInfoPanelHelper.AddQuantityToPickerButton += ScrapperInfoPanelHelper_AddQuantityToPickerButton;
         }
 
