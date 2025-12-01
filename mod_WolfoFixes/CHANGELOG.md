@@ -1,10 +1,18 @@
-## v1.2.2
+```
+v1.2.3
+Fixed Stone Flux Pauldron reducing speed twice.
+Fixed mod making RegenScrap unrebirthable & not give a random temp with Duplicator
+Fixed Warped Echo allowing you to live through OSP, even if OSP is meant to be disabled by curse.
+```
+```
+v1.2.2
 Needed WolfoLib update, WFix unchanged.
 
 Fixed language folder not loading.
 
-## v1.2.1
+v1.2.1
 Forgot to package important stuff
+```
 ## v1.2.0
 
 The developers are aware of these issues, things just slip through the cracks or kinda broke randomly close to when release builds needed to be finalized.

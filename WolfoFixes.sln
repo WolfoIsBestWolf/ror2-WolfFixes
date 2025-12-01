@@ -5,8 +5,6 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolfoFixes", "proj_WolfoFixes\WolfoFixes.csproj", "{E721EFCD-9420-4FB5-9C7C-30FC1D9A00BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpawnPoolFixer", "proj_SpawnPoolFixer\SpawnPoolFixer.csproj", "{AB8B7A0E-0F1D-4D65-B172-53B9E6AA80B2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolfoLibrary", "proj_WolfoLibrary\WolfoLibrary.csproj", "{3D08A089-9C97-4ECB-8971-52D91E5BF346}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{E721EFCD-9420-4FB5-9C7C-30FC1D9A00BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E721EFCD-9420-4FB5-9C7C-30FC1D9A00BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E721EFCD-9420-4FB5-9C7C-30FC1D9A00BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB8B7A0E-0F1D-4D65-B172-53B9E6AA80B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB8B7A0E-0F1D-4D65-B172-53B9E6AA80B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB8B7A0E-0F1D-4D65-B172-53B9E6AA80B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB8B7A0E-0F1D-4D65-B172-53B9E6AA80B2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3D08A089-9C97-4ECB-8971-52D91E5BF346}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3D08A089-9C97-4ECB-8971-52D91E5BF346}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D08A089-9C97-4ECB-8971-52D91E5BF346}.Release|Any CPU.ActiveCfg = Release|Any CPU

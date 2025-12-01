@@ -21,7 +21,7 @@
 		"ITEM_NOVAONLOWHEALTH_DESC": "Falling below <style=cIsHealth>25% health</style> causes you to explode, dealing <style=cIsDamage>6000% base damage</style>. Recharges every <style=cIsUtility>15 seconds</style> <style=cStack>(-33% per stack)</style>.",		
 		"ITEM_LIGHTNINGSTRIKEONHIT_DESC": "<style=cIsDamage>10%</style> chance on hit to down a lightning strike, dealing <style=cIsDamage>500%</style> <style=cStack>(+500% per stack)</style> TOTAL damage.",		
 		"ITEM_FIREBALLSONHIT_DESC": "<style=cIsDamage>10%</style> chance on hit to call forth <style=cIsDamage>3 magma balls</style> from an enemy, dealing <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> TOTAL damage and <style=cIsDamage>igniting</style> all enemies for an additional <style=cIsDamage>50%</style> TOTAL damage over time.",		
-		"ITEM_BEETLEGLAND_DESC": "<style=cIsUtility>Summon a Beetle Guard</style> with <style=cIsDamage>400%</style> damage and <style=cIsHealing>200% health</style>. Can have up to <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> Guards at a time.");
+		"ITEM_BEETLEGLAND_DESC": "<style=cIsUtility>Summon a Beetle Guard</style> with <style=cIsDamage>400%</style> damage and <style=cIsHealing>200% health</style>. Can have up to <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> Guards at a time.",
 		
 		
 		
@@ -29,7 +29,7 @@
 		"ITEM_LUNARDAGGER_DESC": "Increase base damage by <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style>. <style=cIsHealth>Reduce maximum health by 50%</style> <style=cStack>(+50% per stack)</style>.",		
 		 
 		
-		"ITEM_BEARVOID_DESC": "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <style=cIsUtility>13.5 seconds</style> <style=cStack>(-10% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.",		
+		"_ITEM_BEARVOID_DESC": "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <style=cIsUtility>13.5 seconds</style> <style=cStack>(-10% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.",		
 		"ITEM_TREASURECACHEVOID_DESC": "A <style=cIsUtility>hidden cache</style> containing an item (42%/<style=cIsHealing>42%</style>/<style=cIsHealth>16%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",		
 		 
 		 
@@ -44,7 +44,7 @@
 	 
 	 
 		"EQUIPMENT_JETPACK_DESC": "Sprout wings and <style=cIsUtility>fly for 15 seconds</style>. Jumping causes you to perform a dash.",		"EQUIPMENT_BFG_DESC": "Fires preon tendrils, zapping enemies within 35m for up to <style=cIsDamage>1200% damage/second</style>. On contact, detonate in an enormous 20m explosion for <style=cIsDamage>8000% damage</style>.",		"": "",		"": "",	 
-		"EQUIPMENT_BFG_DESC": "Fires preon tendrils, zapping enemies within 35m for up to <style=cIsDamage>1200% damage/second</style>. On contact, detonate in an enormous 20m explosion for <style=cIsDamage>8000% damage</style>.");
+		"EQUIPMENT_BFG_DESC": "Fires preon tendrils, zapping enemies within 35m for up to <style=cIsDamage>1200% damage/second</style>. On contact, detonate in an enormous 20m explosion for <style=cIsDamage>8000% damage</style>.",
 		
 		"EQUIPMENT_CRIPPLEWARD_DESC": "<color=#FF7F7F>ALL characters</color> within have their <style=cIsUtility>movement speed slowed by 100%</style> and have their <style=cIsDamage>armor reduced by 20</style>. Can place up to <style=cIsUtility>5</style>.",
 		

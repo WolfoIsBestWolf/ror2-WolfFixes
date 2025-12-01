@@ -12,11 +12,13 @@ namespace WolfoFixes
     {
         public static void Start()
         {
+            IL.RoR2.CharacterBody.RecalculateStats += FixStoneFluxBeingAppliedTwice;
 
             // IL.RoR2.HealthComponent.TakeDamageProcess += FixEchoOSP;
             IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedEchoE8;
             IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedEchoNotUsingArmor;
             On.RoR2.CharacterBody.OnTakeDamageServer += WEchoFirstHitIntoDanger;
+            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
 
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixChargedPerferatorCrit;
 
@@ -31,6 +33,38 @@ namespace WolfoFixes
 
             //I believe confirmed issue not 100%
             IL.RoR2.HealthComponent.TakeDamageProcess += FixVoidsentNoLongerChaining;
+        }
+
+        private static void FixStoneFluxBeingAppliedTwice(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            bool a = c.TryGotoNext(MoveType.Before,
+            x => x.MatchLdloc(112),
+            x => x.MatchLdloc(46),
+            x => x.MatchConvR4(),
+            x => x.MatchAdd(),
+            x => x.MatchStloc(112));
+
+            if (a && c.TryGotoNext(MoveType.After,
+            x => x.MatchLdloc(112),
+            x => x.MatchLdloc(46)))
+            {
+                //c.RemoveRange(5);
+                c.EmitDelegate<Func<int, int>>((skill) =>
+                {
+                    return 0;
+                });
+            }
+            else
+            {
+                WolfFixes.log.LogWarning("IL Failed : FixStoneFluxBeingAppliedTwice");
+            }
+        }
+
+        private static void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
+        {
+            orig(self);
+            self.hasOneShotProtection = self.hasOneShotProtection && self.oneShotProtectionFraction > 0;
         }
 
         private static void FixVoidsentNoLongerChaining(ILContext il)

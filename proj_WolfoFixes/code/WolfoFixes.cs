@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using R2API;
 using R2API.Utils;
 using RoR2;
 using UnityEngine;
@@ -22,6 +23,9 @@ namespace WolfoFixes
             WConfig.Awake();
             log = base.Logger;
             Assets.Init(base.Info);
+            riskyFixes = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyFixes");
+
+           
         }
 
 
@@ -39,8 +43,7 @@ namespace WolfoFixes
                 WolfFixes.log.LogMessage("WolfoFixes disabled");
                 return;
             }
-
-            riskyFixes = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyFixes");
+         
 
             BodyFixes.Start();
             DevotionFixes.Start();
@@ -69,7 +72,17 @@ namespace WolfoFixes
 
 
 
+            Language.onCurrentLanguageChanged += Language_onCurrentLanguageChanged;
+        }
 
+        private void Language_onCurrentLanguageChanged()
+        {
+     
+            Language.onCurrentLanguageChanged -= Language_onCurrentLanguageChanged;
+            if (!riskyFixes && Language.currentLanguage.TokenIsRegistered("_ITEM_BEARVOID_DESC"))
+            {
+                LanguageAPI.Add("ITEM_BEARVOID_DESC", Language.GetString("_ITEM_BEARVOID_DESC"));
+            }
         }
 
         void addRiskConfigLatest()
@@ -108,7 +121,12 @@ namespace WolfoFixes
             RoR2.Stats.StatDef.highestBloodPurchases.displayToken = "STATNAME_HIGHESTBLOODPURCHASES";
 
             //Prevent scrapping regen scrap.
-            Tags.AddTag(DLC1Content.Items.RegeneratingScrap, ItemTag.Scrap);
+            //Tags.AddTag(DLC1Content.Items.RegeneratingScrap, ItemTag.Scrap);
+            var pdtUnscrappableItems = Addressables.LoadAssetAsync<ExplicitPickupDropTable>(key: "6db5e5eb0ec0c394da95229ad89cea29").WaitForCompletion();
+            HG.ArrayUtils.ArrayAppend(ref pdtUnscrappableItems.pickupEntries, new ExplicitPickupDropTable.PickupDefEntry()
+            {
+                pickupDef = DLC1Content.Items.RegeneratingScrap,
+            });
 
             ItemTags.CallLate();
 

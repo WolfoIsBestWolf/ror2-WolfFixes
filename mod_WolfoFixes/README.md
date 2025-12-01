@@ -17,11 +17,14 @@ Also technically is a library mod, this should have no impact on the end user.
 ## Item Fixes
 Voidsent Flame being unable to proc itself on other full health enemies.
 
+Stone Flux Pauldron reducing speed twice.
+
 Warped Echo blocking Eclipse 8 curse.\
 Warped Echo ignoring Armor.\
 Warped Echo ignoring OneShotProtection.\
 Warped Echos first hit not putting you into danger.\
 Warped Echos first hit being ignored if OSP was triggered.
+
 
 Elusive Antler producing errors on things that move differently. (Stationary Turrets, RemoteOp Drones)\
 Elusive Antler not working on Devoted Lemurians due to wrong authority check.

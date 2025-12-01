@@ -11,7 +11,7 @@ namespace WolfoLibrary
 {
 
     [BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("com.Wolfo.WolfoLibrary", "WolfoLibrary", "1.2.0")]
+    [BepInPlugin("com.Wolfo.WolfoLibrary", "WolfoLibrary", "1.2.3")]
     [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
     public class WolfoLib : BaseUnityPlugin
     {

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace WolfoLibrary
-{
+{   /*
     public class PortraitGenerator
     {
         [ConCommand(commandName = "generate_portrait", flags = ConVarFlags.None, helpText = "Generate Portrait, BodyIndex, R,G,B,Zoom, ItemIndex")]
@@ -103,12 +103,7 @@ namespace WolfoLibrary
                     {
                         num = Mathf.Max(num, temporaryOverlay.duration + 1f);
                     }
-                    /* var particles = modelPanel.modelInstance.GetComponentsInChildren<ParticleSystem>();
-                   foreach (var particle in particles)
-                   {
-                       UnityEngine.Object.Destroy(particle.gameObject);
-                   }
-                   */
+                
                     var lights = modelPanel.modelInstance.GetComponentsInChildren<Light>();
                     foreach (var light in lights)
                     {
@@ -159,5 +154,5 @@ namespace WolfoLibrary
             }
         }
     }
-
+    */
 }
