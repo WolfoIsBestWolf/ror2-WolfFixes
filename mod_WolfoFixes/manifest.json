@@ -1,8 +1,8 @@
 {
     "name": "WolfFixes",
-    "version_number": "1.2.3",
+    "version_number": "1.2.4",
     "website_url": "https://github.com/WolfoIsBestWolf/ror2-WolfFixes",
-    "description": "Mod focused on fixing confirmed gameplay bugs, like Warped Echo. Includes various visual, text and audio fixes.",
+    "description": "Mod focused on fixing confirmed gameplay bugs, and various visual, text and audio fixes.",
     "dependencies": [
 		"RiskofThunder-R2API_Prefab-1.0.4",
 		"RiskofThunder-R2API_Networking-1.0.3",

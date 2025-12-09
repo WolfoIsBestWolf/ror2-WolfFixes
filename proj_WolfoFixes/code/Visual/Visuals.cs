@@ -96,8 +96,8 @@ namespace WolfoFixes
             Addressables.LoadAssetAsync<SkillDef>(key: "067364fa932fb5b4793f0546a08709ca").WaitForCompletion().hideStockCount = true;
 
             //Collective bubble not visible from inside
-            GameObject AffixCollectiveBodyAttachment = Addressables.LoadAssetAsync<GameObject>(key: "479df04eb1a9cb845bdedfaf9ea71cd6").WaitForCompletion();
-            AffixCollectiveBodyAttachment.transform.GetChild(0).GetChild(3).GetComponent<RoR2.UI.MainMenu.PlatformToggle>().Steam = true;
+            //GameObject AffixCollectiveBodyAttachment = Addressables.LoadAssetAsync<GameObject>(key: "479df04eb1a9cb845bdedfaf9ea71cd6").WaitForCompletion();
+            //AffixCollectiveBodyAttachment.transform.GetChild(0).GetChild(3).GetComponent<RoR2.UI.MainMenu.PlatformToggle>().Steam = true;
 
 
         }
@@ -163,8 +163,8 @@ namespace WolfoFixes
             On.RoR2.VehicleSeat.ShouldShowOnScanner += VehicleSeat_ShouldShowOnScanner;
 
             //1 Item misaligned
-            GameObject TemporaryItemsShopTerminal = Addressables.LoadAssetAsync<GameObject>(key: "d31df5066858329458b33f21b3b22d2e").WaitForCompletion();
-            TemporaryItemsShopTerminal.transform.GetChild(1).GetChild(3).localPosition = new Vector3(0f, 2.5f, 0.058f);
+            //GameObject TemporaryItemsShopTerminal = Addressables.LoadAssetAsync<GameObject>(key: "d31df5066858329458b33f21b3b22d2e").WaitForCompletion();
+            //TemporaryItemsShopTerminal.transform.GetChild(1).GetChild(3).localPosition = new Vector3(0f, 2.5f, 0.058f);
 
         }
 

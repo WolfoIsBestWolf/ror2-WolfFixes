@@ -14,10 +14,8 @@ namespace WolfoFixes
         {
             //DLC3 weird tag stuff
             //Randomly got rebirth blacklisted;
-            RemoveTag(RoR2Content.Items.Bear, ItemTag.RebirthBlacklist);
             RemoveTag(DLC1Content.Items.BearVoid, ItemTag.RebirthBlacklist);
             RemoveTag(DLC1Content.Items.RandomlyLunar, ItemTag.RebirthBlacklist);
-            RemoveTag(RoR2Content.Items.SiphonOnLowHealth, ItemTag.RebirthBlacklist);
             RemoveTag(DLC3Content.Items.TransferDebuffOnHit, ItemTag.RebirthBlacklist);
 
             //Better DroneBuffArrow stuff
@@ -30,8 +28,7 @@ namespace WolfoFixes
             AddTag(RoR2Content.Items.DrizzlePlayerHelper, ItemTag.HiddenForDroneBuffIcon);
             AddTag(RoR2Content.Items.MonsoonPlayerHelper, ItemTag.HiddenForDroneBuffIcon);
             AddTag(DLC1Content.Items.GummyCloneIdentifier, ItemTag.HiddenForDroneBuffIcon);
-
-
+ 
             ArrayUtils.ArrayAppend(ref DLC1Content.Items.CloverVoid.tags, ItemTag.DevotionBlacklist);
 
 
@@ -81,7 +78,7 @@ namespace WolfoFixes
             ArrayUtils.ArrayAppend(ref DLC1Content.Items.PrimarySkillShuriken.tags, Tags.EvolutionBlacklist); //Borderline for runs, Keeping in Vfields
             ArrayUtils.ArrayAppend(ref DLC1Content.Items.RegeneratingScrap.tags, ItemTag.AIBlacklist); //Borderline for runs, Keeping in Vfields
 
-            ArrayUtils.ArrayAppend(ref DLC3Content.Items.ShieldBooster.tags, EvolutionBlacklist); //Borderline for runs, Keeping in Vfields
+            ArrayUtils.ArrayAppend(ref DLC3Content.Items.ShieldBooster.tags, ItemTag.AIBlacklist); //Borderline for runs, Keeping in Vfields
             #endregion
             #region Red
             ArrayUtils.ArrayAppend(ref RoR2Content.Items.NovaOnHeal.tags, ItemTag.AIBlacklist); //Overpowered
@@ -155,6 +152,8 @@ namespace WolfoFixes
             #endregion
             #region Boss
             ArrayUtils.ArrayRemoveAtAndResize(ref RoR2Content.Items.Knurl.tags, 0); //Remove Utility
+            ArrayUtils.ArrayAppend(ref DLC1Content.Items.MinorConstructOnKill.tags, ItemTag.Utility);  //Not tagged as any category
+            ArrayUtils.ArrayAppend(ref DLC3Content.Items.ExtraEquipment.tags, ItemTag.Utility);  //Not tagged as any category
 
             #endregion
             #region Lunar

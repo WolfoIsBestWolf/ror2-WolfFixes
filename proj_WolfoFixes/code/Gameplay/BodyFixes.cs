@@ -129,8 +129,8 @@ namespace WolfoFixes
             //Hopoo forgor
             On.RoR2.NetworkedBodySpawnSlot.OnSpawnedServer += XI_GhostEliteMinionFix;
             //Fix XI Tail lagging
-            GameObject MegaConstructBody = Addressables.LoadAssetAsync<GameObject>(key: "64b97b2c7e3e0d949b41abbe57bf3c2d").WaitForCompletion();
-            MegaConstructBody.transform.Find("Model Base/mdlMegaConstruct/MegaConstructArmature/ROOT/base/body.1").GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Extrapolate;
+            //GameObject MegaConstructBody = Addressables.LoadAssetAsync<GameObject>(key: "64b97b2c7e3e0d949b41abbe57bf3c2d").WaitForCompletion();
+            //MegaConstructBody.transform.Find("Model Base/mdlMegaConstruct/MegaConstructArmature/ROOT/base/body.1").GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Extrapolate;
 
             //EntityStates.MegaConstruct.ExitShield has wrong field name, leading to it being skipped
             Addressables.LoadAssetAsync<EntityStateConfiguration>(key: "04deef0aeeb41dc4aa4ad14f7f967526").WaitForCompletion().serializedFieldsCollection.serializedFields[3].fieldName = "baseDuration"; //Is Duration instead of Base
@@ -154,6 +154,7 @@ namespace WolfoFixes
             #endregion
 
             Addressables.LoadAssetAsync<GameObject>(key: "8684165ea0542bf4bae1eea1f5865386").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
+            Addressables.LoadAssetAsync<GameObject>(key: "9d63f2d3bc6c52c44883128cc4b97bf4").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
 
             DLC3Fixes();
         }

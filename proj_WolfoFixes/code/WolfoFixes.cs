@@ -73,6 +73,43 @@ namespace WolfoFixes
 
 
             Language.onCurrentLanguageChanged += Language_onCurrentLanguageChanged;
+
+            On.RoR2.BuffCatalog.Init += BuffCatalog_Init;
+
+           
+        }
+
+      
+
+        private void BuffCatalog_Init(On.RoR2.BuffCatalog.orig_Init orig)
+        {   try
+            {
+
+                //Dont allow in Tinker, because they do NOT do anything.
+                DLC3Content.Buffs.AccelerantIgnited.flags = BuffDef.Flags.ExcludeFromNoxiousThorns;
+                DLC3Content.Buffs.Electrocuted.flags = BuffDef.Flags.ExcludeFromNoxiousThorns;
+                DLC3Content.Buffs.Conductive.flags = 0;
+
+                DLC3Content.Buffs.Accelerant.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.AccelerantIgnited.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.Brittle.isDebuff = false;
+                DLC3Content.Buffs.Conductive.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.Electrocuted.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.GravitySlow.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.InventoryDisable.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.Jailed.ignoreGrowthNectar = true;
+                DLC2Content.Buffs.KnockUpHitEnemiesJuggleCount.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.NanoBug.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.SolusWingWeakpointDestroyed.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.Taunted.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.Underclock.ignoreGrowthNectar = true;
+                DLC3Content.Buffs.VultureRoot.ignoreGrowthNectar = true;
+
+            }
+            catch { }
+
+
+            orig();
         }
 
         private void Language_onCurrentLanguageChanged()
@@ -105,17 +142,7 @@ namespace WolfoFixes
 
             //Only ever possible to get 1 stack so shouldn't show x1.
             DLC2Content.Buffs.Boosted.canStack = false;
-
-            //Dont allow in Tinker, because they do NOT do anything.
-            DLC3Content.Buffs.AccelerantIgnited.flags = 0;
-            DLC3Content.Buffs.Electrocuted.flags = 0;
-            DLC3Content.Buffs.Conductive.flags = 0;
-
-            //Fix missing sprite
-            DLC3Content.Buffs.EliteCollective.iconSprite = Addressables.LoadAssetAsync<Sprite>(key: "17a3451326822bf45b656c26443cb530").WaitForCompletion();
-
-
-
+ 
 
             RoR2.Stats.StatDef.highestLunarPurchases.displayToken = "STATNAME_HIGHESTLUNARPURCHASES";
             RoR2.Stats.StatDef.highestBloodPurchases.displayToken = "STATNAME_HIGHESTBLOODPURCHASES";

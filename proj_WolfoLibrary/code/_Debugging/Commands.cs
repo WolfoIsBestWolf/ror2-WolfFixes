@@ -87,6 +87,24 @@ namespace WolfoLibrary.Testing
             }
         }
 
+        [ConCommand(commandName = "purchase_all", flags = (ConVarFlags.None), helpText = "Purchase everything on the map")]
+        private static void CCPurchaseAll(ConCommandArgs args)
+        {
+            Interactor me = args.senderBody.GetComponent<Interactor>();
+            foreach (PurchaseInteraction purchaseInteraction in InstanceTracker.GetInstancesList<PurchaseInteraction>())
+            {
+                purchaseInteraction.OnInteractionBegin(me);
+            }
+            foreach (BossGroup purchaseInteraction in InstanceTracker.GetInstancesList<BossGroup>())
+            {
+                purchaseInteraction.DropRewards();
+            }
+            foreach (HoldoutZoneController purchaseInteraction in InstanceTracker.GetInstancesList<HoldoutZoneController>())
+            {
+                purchaseInteraction.FullyChargeHoldoutZone();
+            }
+        }
+
         [ConCommand(commandName = "load", flags = (ConVarFlags.None), helpText = "Load given asset")]
         private static void CCLoad(ConCommandArgs args)
         {
@@ -295,7 +313,7 @@ namespace WolfoLibrary.Testing
                 Debug.Log("WolfoLibrary commands are only available with DebugToolkit installed");
                 return;
             }
-            args.senderMaster.money = uint.MaxValue;
+            args.senderMaster.money = (uint.MaxValue/2);
         }
 
         [ConCommand(commandName = "cooldown", flags = ConVarFlags.ExecuteOnServer, helpText = "Removes Skill Cooldown for current stage")]

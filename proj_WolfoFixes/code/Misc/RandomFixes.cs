@@ -34,8 +34,8 @@ namespace WolfoFixes
             //Always update hud if rebuild cards
             On.RoR2.ClassicStageInfo.RebuildCards += MarkHudAsDirtyForKin;
 
-            
-            IL.RoR2.UI.ScrapperInfoPanelHelper.AddQuantityToPickerButton += ScrapperInfoPanelHelper_AddQuantityToPickerButton;
+            //Fixed 1.4.1
+            //IL.RoR2.UI.ScrapperInfoPanelHelper.AddQuantityToPickerButton += ScrapperInfoPanelHelper_AddQuantityToPickerButton;
         }
 
         private static void ScrapperInfoPanelHelper_AddQuantityToPickerButton(ILContext il)

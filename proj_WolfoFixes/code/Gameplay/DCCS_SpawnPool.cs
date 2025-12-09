@@ -146,16 +146,7 @@ namespace WolfoFixes
 
 
 
-            //SolusAmalgamator is meant to be a loop boss here, but only present in pre loop variant
-            DirectorCardCategorySelection dccsIronalluvium2Monsters = Addressables.LoadAssetAsync<DirectorCardCategorySelection>(key: "16b3a261b3860aa42bcccd4f2f16c956").WaitForCompletion();
-            dccsIronalluvium2Monsters.AddCard(0, new DirectorCard
-            {
-                spawnCardReference = new AssetReferenceT<SpawnCard>("14bf22df446f37549aa65eb724c1ddda"),
-                selectionWeight = 1,
-                preventOverhead = true,
-                minimumStageCompletions = 4,
-            });
-
+         
 
             //Hermit Crab missing from Dissonance
             /*DirectorCardCategorySelection dccsMixEnemy = Addressables.LoadAssetAsync<DirectorCardCategorySelection>(key: "0453bb766b3ba0448943dd0b703996cb").WaitForCompletion();

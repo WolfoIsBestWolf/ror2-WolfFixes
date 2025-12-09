@@ -1,4 +1,17 @@
 ```
+v1.2.4
+Removed various fixes as they were fixed in AC 1.4.1
+-Noted below
+-All the Warped Echo bugs
+--It works with Armor, Danger, E8 Curse and OSP as it should again
+
+SPEX immune to Void now to not get kicked out by Lost Seers.
+
+Fixed Honor elite rng not being random on some special bosses.
+Fixed most new debuffs triggering Growth Nectar.
+Fixed Drifter being able to apply Debuffs that do literally nothing.
+```
+```
 v1.2.3
 Fixed Stone Flux Pauldron reducing speed twice.
 Fixed mod making RegenScrap unrebirthable & not give a random temp with Duplicator
@@ -22,31 +35,31 @@ They be working on it.
 ### DLC3 Fixes:
 #### Gameplay:
 - AC making Verdant Falls half as likely as a Stage 1
-- Voidsent Flame not chain-proccing more Voidsent Flames on other full health enemies.
+- (Fixed in 1.4.1) Voidsent Flame not chain-proccing more Voidsent Flames on other full health enemies.
 - Bandolier not working on new drones/devoted lemurians.  *(Wrong auth check)*
 - Jailer Drones not assuming position before firing. (Late into dev got messed up)
 - Access Node on Repurposed Crater not spawning if Solus Wing was defeated prior.
 - Drone Combiner spawning with Devotion.
 - Drone Shop not spawning with Sacrifice.
 - Solus Wing weakpoints not being immune to VoidDeath.
-- Iron Aurura not having Solus Amalgamator in the spawnpool.
+- (Fixed in 1.4.1) Iron Aurura not having Solus Amalgamator in the spawnpool.
 	- *Is a Loop Boss on Iron Alluvium, but thats replace by the night variant, which they forgot to add it to*
 
 #### Visual:
 
 - Faraday Spur visual radius being half of the attack radius.
-- Tier2 Drones using the wrong color. (Blazing instead of Magenta)
+- (Fixed in 1.4.1) Tier2 Drones using the wrong color. (Blazing instead of Magenta)
 - "BuffedDrone" arrow not appearing for Turrets/Mechanical allies, despite those being affected as well.
 - "BuffedDrone" arrow not disappearing when items disappear.
-- Collective Elite Buff missing sprite.
-- Collective Elite bubbles being less visible from inside on specifically PC.
+- (Fixed in 1.4.1) Collective Elite Buff missing sprite.
+- (Changed in 1.4.1) Collective Elite bubbles being less visible from inside on specifically PC.
 - Elite Extractors not having elite colored legs.
 - Scorcher Grease will no longer get stuch in the skybox.
 - Solus Distributors not casting shadows.
-- Temp Distributers having 1 misaligned item.
+- (Not a bug?) Temp Distributers having 1 misaligned item.
 - "Vehicle Seats", such as Drifter showing up on Scanners as ?
 - Most creatures not using full body pings.
-- Scrapper Quantity showing "Temp+Perm" instead of just Permament
+- (Fixed in 1.4.1) Scrapper Quantity showing "Temp+Perm" instead of just Permament
 - Drone Combiner lacking some visuals/outputting errors in log for Clients
 
  
@@ -57,7 +70,7 @@ False Son Death quote being the wrong ones since launch SotS.
 XI Shield Exit not animation not playing since launch SotV.\
 XI Ghosts not spawning Ghost Alphas\
 XI Elites not spawning Elite Alphas\
-XI's lower half rotating wildly since Devotion
+(Fixed in 1.4.1) XI's lower half rotating wildly since Devotion
 
 Twisted Scavs immune to Void Implosions *(Like other final bosses)*
 

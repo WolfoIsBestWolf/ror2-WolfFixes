@@ -15,17 +15,8 @@ Also technically is a library mod, this should have no impact on the end user.
 
 
 ## Item Fixes
-Voidsent Flame being unable to proc itself on other full health enemies.
-
 Stone Flux Pauldron reducing speed twice.
-
-Warped Echo blocking Eclipse 8 curse.\
-Warped Echo ignoring Armor.\
-Warped Echo ignoring OneShotProtection.\
-Warped Echos first hit not putting you into danger.\
-Warped Echos first hit being ignored if OSP was triggered.
-
-
+ 
 Elusive Antler producing errors on things that move differently. (Stationary Turrets, RemoteOp Drones)\
 Elusive Antler not working on Devoted Lemurians due to wrong authority check.
 
@@ -35,15 +26,16 @@ Charged Perferator rolling for crit instead of inheriting like other procs.
 
 Regenerative Scrap being scrappable
 
+Various AC debuffs activating Growth Nectar.
 
 Corrects various wrong item descriptions.
 
 ```
 Some item tags were adjusted, to better match others.
 - Equipment items unblacklisted for Scavs.
-- Nkuhanas Opinion blacklisted from all monsters.
-- Kinetic Dampner blacklisted from evolution.
-- Egocentrism blacklisted for Mithrix.
+- Nkuhanas Opinion blacklisted from all monsters. (Undodgeable instant death, unpredictable procs)
+- Kinetic Dampner blacklisted from all monsters. (Undodgeable instant death, as melee)
+- Egocentrism blacklisted for Mithrix.  (Too opressive against melee, like Mired Urn)
 - Hunters Harpoon missing OnKill.
 ```
 ```
@@ -65,6 +57,7 @@ Acrid now has spawn invulnerability.
 
 Captain Beacons being unable to crit. 
 
+Drifter's Tinker being able to apply 3 debuffs that do literally nothing.
 ```
 Player Visuals:
 
@@ -72,7 +65,6 @@ REXs flower vines disappearing quickly
 
 Railgunners Scope being more opaque than in the past
 
-Tier 2 Drones using the wrong color. *(Blazing instead of unique Magenta)*\
 "DroneBuff" icon not appearing for non-drone mechanical allies, despite those being buffed as well.\
 "DroneBuff" icon not disappearing, if related item effects disappear.
 
@@ -82,14 +74,14 @@ Broken Flame & Missile Drone clip less into the ground.
 ## Monster Fixes
 XI Construct Elites not spawning Elite Minions.\
 XI Construct Ghosts not spawning Ghost Minions.\
-XI Construct Exit Shield state not playing.\
-XI Construct Tail being incredibly disjointed on higher framerates.     
- 
+XI Construct Exit Shield state not playing.
+
 Lunar Golems having strange unneeded spawn restrictions.\
 *(Often prevents them from spawning with Dissonance)*  
 
 Child now immune to the sun. *(Like Parents)*  \
-Twisted Scavs now immune to void implosions. *(Like other final bosses)*
+Twisted Scavs now immune to void implosions. *(Like other final bosses)*\
+SPEX & Memory Probes now immune to void implosions.
 
  ```
 Mob Visuals:
@@ -138,8 +130,7 @@ Child & Grandparent not spawning during Parent family event.
 
 ## Gameplay Other Fixes
 
-Temp Item Shop having 1 misaligned item.
-
+ 
 Newt Altars will no longer purchasable after Teleporter. (Like pre SotS)\
 Newt Altars will not be purchasable if Teleporter starts with Blue Orb.
 
@@ -153,8 +144,9 @@ Removed Chance Doll from Simulacrum, as there are no Shrine of Chance.\
 *-(Unless SimulacrumAdditions is installed)*
 
 
+## Artifact Fixes
 
-
+Fixes Honor always choosing the same Elite types for some special bosses.
 
 Fixes Vengence + Swarms spawning one of them as not an Umbra/Without any items.
 
@@ -185,9 +177,7 @@ Simulacrum not pointing out enemies at the end of waves for Clients.
 
 
 ## Visual
-
-
-
+ 
 Adds various missing item displays :
 - Elite Displays for XI Constructs, Mithrix.
 - Perfected Elite Displays for all Monsters

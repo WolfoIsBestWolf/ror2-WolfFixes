@@ -15,10 +15,10 @@ namespace WolfoFixes
             IL.RoR2.CharacterBody.RecalculateStats += FixStoneFluxBeingAppliedTwice;
 
             // IL.RoR2.HealthComponent.TakeDamageProcess += FixEchoOSP;
-            IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedEchoE8;
-            IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedEchoNotUsingArmor;
-            On.RoR2.CharacterBody.OnTakeDamageServer += WEchoFirstHitIntoDanger;
-            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            ////IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedEchoE8;
+            //IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedEchoNotUsingArmor;
+            //On.RoR2.CharacterBody.OnTakeDamageServer += WEchoFirstHitIntoDanger;
+            //On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
 
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixChargedPerferatorCrit;
 
@@ -32,7 +32,7 @@ namespace WolfoFixes
             IL.RoR2.SkillLocator.ApplyAmmoPack += Bandolier_WrongAuthCheck;
 
             //I believe confirmed issue not 100%
-            IL.RoR2.HealthComponent.TakeDamageProcess += FixVoidsentNoLongerChaining;
+            //IL.RoR2.HealthComponent.TakeDamageProcess += FixVoidsentNoLongerChaining;
         }
 
         private static void FixStoneFluxBeingAppliedTwice(ILContext il)
@@ -67,7 +67,8 @@ namespace WolfoFixes
             self.hasOneShotProtection = self.hasOneShotProtection && self.oneShotProtectionFraction > 0;
         }
 
-        private static void FixVoidsentNoLongerChaining(ILContext il)
+        //Fix 1.4.1
+        /*private static void FixVoidsentNoLongerChaining(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -86,7 +87,7 @@ namespace WolfoFixes
             {
                 WolfFixes.log.LogWarning("IL Failed : FixVoidsentNoLongerChaining");
             }
-        }
+        }*/
 
         private static void Bandolier_WrongAuthCheck(ILContext il)
         {

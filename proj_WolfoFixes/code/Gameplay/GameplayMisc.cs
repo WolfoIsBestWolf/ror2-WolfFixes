@@ -37,7 +37,20 @@ namespace WolfoFixes
             GameObject TankerAccelerantProjectile = Addressables.LoadAssetAsync<GameObject>(key: "e075b1933eaeb214180184c6d242f13a").WaitForCompletion();
             TankerAccelerantProjectile.GetComponent<ProjectileSimple>().lifetime = 3;
 
+            //Remove Deployable from Beetle Guard
+            GameObject.Destroy(Addressables.LoadAssetAsync<GameObject>(key: "5459e8ded89cd0f4d84219750a7e10ac").WaitForCompletion().GetComponent<Deployable>());
+
+            //Fix Honor sometimes always choosing the same elites
+            On.RoR2.Artifacts.EliteOnlyArtifactManager.PromoteIfHonor += EliteOnlyArtifactManager_PromoteIfHonor;
         }
+
+        private static void EliteOnlyArtifactManager_PromoteIfHonor(On.RoR2.Artifacts.EliteOnlyArtifactManager.orig_PromoteIfHonor orig, CharacterMaster instanceMaster, Xoroshiro128Plus rng, EliteDef[] eliteDefs)
+        {
+            orig(instanceMaster,Run.instance.bossRewardRng,eliteDefs);
+        }
+
+
+
         //Fixed in AC
         public static void AllowGhostsToSuicideProperly(ILContext il)
         {
