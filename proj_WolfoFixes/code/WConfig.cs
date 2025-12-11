@@ -14,14 +14,12 @@ namespace WolfoFixes
         public static ConfigFile ConfigFile_Client = WolfoLibrary.WConfig.ConfigFile;
 
 
-        public static ConfigEntry<bool> cfgLava;
+        public static ConfigEntry<bool> cfgTempShopWeight;
         public static ConfigEntry<float> cfgStage1Weight;
         public static ConfigEntry<bool> cfgLoopSeers;
 
         public static ConfigEntry<bool> cfgTextFixes;
-
-        public static ConfigEntry<bool> cfgMithrix4Skip;
-
+ 
         public static ConfigEntry<bool> cfgItemTags;
         public static ConfigEntry<bool> cfgDevotionSpareDroneParts;
 
@@ -45,6 +43,12 @@ namespace WolfoFixes
              0.75f,
              "They are counted as 2 stages due to the 2 variants, so they essentially have double the weight."
           );
+            cfgTempShopWeight = ConfigFile_Client.Bind(
+             "Main",
+             "Fix Temp Shop Weights",
+             true,
+             "Temporary shops are 10x more common than intended on Verdant Falls, Reformed Altar, Helminth Hatchery"
+          );
             cfgLoopSeers = ConfigFile_Client.Bind(
                "Main",
                "No Pre-Loop Stage Seers during loops",
@@ -52,15 +56,6 @@ namespace WolfoFixes
                "You can get PreLoop variants of stages that have loop variants as Lunar Seer Destinations.\nVanilla : True\nAt least a dev thought it was a funny quirk but still just feels like a bug."
             );
 
-
-
-            cfgMithrix4Skip = ConfigFile_Client.Bind(
-               "Main",
-               "Fix Mithrix P4 Skip",
-               false,
-               "This bug happens because SetStateOnHurt consider Mithrixes health 0 for 1 frame and staggers him.\n\nOff by default due to feedback."
-           );
-            cfgMithrix4Skip.SettingChanged += BodyFixes.SetSkippable;
  
             cfgItemTags = ConfigFile_Client.Bind(
                 "Main",

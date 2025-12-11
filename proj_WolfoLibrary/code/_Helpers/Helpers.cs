@@ -44,7 +44,7 @@ namespace WolfoLibrary
             for (int i = 0; i < insert.Length; i++)
             {
                 //WolfoMain.Logger.LogWarning(insert[i].spawnCard);
-                if (insert[i].spawnCard && insert[i].spawnCard.name.EndsWith(LookingFor))
+                if (insert[i].GetSpawnCard() && insert[i].GetSpawnCard().name.EndsWith(LookingFor))
                 {
                     //Debug.Log("Found " + LookingFor);
                     return i;
@@ -54,7 +54,19 @@ namespace WolfoLibrary
             return -1;
         }
 
-
+        public static DirectorCard GetDirectorCard(ref DirectorCard[] insert, string LookingFor)
+        {
+            //WolfoLib.log.LogWarning(insert);
+            for (int i = 0; i < insert.Length; i++)
+            {
+                //WolfoLib.log.LogWarning(insert[i].GetSpawnCard());
+                if (insert[i].GetSpawnCard() && insert[i].GetSpawnCard().name.EndsWith(LookingFor))
+                {
+                    return insert[i];
+                }
+            }
+            return null;
+        }
 
     }
 

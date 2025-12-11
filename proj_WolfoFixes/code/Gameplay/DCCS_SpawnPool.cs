@@ -1,8 +1,10 @@
 ﻿//using System;
 using RoR2;
 using RoR2.Navigation;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
+using WolfoLibrary;
 
 namespace WolfoFixes
 {
@@ -36,6 +38,30 @@ namespace WolfoFixes
             On.RoR2.BazaarController.IsUnlockedBeforeLooping += NoPreLoopPostLoop;
             On.RoR2.Stage.PreStartClient += FixRareStagesWithoutNodesWhenCalledFor;
             On.RoR2.AccessCodesMissionController.OnStartServer += AccessCodesMissionController_OnStartServer;
+
+            SceneDirector.onGenerateInteractableCardSelection += SceneDirector_onGenerateInteractableCardSelection;
+        }
+
+        private static void SceneDirector_onGenerateInteractableCardSelection(SceneDirector self, DirectorCardCategorySelection dccs)
+        {
+            if (WConfig.cfgTempShopWeight.Value)
+            {
+                int chest = dccs.FindCategoryIndexByName("Chests");
+                if (chest != -1)
+                {
+                    var tempshop = DccsUtil.GetDirectorCard(ref dccs.categories[chest].cards, "ItemsShop");
+                    if (tempshop != null)
+                    {
+                        var chest1 = DccsUtil.GetDirectorCard(ref dccs.categories[chest].cards, "1");
+                        if (chest1 != null && chest1.selectionWeight == 24)
+                        {
+                            tempshop.selectionWeight = 1;
+                            Debug.Log("Fixing TempShop weight on SotS stage");
+                        }
+                    }
+
+                }
+            }
         }
 
         private static void AccessCodesMissionController_OnStartServer(On.RoR2.AccessCodesMissionController.orig_OnStartServer orig, AccessCodesMissionController self)

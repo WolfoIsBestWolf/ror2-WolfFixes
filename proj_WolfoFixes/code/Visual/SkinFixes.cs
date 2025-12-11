@@ -11,7 +11,7 @@ namespace WolfoFixes
 
 
             On.RoR2.CharacterModel.IsAurelioniteAffix += DontRemoveGildedVisualsOnDeath;
-            On.RoR2.CharacterModel.Start += CharacterModel_Start;
+            //On.RoR2.CharacterModel.Start += CharacterModel_Start;
         }
 
         private static void CharacterModel_Start(On.RoR2.CharacterModel.orig_Start orig, CharacterModel self)

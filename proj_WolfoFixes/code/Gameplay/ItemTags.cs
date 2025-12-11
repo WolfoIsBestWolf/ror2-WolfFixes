@@ -25,10 +25,11 @@ namespace WolfoFixes
             AddTag(RoR2Content.Items.HealthDecay, ItemTag.HiddenForDroneBuffIcon);
             AddTag(RoR2Content.Items.Ghost, ItemTag.HiddenForDroneBuffIcon);
             AddTag(RoR2Content.Items.TeamSizeDamageBonus, ItemTag.HiddenForDroneBuffIcon);
+            AddTag(RoR2Content.Items.CutHp, ItemTag.HiddenForDroneBuffIcon);
             AddTag(RoR2Content.Items.DrizzlePlayerHelper, ItemTag.HiddenForDroneBuffIcon);
             AddTag(RoR2Content.Items.MonsoonPlayerHelper, ItemTag.HiddenForDroneBuffIcon);
             AddTag(DLC1Content.Items.GummyCloneIdentifier, ItemTag.HiddenForDroneBuffIcon);
- 
+
             ArrayUtils.ArrayAppend(ref DLC1Content.Items.CloverVoid.tags, ItemTag.DevotionBlacklist);
 
 

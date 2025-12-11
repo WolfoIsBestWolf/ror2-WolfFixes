@@ -38,14 +38,14 @@ namespace WolfoFixes
                                 self.gameObject.GetComponent<GenericDisplayNameProvider>().displayToken = "ARTIFACT_COMMAND_CUBE_PINK_NAME";
                             }
                             //Double checking for other mods
-                            if (!index.pickupDisplay.voidParticleEffect)
+                            /*if (!index.pickupDisplay.voidParticleEffect)
                             {
                                 GameObject newVoidParticle = Object.Instantiate(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/GenericPickup").GetComponent<GenericPickupController>().pickupDisplay.voidParticleEffect, self.transform.GetChild(0));
                                 newVoidParticle.SetActive(true);
                                 GameObject newOrb = Object.Instantiate(index.pickupDisplay.tier2ParticleEffect.transform.GetChild(2).gameObject, newVoidParticle.transform);
                                 newOrb.GetComponent<ParticleSystem>().startColor = ColorCatalog.GetColor(ColorCatalog.ColorIndex.VoidItem);
                                 index.pickupDisplay.voidParticleEffect = newVoidParticle;
-                            }
+                            }*/
                              
                         }
                     }

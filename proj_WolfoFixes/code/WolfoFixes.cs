@@ -84,7 +84,9 @@ namespace WolfoFixes
         private void BuffCatalog_Init(On.RoR2.BuffCatalog.orig_Init orig)
         {   try
             {
-
+                DLC2Content.Buffs.TeleportOnLowHealthActive.isCooldown = false;
+                DLC2Content.Buffs.TeleportOnLowHealthVictim.isCooldown = false;
+                 
                 //Dont allow in Tinker, because they do NOT do anything.
                 DLC3Content.Buffs.AccelerantIgnited.flags = BuffDef.Flags.ExcludeFromNoxiousThorns;
                 DLC3Content.Buffs.Electrocuted.flags = BuffDef.Flags.ExcludeFromNoxiousThorns;

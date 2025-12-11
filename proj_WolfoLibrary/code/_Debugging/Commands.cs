@@ -563,21 +563,26 @@ namespace WolfoLibrary.Testing
                 Debug.Log("WolfoLibrary commands are only available with DebugToolkit installed");
                 return;
             }
+            string stage = Stage.instance.sceneDef.cachedName;
             Component senderBody = args.GetSenderBody();
             Vector3 newPosition = Vector3.zero;
-            if (Stage.instance.sceneDef.cachedName == "moon2")
+            if (stage == "moon2")
             {
                 newPosition = new Vector3(-11, 490, 80);
             }
-            else if (Stage.instance.sceneDef.cachedName == "meridian")
+            else if (stage == "solutionalhaunt")
+            {
+                newPosition = new Vector3(252.5426f, - 549.5432f, - 90.2127f);
+            }
+            else if (stage == "meridian")
             {
                 newPosition = new Vector3(85.2065f, 146.5167f, -70.5265f);
             }
-            else if (Stage.instance.sceneDef.cachedName == "mysteryspace")
+            else if (stage == "mysteryspace")
             {
                 newPosition = new Vector3(362.9097f, -151.5964f, 213.0157f);
             }
-            else if (Stage.instance.sceneDef.cachedName == "voidraid")
+            else if (stage == "voidraid")
             {
                 bool crab = false;
                 for (int i = 0; i < CharacterBody.instancesList.Count; i++)
@@ -614,6 +619,17 @@ namespace WolfoLibrary.Testing
                 return;
             }
             TeleportHelper.TeleportGameObject(senderBody.gameObject, newPosition);
+
+            if (stage == "conduitcanyon")
+            {
+                List<PowerPedestal> instancesList = InstanceTracker.GetInstancesList<PowerPedestal>();
+                foreach (PowerPedestal powerPedestal in instancesList)
+                {
+                    powerPedestal.SetComplete(true);
+                }
+            }
+
+           
         }
 
         [ConCommand(commandName = "simu_softlock", flags = ConVarFlags.SenderMustBeServer, helpText = "Attempts to end current wave or otherwise spawn a portal")]

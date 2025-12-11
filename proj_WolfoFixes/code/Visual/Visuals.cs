@@ -159,19 +159,14 @@ namespace WolfoFixes
             //Spurs visual sets diamater not radius, attack uses radius just fine.
             IL.RoR2.Items.JumpDamageStrikeBodyBehavior.UpdateAura += SpurHalfVisualRadius;
 
-            //Shouldnt show. Annoying for Drifter
-            On.RoR2.VehicleSeat.ShouldShowOnScanner += VehicleSeat_ShouldShowOnScanner;
-
+         
             //1 Item misaligned
             //GameObject TemporaryItemsShopTerminal = Addressables.LoadAssetAsync<GameObject>(key: "d31df5066858329458b33f21b3b22d2e").WaitForCompletion();
             //TemporaryItemsShopTerminal.transform.GetChild(1).GetChild(3).localPosition = new Vector3(0f, 2.5f, 0.058f);
 
         }
 
-        private static bool VehicleSeat_ShouldShowOnScanner(On.RoR2.VehicleSeat.orig_ShouldShowOnScanner orig, VehicleSeat self)
-        {
-            return false;
-        }
+      
 
         private static void SpurHalfVisualRadius(ILContext il)
         {

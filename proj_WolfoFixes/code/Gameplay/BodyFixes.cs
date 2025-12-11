@@ -9,41 +9,34 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace WolfoFixes
 {
 
     internal class BodyFixes
     {
-        public static void SetSkippable(object sender, System.EventArgs e)
+        
+        public static void FixBarnalceMinorsSpammingNotImplementedWithOpsTransport(System.Action<PseudoCharacterMotor, Vector3> orig, PseudoCharacterMotor self, Vector3 newVelocity)
         {
-            GameObject BrotherHurtBody = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/Base/Brother/BrotherHurtBody.prefab").WaitForCompletion();
-            SetStateOnHurt component = BrotherHurtBody.GetComponent<SetStateOnHurt>();
-            if (component)
-            {
-                component.canBeHitStunned = !WConfig.cfgMithrix4Skip.Value;
-            }
-            if (BrotherHurtBody.GetComponent<MithrixPhase4Fix>() == null)
-            {
-                component.gameObject.AddComponent<MithrixPhase4Fix>();
-            }
-
-
-            /*HurtBoxGroup hurtBoxGroup = BrotherHurtBody.GetComponentInChildren<HurtBoxGroup>();
-               hurtBoxGroup.gameObject.AddComponent<MithrixPhase4Fix>();
-               if (hurtBoxGroup)
-               {
-                   hurtBoxGroup.SetHurtboxesActive(false);
-               }*/
-
-
-            //bdLunarRuin
-            //Dont count as debuff because its already a DoT in most cases
-            //Ideally i'd make all cases a DoT but uhhh
-            //Needs to be kept as a debuff ahh fuck
-            //Addressables.LoadAssetAsync<BuffDef>(key: "4f0cbda1787e0074ab5e44d1df995d6b").WaitForCompletion().isDebuff = false;
-
+            return;
         }
+
+        private static void Inventory_SetActiveEquipmentSlot(On.RoR2.Inventory.orig_SetActiveEquipmentSlot orig, Inventory self, byte slotIndex)
+        {
+            self.wasRecentlyExtraEquipmentSwapped = true;
+            orig(self, slotIndex);
+        }
+
+        private static void WhirlwindGround_OnEnter(On.EntityStates.Merc.WhirlwindGround.orig_OnEnter orig, EntityStates.Merc.WhirlwindGround self)
+        {
+            orig(self);
+            if (NetworkServer.active)
+            {
+                self.characterBody.AddTimedBuff(JunkContent.Buffs.IgnoreFallDamage,0.8f, 1);
+            }
+        }
+
         //On.RoR2.GenericSkill.SetSkillOverride += FixHeresyForEnemies;
         //Is this even still needed check that
         private static void FixHeresyForEnemies(On.RoR2.GenericSkill.orig_SetSkillOverride orig, GenericSkill self, object source, RoR2.Skills.SkillDef skillDef, GenericSkill.SkillOverridePriority priority)
@@ -157,6 +150,16 @@ namespace WolfoFixes
             Addressables.LoadAssetAsync<GameObject>(key: "9d63f2d3bc6c52c44883128cc4b97bf4").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
 
             DLC3Fixes();
+
+
+            On.EntityStates.Merc.WhirlwindGround.OnEnter += WhirlwindGround_OnEnter;
+
+            On.RoR2.Inventory.SetActiveEquipmentSlot += Inventory_SetActiveEquipmentSlot;
+
+
+            var targetMethod = typeof(PseudoCharacterMotor).GetProperty(nameof(PseudoCharacterMotor.velocityAuthority), BindingFlags.Public |  BindingFlags.Instance).GetSetMethod();
+            var destMethod = typeof(BodyFixes).GetMethod(nameof(FixBarnalceMinorsSpammingNotImplementedWithOpsTransport), System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+            var overrideHook2 = new Hook(targetMethod, destMethod);
         }
 
         public static void DLC3Fixes()
@@ -194,8 +197,19 @@ namespace WolfoFixes
             {
                 if (self.inventory.GetItemCountPermanent(RoR2Content.Items.CaptainDefenseMatrix) > 0 ||
                     self.inventory.GetItemCountPermanent(DLC1Content.Items.DroneWeaponsBoost) > 0 ||
-                    self.inventory.GetItemCountPermanent(DLC3Content.Items.DronesDropDynamite) > 0 ||
+                    self.inventory.GetItemCountPermanent(DLC3Content.Items.DroneDynamiteDisplay) > 0 ||
                     self.inventory.GetItemCountPermanent(DLC3Content.Items.TransferDebuffOnHit) > 0
+                    )
+                {
+                    self.bodyFlags |= CharacterBody.BodyFlags.DroneHasItems;
+                    item = true;
+                }
+            }
+            else if ((self.bodyFlags & CharacterBody.BodyFlags.Devotion) > CharacterBody.BodyFlags.None)
+            {
+                if (
+                    self.inventory.GetItemCountPermanent(DLC1Content.Items.DroneWeaponsBoost) > 0 ||
+                    self.inventory.GetItemCountPermanent(DLC3Content.Items.DroneDynamiteDisplay) > 0
                     )
                 {
                     self.bodyFlags |= CharacterBody.BodyFlags.DroneHasItems;

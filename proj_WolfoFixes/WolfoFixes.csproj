@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="R2API" Version="5.0.5" />
-    <PackageReference Include="RoR2BepInExPack" Version="1.34.0">
+    <PackageReference Include="RoR2BepInExPack" Version="1.41.0">
       <ExcludeAssets>RoR2.dll</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Rune580.Mods.RiskOfRain2.RiskOfOptions" Version="2.8.3">

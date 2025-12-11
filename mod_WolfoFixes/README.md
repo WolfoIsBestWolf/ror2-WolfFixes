@@ -24,6 +24,8 @@ Bandolier not working on some drones due to wrong authority check.
  
 Charged Perferator rolling for crit instead of inheriting like other procs.
 
+Unstable Transmitters effect being removed by cleansing effects. *(Its tagged as cooldownby accident)*
+
 Regenerative Scrap being scrappable
 
 Various AC debuffs activating Growth Nectar.
@@ -107,6 +109,8 @@ For Retool, Enigma, Bottled Chaos
 - Milky Chrysalis flight will always have wings.
 
 ## Stage Fixes
+
+Temporary Item Vendors being 10x more common than intended on SotS stages.
 
 Verdant Falls: No longer half as likely as other stage 1s.\ 
 Distant Roost: No longer twice as likely. *(1.5x now, they are still variants)*\
@@ -193,9 +197,7 @@ Shrine of Shaping and Seed of Life not using the revive effect. (They attempt to
 
 Artifact of Glass will now make you and minions appear as glass.
 
-  
-Most mobs not having "Full Body Ping" enabled.
-
+ 
 Lunar Exploder not having a subtitleToken.
 
 Halcyon Shrine often not having its tip golden due to a redundant check.
