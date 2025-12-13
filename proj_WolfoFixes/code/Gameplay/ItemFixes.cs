@@ -13,13 +13,7 @@ namespace WolfoFixes
         public static void Start()
         {
             IL.RoR2.CharacterBody.RecalculateStats += FixStoneFluxBeingAppliedTwice;
-
-            // IL.RoR2.HealthComponent.TakeDamageProcess += FixEchoOSP;
-            ////IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedEchoE8;
-            //IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedEchoNotUsingArmor;
-            //On.RoR2.CharacterBody.OnTakeDamageServer += WEchoFirstHitIntoDanger;
-            //On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-
+ 
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixChargedPerferatorCrit;
 
             //Checks for NetworkAuth instead of EffectiveAuth
@@ -31,8 +25,192 @@ namespace WolfoFixes
             //Bandolier does not work on Lemurians and new Drones due to wrong Auth Check
             IL.RoR2.SkillLocator.ApplyAmmoPack += Bandolier_WrongAuthCheck;
 
-            //I believe confirmed issue not 100%
-            //IL.RoR2.HealthComponent.TakeDamageProcess += FixVoidsentNoLongerChaining;
+            if (WConfig.cfgFixWarpedOSP.Value)
+            {
+                IL.RoR2.HealthComponent.TakeDamageProcess += RemoveOSPEntirelyIfYouAreBelowOSPThreshold;
+                IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedReducingDamageAfterOSP;
+            }
+            IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDamageNotProccingPlanulaAnymoreAC141;
+            IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDamageDoubleDippingEnemyWatches;
+            IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDoubleDippingLunarRuin;
+
+            IL.RoR2.HealthComponent.TakeDamageProcess += FixParryConsuemdOn0Damage0ProcAttacks;
+        }
+
+        private static void FixWEchoDoubleDippingLunarRuin(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            bool a = c.TryGotoNext(MoveType.After,
+            x => x.MatchLdsfld("RoR2.DLC2Content/Buffs", "lunarruin"),
+            x => x.MatchCallvirt("RoR2.CharacterBody", "HasBuff"));
+
+            if (a)
+            {
+                c.Emit(OpCodes.Ldarg_1);
+                c.EmitDelegate<Func<bool, DamageInfo, bool>>((var, self) =>
+                {
+                    if (self.delayedDamageSecondHalf)
+                    {
+                        return false;
+                    }
+                    return var;
+                });
+            }
+            else
+            {
+                WolfFixes.log.LogWarning("IL Failed : FixWEchoDoubleDippingLunarRuin");
+            }
+        }
+
+        private static void FixParryConsuemdOn0Damage0ProcAttacks(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            bool a = c.TryGotoNext(MoveType.After,
+            x => x.MatchLdsfld("RoR2.DLC3Content/Buffs", "SureProc"),
+            x => x.MatchCallvirt("RoR2.CharacterBody", "HasBuff"));
+
+            if (a)
+            {
+                c.Emit(OpCodes.Ldarg_1);
+                c.EmitDelegate<Func<bool, DamageInfo, bool>>((var, self) =>
+                {
+                    if (self.procCoefficient == 0 || self.damage == 0)
+                    {
+                        return false;
+                    }
+                    return var;
+                });
+            }
+            else
+            {
+                WolfFixes.log.LogWarning("IL Failed : FixParryConsuemdOn0Damage0ProcAttacks");
+            }
+        }
+
+        private static void FixWarpedReducingDamageAfterOSP(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            bool a = c.TryGotoNext(MoveType.After,
+            x => x.MatchLdsfld("RoR2.DLC2Content/Items", "DelayedDamage"));
+
+            if (a & c.TryGotoNext(MoveType.After,
+            x => x.MatchLdcR4(0.9f)))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, HealthComponent, float>>((var, self) =>
+                {
+                    if (self.ospTimer > 0f)
+                    {
+                        return 1;
+                    }
+                    return var;
+                });
+            }
+            else
+            {
+                WolfFixes.log.LogWarning("IL Failed : FixWarpedReducingDamageAfterOSP");
+            }
+        }
+
+        private static void RemoveOSPEntirelyIfYouAreBelowOSPThreshold(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if(c.TryGotoNext(MoveType.After,
+            x => x.MatchCallvirt("RoR2.CharacterBody", "get_hasOneShotProtection")))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<bool, HealthComponent, bool>>((var, self) =>
+                {
+                    //Debug.Log(self.combinedHealthFraction);
+                    if (self.combinedHealthFraction < (1 - self.body.oneShotProtectionFraction))
+                    {
+                        return false;
+                    }
+                    return var;
+                });
+            }
+            else
+            {
+                WolfFixes.log.LogWarning("IL Failed : RemoveOSPEntirelyIfYouAreBelowOSPThreshold");
+                return;
+            }
+          
+        }
+
+        private static void FixWEchoDamageDoubleDippingEnemyWatches(ILContext il)
+        {
+            //Skip all damage code for WEcho code that requires an attacker
+            //Because 90% of damage increases happen there.
+
+            ILCursor c = new ILCursor(il);
+
+            bool a = c.TryGotoNext(MoveType.Before,
+            x => x.MatchCallvirt("RoR2.CharacterBody", "get_canPerformBackstab"));
+
+            bool b = c.TryGotoPrev(MoveType.After,
+            x => x.MatchCall("UnityEngine.Object", "op_Implicit"));
+ 
+            if (!a || !b)
+            {
+                WolfFixes.log.LogWarning("IL Failed : FixWEchoDamageDoubleDippingEnemyWatches Part 1");
+                return;
+            }
+            c.Emit(OpCodes.Ldarg_1);
+            c.EmitDelegate<Func<bool, DamageInfo, bool>>((var, damageInfo) =>
+            {
+                if (damageInfo.delayedDamageSecondHalf)
+                {
+                    return false;
+                }
+                return var;
+            });
+        }
+
+        private static void FixWEchoDamageNotProccingPlanulaAnymoreAC141(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            bool a = false;
+            a = c.TryGotoNext(MoveType.Before,
+            x => x.MatchBrtrue(out _),
+            x => x.MatchLdarg(0),
+            x => x.MatchLdfld("RoR2.HealthComponent", "body"),
+            x => x.MatchCallvirt("RoR2.CharacterBody", "get_armor"));
+ 
+            if (!a)
+            {
+                WolfFixes.log.LogWarning("IL Failed : FixWEchoDamageNotProccingPlanulaAnymoreAC141 Part 1");
+                return;
+            }
+            c.Emit(OpCodes.Ldarg_1);
+            c.EmitDelegate<Func<bool,DamageInfo, bool>>((var, damageInfo) =>
+            {
+                if (damageInfo.delayedDamageSecondHalf)
+                {
+                    return false;
+                }
+                return var;
+            });
+
+            a = c.TryGotoNext(MoveType.Before,
+            x => x.MatchMul(),
+            x => x.MatchCall("UnityEngine.Mathf", "Max"),
+            x => x.MatchStloc(10));
+ 
+            if (!a)
+            {
+                WolfFixes.log.LogWarning("IL Failed : FixWEchoDamageNotProccingPlanulaAnymoreAC141 Part 2");
+                return;
+            }
+            c.Emit(OpCodes.Ldarg_1);
+            c.EmitDelegate<Func<float, DamageInfo, float>>((var, damageInfo) =>
+            {
+                if (damageInfo.delayedDamageSecondHalf)
+                {
+                    return 1f;
+                }
+                return var;
+            });
         }
 
         private static void FixStoneFluxBeingAppliedTwice(ILContext il)

@@ -25,28 +25,28 @@ namespace WolfoFixes
 
 
             //VoidMegaCrab too zoomed in
-            Addressables.LoadAssetAsync<GameObject>(key: "097b0e271757ce24581d4a8983d2c941").WaitForCompletion().transform.GetChild(0).GetChild(3).GetComponent<ModelPanelParameters>().maxDistance = 40;
-            Addressables.LoadAssetAsync<GameObject>(key: "285347cf04a9df04b9dada8fed09832f").WaitForCompletion().transform.GetChild(0).GetChild(3).GetComponent<ModelPanelParameters>().maxDistance = 40;
+            //Addressables.LoadAssetAsync<GameObject>(key: "097b0e271757ce24581d4a8983d2c941").WaitForCompletion().transform.GetChild(0).GetChild(3).GetComponent<ModelPanelParameters>().maxDistance = 40;
+            //Addressables.LoadAssetAsync<GameObject>(key: "285347cf04a9df04b9dada8fed09832f").WaitForCompletion().transform.GetChild(0).GetChild(3).GetComponent<ModelPanelParameters>().maxDistance = 40;
 
 
             //Sulfur Pools Diagram is Red instead of Yellow ???
-            GameObject SulfurpoolsDioramaDisplay = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/sulfurpools/SulfurpoolsDioramaDisplay.prefab").WaitForCompletion();
+           /* GameObject SulfurpoolsDioramaDisplay = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/sulfurpools/SulfurpoolsDioramaDisplay.prefab").WaitForCompletion();
             MeshRenderer SPDiaramaRenderer = SulfurpoolsDioramaDisplay.transform.GetChild(2).GetComponent<MeshRenderer>();
             Material SPRingAltered = Object.Instantiate(SPDiaramaRenderer.material);
             SPRingAltered.SetTexture("_SnowTex", Addressables.LoadAssetAsync<Texture2D>(key: "RoR2/DLC1/sulfurpools/texSPGroundDIFVein.tga").WaitForCompletion());
-            SPDiaramaRenderer.material = SPRingAltered;
+            SPDiaramaRenderer.material = SPRingAltered;*/
 
             //Way too zoomed in
-            ModelPanelParameters VoidStageDiorama = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/voidstage/VoidStageDiorama.prefab").WaitForCompletion().GetComponent<ModelPanelParameters>();
-            VoidStageDiorama.minDistance = 60;
-            VoidStageDiorama.maxDistance = 320;
+            //ModelPanelParameters VoidStageDiorama = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/voidstage/VoidStageDiorama.prefab").WaitForCompletion().GetComponent<ModelPanelParameters>();
+            //VoidStageDiorama.minDistance = 60;
+            //VoidStageDiorama.maxDistance = 320;
 
             //Way too zoomed out
-            ModelPanelParameters PickupDevilHorns = Addressables.LoadAssetAsync<GameObject>(key: "b3e07eca6dc3dae4f97bc2c4fba31ba6").WaitForCompletion().GetComponent<ModelPanelParameters>();
+            /*ModelPanelParameters PickupDevilHorns = Addressables.LoadAssetAsync<GameObject>(key: "b3e07eca6dc3dae4f97bc2c4fba31ba6").WaitForCompletion().GetComponent<ModelPanelParameters>();
             PickupDevilHorns.minDistance = 0.35f;
             PickupDevilHorns.maxDistance = 2;
             PickupDevilHorns.cameraPositionTransform.localPosition = new Vector3(-0.0047f, 0.35f, -0.0111f);
-            PickupDevilHorns.cameraPositionTransform.localPosition = new Vector3(0f, 0.35f, 0f);
+            PickupDevilHorns.cameraPositionTransform.localPosition = new Vector3(0f, 0.35f, 0f);*/
 
             //Default fallback
             On.RoR2.UI.ModelPanel.CameraFramingCalculator.GetCharacterThumbnailPosition += AddOrSetDefaultModelPanelParamsIfMissing;

@@ -14,13 +14,23 @@ Also technically is a library mod, this should have no impact on the end user.
 ### Fixes the following :
 
 
-## Item Fixes
+## Item & EquipmentFixes
+Warped Echo echoed hits no longer activating Planula & Repulsion Armor Plate. *(Like how it was specifically added to do that in prior versions)*\
+Warped Echo echoed hits double-dipping some damage *increases* of the attacker. *(i.e. Watch, Lunar Ruin)*\
+Warped Echo letting you live through OSP, even when OSP is meant to be disabled *(Curse, Low Health)*\
+Warped Echo reducing damage further after OSP. *(Which is not how OSP is meant to function)*
+
+Deus Ex Machina Blessing being consumed on attacks that cannot proc. *(Due to 0 damage or 0 procCoefficient)*
+
 Stone Flux Pauldron reducing speed twice.
+ 
+All AC debuffs activating Growth Nectar.
+ 
  
 Elusive Antler producing errors on things that move differently. (Stationary Turrets, RemoteOp Drones)\
 Elusive Antler not working on Devoted Lemurians due to wrong authority check.
 
-Bandolier not working on some drones due to wrong authority check.
+Bandolier not working on some drones & allies due to wrong authority check.
  
 Charged Perferator rolling for crit instead of inheriting like other procs.
 
@@ -28,7 +38,13 @@ Unstable Transmitters effect being removed by cleansing effects. *(Its tagged as
 
 Regenerative Scrap being scrappable
 
-Various AC debuffs activating Growth Nectar.
+
+Executive Card no longer fails if you open Multi Shops *too quickly*.
+
+For Retool, Enigma, Bottled Chaos
+- Sawmerang not bleeding if you don't have the equipment.
+- Milky Chrysalis flight will always have wings.
+
 
 Corrects various wrong item descriptions.
 
@@ -101,18 +117,12 @@ Gilded Elite corpses looking like blazing elite.
 ```
 
 
-## Equipment Fixes
-Executive Card no longer fails if you open Multi Shops *too quickly*.
-
-For Retool, Enigma, Bottled Chaos
-- Sawmerang not bleeding if you don't have the equipment.
-- Milky Chrysalis flight will always have wings.
 
 ## Stage Fixes
 
 Temporary Item Vendors being 10x more common than intended on SotS stages.
 
-Verdant Falls: No longer half as likely as other stage 1s.\ 
+Verdant Falls: No longer half as likely as other stage 1s.\
 Distant Roost: No longer twice as likely. *(1.5x now, they are still variants)*\
 Titanic Plains: No longer twice as likely. *^*  
  
@@ -128,12 +138,10 @@ Simu-Sanctuary & Simu-Commencement not able to spawn Lunar Pods. *(but still tak
  
 A Bulwarks Ambry using the wrong DLC1 spawn pool\
 A Bulwarks Ambry spawning the wrong Alpha & XI Construct
-
-Iron Aurora not being able to spawn Solus Amalgams.\
+ 
 Child & Grandparent not spawning during Parent family event.
 
 ## Gameplay Other Fixes
-
  
 Newt Altars will no longer purchasable after Teleporter. (Like pre SotS)\
 Newt Altars will not be purchasable if Teleporter starts with Blue Orb.
@@ -141,13 +149,11 @@ Newt Altars will not be purchasable if Teleporter starts with Blue Orb.
 Drone Combiner no longer spawns with Devotion.\
 Drone Shop can now spawn with Sacrifice.\
 Limits Altar of Gold to 1 per stage.
-
-
+ 
 Simulacrums Fog ramping up 25x slower than what is intended.\
 Removed Chance Doll from Simulacrum, as there are no Shrine of Chance.\
 *-(Unless SimulacrumAdditions is installed)*
-
-
+  
 ## Artifact Fixes
 
 Fixes Honor always choosing the same Elite types for some special bosses.
@@ -188,9 +194,6 @@ Adds various missing item displays :
 - Fuel Array Display for Engineer Turrets.
  
 
-
- 
-Void Command Essence not having particles.\
 Deep Void Signals Beam being flat.
 
 Shrine of Shaping and Seed of Life not using the revive effect. (They attempt to spawn a unfinished object)
@@ -214,11 +217,8 @@ Scavengers not playing their Spawn Sound
 Soup not playing their Soup sound
 
 ## Misc
-Log Fixes : 
+Logbook Fixes : 
 - Eclipse not incrementing Wins / (Thus not unlocking logs)
-- Sulfur Pools Diorama having a red base.
-- Void Locust Diorama, Void Devastator being too zoomed in.
-- Nkuhanas Opinion being too zoomed out.
 - Devoted Lemurians being in log instead of wild.
  
 

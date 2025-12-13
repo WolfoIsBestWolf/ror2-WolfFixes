@@ -1,11 +1,21 @@
 
 ```
+v1.3.0
+Fixed Warped Echo echo hits no longer activating Planula
+Fixed Warped Echo echo hits no longer activating Repulsion Armor Plate
+Fixed Warped Echo echo hits double dipping some damage increases (Enemy Watches, Lunar Ruin)
+Fixed Warped Echo being able to let you live through OSP, even when OSP is meant to be disabled. *(Configuerable)
+Fixed DeusEXMachina buff being consumed on attacks that can't proc. (0 damage/0 proc attacks)
+
+```
+```
 v1.2.5
-!Fixed Temp Shops being x10 as likely on SotS maps compared to other maps. (Config to turn off if so desired)
+!Fixed Temp Shops being x10 more common on SotS maps than what is intended. (Config to turn off if so desired)
 !Fixed Operator Transport Drone Command creating infinite errors.
 
 Fixed MulT switching equipment highlighting them, every time.
 Fixed Unstable Transmitter effect being removed by cleansing effects.
+Fixed Box of Dynamite not granting the lil arrow to Mechanicals.
 
 ```
 ```

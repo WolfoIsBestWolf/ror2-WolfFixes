@@ -14,6 +14,7 @@ namespace WolfoFixes
         public static ConfigFile ConfigFile_Client = WolfoLibrary.WConfig.ConfigFile;
 
 
+        public static ConfigEntry<bool> cfgFixWarpedOSP;
         public static ConfigEntry<bool> cfgTempShopWeight;
         public static ConfigEntry<float> cfgStage1Weight;
         public static ConfigEntry<bool> cfgLoopSeers;
@@ -55,8 +56,14 @@ namespace WolfoFixes
                true,
                "You can get PreLoop variants of stages that have loop variants as Lunar Seer Destinations.\nVanilla : True\nAt least a dev thought it was a funny quirk but still just feels like a bug."
             );
+            cfgFixWarpedOSP = ConfigFile_Client.Bind(
+              "Main",
+              "Fix Warped Echo OSP",
+              true,
+              "You can get PreLoop variants of stages that have loop variants as Lunar Seer Destinations.\nVanilla : True\nAt least a dev thought it was a funny quirk but still just feels like a bug."
+           );
 
- 
+
             cfgItemTags = ConfigFile_Client.Bind(
                 "Main",
                 "Item Tag Changes",
@@ -93,26 +100,9 @@ namespace WolfoFixes
         {
             ModSettingsManager.SetModIcon(Addressables.LoadAssetAsync<Sprite>(key: "8d5cb4f0268083645999f52a10c6904b").WaitForCompletion());
             ModSettingsManager.SetModDescription("Random assortment of fixes for bugs that bothered me.");
+            WolfoLibrary.WolfoLib.AddAllConfigAsRiskConfig(ConfigFile_Client);
 
- 
-            ConfigEntryBase[] entries = ConfigFile_Client.GetConfigEntries();
-            foreach (ConfigEntryBase entry in entries)
-            {
-                if (entry.SettingType == typeof(bool))
-                {
-                    var temp = (ConfigEntry<bool>)entry;
-                    ModSettingsManager.AddOption(new CheckBoxOption(temp,true));
-                }
-                 if (entry.SettingType == typeof(float))
-                {
-                    var temp = (ConfigEntry<float>)entry;
-                    ModSettingsManager.AddOption(new FloatFieldOption(temp, true));
-                }
-                else
-                {
-                    WolfFixes.log.LogWarning("Could not add config " + entry.Definition.Key + " of type : " + entry.SettingType);
-                }
-            }
+          
 
         }
 

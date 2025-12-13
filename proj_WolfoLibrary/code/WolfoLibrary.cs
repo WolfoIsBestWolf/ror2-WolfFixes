@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using R2API.Utils;
 using RoR2;
@@ -6,12 +7,15 @@ using RoR2.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using WolfoLibrary.Testing;
+using RiskOfOptions;
+using RiskOfOptions.OptionConfigs;
+using RiskOfOptions.Options;
 
 namespace WolfoLibrary
 {
 
     [BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("com.Wolfo.WolfoLibrary", "WolfoLibrary", "1.2.3")]
+    [BepInPlugin("com.Wolfo.WolfoLibrary", "WolfoLibrary", "1.3.0")]
     [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
     public class WolfoLib : BaseUnityPlugin
     {
@@ -37,46 +41,41 @@ namespace WolfoLibrary
             VoidElite.VoidAffix();
             VoidSuppressor.SuppresedScrap();
             VoidSuppressor.FixInteractable();
-            //On.RoR2.BodyCatalog.CCBodyGeneratePortraits += BodyCatalog_CCBodyGeneratePortraits;
+           
         }
 
-        private void BodyCatalog_CCBodyGeneratePortraits(On.RoR2.BodyCatalog.orig_CCBodyGeneratePortraits orig, ConCommandArgs args)
+
+        public static void AddAllConfigAsRiskConfig(ConfigFile config)
         {
 
-            Debug.Log("Starting portrait generation.");
-            var iconGenerator = LegacyResourcesAPI.Load<GameObject>("Prefabs/UI/IconGenerator");
-            ModelPanel modelPanel = iconGenerator.GetComponentInChildren<ModelPanel>();
-            modelPanel.renderSettings = new RenderSettingsState
+            ConfigEntryBase[] entries = config.GetConfigEntries();
+            foreach (ConfigEntryBase entry in entries)
             {
-                haloStrength = 0,
-                defaultReflectionResolution = 0,
-                defaultReflectionMode = 0,
-                reflectionBounces = 0,
-                reflectionIntensity = 0,
-                customReflection = null,
-                sun = null,
-                skybox = null,
-                subtractiveShadowColor = new Color(0, 0, 0, 0),
-                flareStrength = 0,
-                ambientLight = new Color(r: 0.01372549f, g: 0.015686275f, b: 0.009558824f, a: 0),
-                ambientGroundColor = new Color(r: 10.680627f, g: 10.680627f, b: 10.680627f, a: 0),
-                ambientEquatorColor = new Color(r: 1, g: 1, b: 1, a: 0),
-                ambientSkyColor = new Color(r: 5.3403134f, g: 5.3403134f, b: 5.3403134f, a: 1),
-                ambientMode = AmbientMode.Trilight,
-                fogDensity = 0,
-                fogColor = new Color(0, 0, 0, 0),
-                fogMode = 0,
-                fogEndDistance = 0,
-                fogStartDistance = 0,
-                fog = false,
-                ambientIntensity = 1,
-                flareFadeSpeed = 0,
-            };
-            modelPanel.disablePostProcessLayer = true;
-            modelPanel.modelPostProcessVolumePrefab = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                if (entry.SettingType == typeof(bool))
+                {
+                    ModSettingsManager.AddOption(new CheckBoxOption((ConfigEntry<bool>)entry, true));
+                }
+                else if (entry.SettingType == typeof(float))
+                {
+                    ModSettingsManager.AddOption(new FloatFieldOption((ConfigEntry<float>)entry, true));
+                }
+                else if (entry.SettingType == typeof(int))
+                {
+                    ModSettingsManager.AddOption(new IntFieldOption((ConfigEntry<int>)entry, true));
+                }
+                else if (entry.SettingType.IsEnum)
+                {
+                    ModSettingsManager.AddOption(new ChoiceOption(entry, true));
+                }
+                else
+                {
+                   log.LogWarning("Could not add config " + entry.Definition.Key + " of type : " + entry.SettingType);
+                }
+            }
 
-            orig(args);
         }
+
+
     }
 
 }
