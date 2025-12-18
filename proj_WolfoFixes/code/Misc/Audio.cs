@@ -52,8 +52,42 @@ namespace WolfoFixes
                 orig(self);
                 Util.PlaySound("Play_item_lunar_specialReplace_apply", self.outer.gameObject);
             };
+
+
+            //Awkward and delayed
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/HippoRezEffect").GetComponent<EffectComponent>().soundName = "Play_item_proc_extraLife";
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/VoidRezEffect").GetComponent<EffectComponent>().soundName = "Play_item_void_extraLife";
+             
+            //On.RoR2.CharacterMaster.ExtraLifeServerBehavior.Awake += ExtraLifeServerBehavior_Awake;
+           // On.RoR2.CharacterMaster.ExtraLifeServerBehavior.FixedUpdate += ExtraLifeServerBehavior_FixedUpdate;
+
         }
 
+        private static void ExtraLifeServerBehavior_FixedUpdate(On.RoR2.CharacterMaster.ExtraLifeServerBehavior.orig_FixedUpdate orig, CharacterMaster.ExtraLifeServerBehavior self)
+        {
+            if (self.soundTime.hasPassed)
+            {
+                self.soundTime = Run.FixedTimeStamp.positiveInfinity;
+                System.Action action = self.soundCallback;
+                if (action != null)
+                {
+                    action();
+                }
+            }
+            orig(self);
+        }
+
+        private static void ExtraLifeServerBehavior_Awake(On.RoR2.CharacterMaster.ExtraLifeServerBehavior.orig_Awake orig, CharacterMaster.ExtraLifeServerBehavior self)
+        {
+            orig(self);
+            self.soundTime += 1;
+        }
+
+        private static void CharacterMaster_PlayExtraLifeSFX(On.RoR2.CharacterMaster.orig_PlayExtraLifeSFX orig, CharacterMaster self)
+        {
+            Debug.Log(self.bodyInstanceObject);
+            orig(self);
+        }
 
         public static void Start()
         {

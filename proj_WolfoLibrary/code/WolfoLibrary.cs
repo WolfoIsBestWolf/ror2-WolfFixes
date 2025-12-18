@@ -45,36 +45,7 @@ namespace WolfoLibrary
         }
 
 
-        public static void AddAllConfigAsRiskConfig(ConfigFile config)
-        {
-
-            ConfigEntryBase[] entries = config.GetConfigEntries();
-            foreach (ConfigEntryBase entry in entries)
-            {
-                if (entry.SettingType == typeof(bool))
-                {
-                    ModSettingsManager.AddOption(new CheckBoxOption((ConfigEntry<bool>)entry, true));
-                }
-                else if (entry.SettingType == typeof(float))
-                {
-                    ModSettingsManager.AddOption(new FloatFieldOption((ConfigEntry<float>)entry, true));
-                }
-                else if (entry.SettingType == typeof(int))
-                {
-                    ModSettingsManager.AddOption(new IntFieldOption((ConfigEntry<int>)entry, true));
-                }
-                else if (entry.SettingType.IsEnum)
-                {
-                    ModSettingsManager.AddOption(new ChoiceOption(entry, true));
-                }
-                else
-                {
-                   log.LogWarning("Could not add config " + entry.Definition.Key + " of type : " + entry.SettingType);
-                }
-            }
-
-        }
-
+     
 
     }
 

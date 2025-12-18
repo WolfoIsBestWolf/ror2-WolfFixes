@@ -18,13 +18,15 @@ Also technically is a library mod, this should have no impact on the end user.
 Warped Echo echoed hits no longer activating Planula & Repulsion Armor Plate. *(Like how it was specifically added to do that in prior versions)*\
 Warped Echo echoed hits double-dipping some damage *increases* of the attacker. *(i.e. Watch, Lunar Ruin)*\
 Warped Echo letting you live through OSP, even when OSP is meant to be disabled *(Curse, Low Health)*\
-Warped Echo reducing damage further after OSP. *(Which is not how OSP is meant to function)*
+Warped Echo reducing damage further after OSP. *(OSP is meant to be last damage limit)*
 
-Deus Ex Machina Blessing being consumed on attacks that cannot proc. *(Due to 0 damage or 0 procCoefficient)*
+Deus Ex Machina Blessing being consumed on attacks that cannot proc. *(0 damage or 0 procCoefficient attacks)*
 
-Stone Flux Pauldron reducing speed twice.
+Stone Flux Pauldron reducing speed twice. *(-200% rather than -100%)*
  
-All AC debuffs activating Growth Nectar.
+Hearty Stew never working on certain amounts of Eclipse curse. *(Due to a floating point discrepancy)*
+ 
+Most AC debuffs activating Growth Nectar. *(Because debuffs are not filtered out automatically, and they forgot to tag them manually)*
  
  
 Elusive Antler producing errors on things that move differently. (Stationary Turrets, RemoteOp Drones)\
@@ -34,25 +36,27 @@ Bandolier not working on some drones & allies due to wrong authority check.
  
 Charged Perferator rolling for crit instead of inheriting like other procs.
 
-Unstable Transmitters effect being removed by cleansing effects. *(Its tagged as cooldownby accident)*
+Unstable Transmitters effect being removed by cleansing effects. *(Accidentally tagged as a cooldown buff)*
 
 Regenerative Scrap being scrappable
 
 
 Executive Card no longer fails if you open Multi Shops *too quickly*.
 
-For Retool, Enigma, Bottled Chaos
+For Retool, Enigma, Bottled Chaos, Functional Couple:
 - Sawmerang not bleeding if you don't have the equipment.
 - Milky Chrysalis flight will always have wings.
 
 
 Corrects various wrong item descriptions.
 
+Removes Warbanner from Best Buddy's above level 99, to avoid spam and lag.
+
 ```
 Some item tags were adjusted, to better match others.
 - Equipment items unblacklisted for Scavs.
-- Nkuhanas Opinion blacklisted from all monsters. (Undodgeable instant death, unpredictable procs)
-- Kinetic Dampner blacklisted from all monsters. (Undodgeable instant death, as melee)
+- Nkuhanas Opinion blacklisted from all monsters. (Undodgeable instant death, unpredictable activations)
+- Kinetic Dampner blacklisted from all monsters. (Undodgeable instant death as melee)
 - Egocentrism blacklisted for Mithrix.  (Too opressive against melee, like Mired Urn)
 - Hunters Harpoon missing OnKill.
 ```
@@ -61,7 +65,7 @@ Item Visuals:
 
 Faraday Spur visual radius being half of the attack radius.
 
-Mercurial Rachis visual radius not being entirely accurate.
+Mercurial Rachis visual radius being slightly bigger than buff radius.
 
 Deskplant visual being too small.
 ```
@@ -100,6 +104,8 @@ Lunar Golems having strange unneeded spawn restrictions.\
 Child now immune to the sun. *(Like Parents)*  \
 Twisted Scavs now immune to void implosions. *(Like other final bosses)*\
 SPEX & Memory Probes now immune to void implosions.
+
+Solus Heart softlocking the game if he has Dios.
 
  ```
 Mob Visuals:

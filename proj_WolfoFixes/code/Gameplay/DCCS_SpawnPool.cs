@@ -40,6 +40,13 @@ namespace WolfoFixes
             On.RoR2.AccessCodesMissionController.OnStartServer += AccessCodesMissionController_OnStartServer;
 
             SceneDirector.onGenerateInteractableCardSelection += SceneDirector_onGenerateInteractableCardSelection;
+
+            On.RoR2.DCCSBlender.GetBlendedDCCS += DCCSBlender_GetBlendedDCCS;
+        }
+
+        private static DirectorCardCategorySelection DCCSBlender_GetBlendedDCCS(On.RoR2.DCCSBlender.orig_GetBlendedDCCS orig, DccsPool.Category dccsPoolCategory, ref Xoroshiro128Plus rng, ClassicStageInfo stageInfo, int contentSourceMixLimit, System.Collections.Generic.List<RoR2.ExpansionManagement.ExpansionDef> acceptableExpansionList)
+        {
+            return orig(dccsPoolCategory, ref rng, stageInfo, contentSourceMixLimit, null);
         }
 
         private static void SceneDirector_onGenerateInteractableCardSelection(SceneDirector self, DirectorCardCategorySelection dccs)

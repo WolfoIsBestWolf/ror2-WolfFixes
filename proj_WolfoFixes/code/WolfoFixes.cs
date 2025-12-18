@@ -76,10 +76,13 @@ namespace WolfoFixes
 
             On.RoR2.BuffCatalog.Init += BuffCatalog_Init;
 
-           
+            log.LogMessage("Test");
+            log.LogWarning("Test");
+            log.LogError("Test");
+
         }
 
-      
+
 
         private void BuffCatalog_Init(On.RoR2.BuffCatalog.orig_Init orig)
         {   try

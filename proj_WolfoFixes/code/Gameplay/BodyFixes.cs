@@ -173,10 +173,58 @@ namespace WolfoFixes
 
             On.RoR2.CharacterBody.CheckDroneHasItems += CharacterBody_CheckDroneHasItems;
 
+            //On.RoR2.SolusWebMissionController.EncounterHealthThresholdController_onAllMembersReachedThreshold += SolusWebMissionController_EncounterHealthThresholdController_onAllMembersReachedThreshold;
 
+            On.RoR2.Items.PhysicsProjectileBehavior.InheritMovementItems += PhysicsProjectileBehavior_InheritMovementItems;
+
+            On.EntityStates.SolusHeart.Death.MissionCompleted.FixedUpdate += MissionCompleted_FixedUpdate;
         }
 
+        private static void MissionCompleted_FixedUpdate(On.EntityStates.SolusHeart.Death.MissionCompleted.orig_FixedUpdate orig, EntityStates.SolusHeart.Death.MissionCompleted self)
+        {
+            for (int i = 0; i < self.combatSquad.readOnlyMembersList.Count; i++)
+            {
+                CharacterMaster characterMaster = self.combatSquad.readOnlyMembersList[i];
+                if (characterMaster)
+                {
+                    CharacterBody body = characterMaster.GetBody();
+                    if (body)
+                    {
+                        characterMaster.TrueKill();
+                        //body.healthComponent.Suicide(null, null, default(DamageTypeCombo));
+                    }
+                }
+            }
+            orig(self);
+        }
 
+        private static void PhysicsProjectileBehavior_InheritMovementItems(On.RoR2.Items.PhysicsProjectileBehavior.orig_InheritMovementItems orig, RoR2.Items.PhysicsProjectileBehavior self, Inventory friendInventory)
+        {
+            orig(self, friendInventory);
+            if (friendInventory)
+            {
+                if (Run.instance.ambientLevel > 99)
+                {
+                    friendInventory.ResetItemPermanent(RoR2Content.Items.WardOnLevel);
+                }
+            }
+            
+        }
+
+        private static void SolusWebMissionController_EncounterHealthThresholdController_onAllMembersReachedThreshold(On.RoR2.SolusWebMissionController.orig_EncounterHealthThresholdController_onAllMembersReachedThreshold orig, SolusWebMissionController self, int threshold)
+        {
+            if (threshold == 3)
+            {
+                foreach (var master in self.combatSquad.readOnlyMembersList)
+                {
+                    if (!master.IsDeadAndOutOfLivesServer())
+                    {
+                        threshold = 2;
+                    }
+                }
+            }
+            orig(self, threshold);
+        }
 
         private static bool CharacterBody_CheckDroneHasItems(On.RoR2.CharacterBody.orig_CheckDroneHasItems orig, CharacterBody self)
         {

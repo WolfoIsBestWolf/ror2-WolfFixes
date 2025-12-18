@@ -4,6 +4,7 @@ using RiskOfOptions.Options;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using WolfoLibrary;
 
 namespace WolfoFixes
 {
@@ -100,11 +101,38 @@ namespace WolfoFixes
         {
             ModSettingsManager.SetModIcon(Addressables.LoadAssetAsync<Sprite>(key: "8d5cb4f0268083645999f52a10c6904b").WaitForCompletion());
             ModSettingsManager.SetModDescription("Random assortment of fixes for bugs that bothered me.");
-            WolfoLibrary.WolfoLib.AddAllConfigAsRiskConfig(ConfigFile_Client);
+            AddAllConfigAsRiskConfig();
+        }
+        public static void AddAllConfigAsRiskConfig()
+        {
 
-          
+            ConfigEntryBase[] entries = ConfigFile_Client.GetConfigEntries();
+            foreach (ConfigEntryBase entry in entries)
+            {
+                if (entry.SettingType == typeof(bool))
+                {
+                    ModSettingsManager.AddOption(new CheckBoxOption((ConfigEntry<bool>)entry, true));
+                }
+                else if (entry.SettingType == typeof(float))
+                {
+                    ModSettingsManager.AddOption(new FloatFieldOption((ConfigEntry<float>)entry, true));
+                }
+                else if (entry.SettingType == typeof(int))
+                {
+                    ModSettingsManager.AddOption(new IntFieldOption((ConfigEntry<int>)entry, true));
+                }
+                else if (entry.SettingType.IsEnum)
+                {
+                    ModSettingsManager.AddOption(new ChoiceOption(entry, true));
+                }
+                else
+                {
+                    WolfoLib.log.LogWarning("Could not add config " + entry.Definition.Key + " of type : " + entry.SettingType);
+                }
+            }
 
         }
+
 
     }
 

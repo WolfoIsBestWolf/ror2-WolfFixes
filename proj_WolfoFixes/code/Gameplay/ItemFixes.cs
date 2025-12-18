@@ -12,6 +12,8 @@ namespace WolfoFixes
     {
         public static void Start()
         {
+            IL.RoR2.CharacterBody.RecalculateStats += Stew_GettingDeletedByCurseRandomly;
+          
             IL.RoR2.CharacterBody.RecalculateStats += FixStoneFluxBeingAppliedTwice;
  
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixChargedPerferatorCrit;
@@ -37,6 +39,32 @@ namespace WolfoFixes
             IL.RoR2.HealthComponent.TakeDamageProcess += FixParryConsuemdOn0Damage0ProcAttacks;
         }
 
+        private static void Stew_GettingDeletedByCurseRandomly(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            bool a = c.TryGotoNext(MoveType.After,
+            x => x.MatchCall("RoR2.CharacterBody", "get_healthComponent"),
+            x => x.MatchLdfld("RoR2.HealthComponent", "health"),
+            x => x.MatchLdarg(0),
+            x => x.MatchCall("RoR2.CharacterBody", "get_maxHealth"),
+            x => x.MatchLdarg(0),
+            x => x.MatchCall("RoR2.CharacterBody", "get_cursePenalty"),
+            x => x.MatchDiv());
+
+            if (a)
+            {
+                //c.RemoveRange(5);
+                c.EmitDelegate<Func<float, float>>((body) =>
+                {            
+                    return Mathf.Floor(body);
+                });
+            }
+            else
+            {
+                WolfFixes.log.LogWarning("IL Failed : STEW getting fucked up by eclipse curse");
+            }
+        }
+  
         private static void FixWEchoDoubleDippingLunarRuin(ILContext il)
         {
             ILCursor c = new ILCursor(il);

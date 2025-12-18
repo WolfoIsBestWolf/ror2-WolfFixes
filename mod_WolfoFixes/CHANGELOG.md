@@ -1,4 +1,11 @@
+```
+v1.3.1
+Fixed Hearty Stew randomly not working depending on your curse amount.
+Fixed Solus Heart softlocking if he has Dios.
 
+Fixed mod config getting added wrongly to RiskOfOptions.
+Fixed Warbanner spam on Orphaned Core past level 99. (Not relevant for vanilla, requested)
+```
 ```
 v1.3.0
 Fixed Warped Echo echo hits no longer activating Planula
