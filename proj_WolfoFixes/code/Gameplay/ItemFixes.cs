@@ -35,7 +35,11 @@ namespace WolfoFixes
             }
             IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDamageNotProccingPlanulaAnymoreAC141;
             IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDamageDoubleDippingEnemyWatches;
-            IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDoubleDippingLunarRuin;
+            if (!WolfoFixes.WolfFixes.riskyTweaks)
+            {
+                IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDoubleDippingLunarRuin;
+            }
+        
 
             IL.RoR2.HealthComponent.TakeDamageProcess += FixParryConsuemdOn0Damage0ProcAttacks;
         }
@@ -87,7 +91,7 @@ namespace WolfoFixes
             }
             else
             {
-                IL.RoR2.HealthComponent.TakeDamageProcess -= FixWEchoDoubleDippingLunarRuin;
+                //IL.RoR2.HealthComponent.TakeDamageProcess -= FixWEchoDoubleDippingLunarRuin; //This kills, the computer
                 WolfFixes.log.LogError("IL Failed : FixWEchoDoubleDippingLunarRuin");
             }
         }

@@ -1,4 +1,7 @@
 ```
+v1.3.3
+Fixed IL Incompat with other mods affected Lunar Ruin. (ie RiskyMod)
+
 v1.3.2
 Fixed Distant Roost never spawning DLC3 interactables, with all 3 dlcs enabled.\
 Fixed Scorches Acres never spawning DLC3 interactables, with all 3 dlcs enabled.\

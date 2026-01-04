@@ -19,12 +19,14 @@ namespace WolfoFixes
         public static ManualLogSource log;
 
         public static bool riskyFixes;
+         public static bool riskyTweaks;
         public void Awake()
         {
             WConfig.Awake();
             log = base.Logger;
             Assets.Init(base.Info);
             riskyFixes = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyFixes");
+            riskyTweaks = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyTweaks");
 
 
         }
