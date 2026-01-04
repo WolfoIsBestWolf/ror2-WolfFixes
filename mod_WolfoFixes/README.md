@@ -14,6 +14,9 @@ Also technically is a library mod, this should have no impact on the end user.
 ### Fixes the following :
 
 
+Corrects or details various wrong item, survivor, drone, admin command descriptions.
+
+
 ## Item & EquipmentFixes
 Warped Echo echoed hits no longer activating Planula & Repulsion Armor Plate. *(Like how it was specifically added to do that in prior versions)*\
 Warped Echo echoed hits double-dipping some damage *increases* of the attacker. *(i.e. Watch, Lunar Ruin)*\
@@ -47,8 +50,6 @@ For Retool, Enigma, Bottled Chaos, Functional Couple:
 - Sawmerang not bleeding if you don't have the equipment.
 - Milky Chrysalis flight will always have wings.
 
-
-Corrects various wrong item descriptions.
 
 Removes Warbanner from Best Buddy's above level 99, to avoid spam and lag.
 
@@ -110,14 +111,11 @@ Solus Heart softlocking the game if he has Dios.
  ```
 Mob Visuals:
 
-Solus Scorchers Grease no longer able to spawn midair if shot into the sky.\
+Solus Scorchers Grease no longer spawns midair or get stuck in the sky.\
 Solus Extractor legs are now elite colored.  
 Solus Distributors not casting shadows.
 
-False Son using wrong Death Message.
-
-Collective Elite icon missing.\
-Collective Elite bubble being more transparent on accident.
+False Son using wrong Death Message since launch.
 
 Gilded Elite corpses looking like blazing elite.
 ```
@@ -128,13 +126,18 @@ Gilded Elite corpses looking like blazing elite.
 
 Temporary Item Vendors being 10x more common than intended on SotS stages.
 
-Verdant Falls: No longer half as likely as other stage 1s.\
+Distant Roost never spawning DLC3 interactables, with all 3 DLCs enabled.\
+Scorches Acres never spawning DLC3 interactables, with all 3 DLCs enabled.\
+Helminth Hatchery never spawning DLC1 interactables, with all 3 DLCs enabled.
+
+
+Verdant Falls: No longer half as likely as other stage 1s.\ *(AC changed this for literally no reason)*
 Distant Roost: No longer twice as likely. *(1.5x now, they are still variants)*\
 Titanic Plains: No longer twice as likely. *^*  
  
 
 
-Repurposed Crater not spawning the Access Node after Solus Wing.
+Repurposed Crater not spawning the Access Node after Solus Wing. *(I was told this was a bug)*
 
 Bazaar Seers being able to select Pre-Loop variants, Post-Loop.\
 Bazaar Seers being able to select 2 Plains/2 Roosts.
@@ -162,7 +165,7 @@ Removed Chance Doll from Simulacrum, as there are no Shrine of Chance.\
   
 ## Artifact Fixes
 
-Fixes Honor always choosing the same Elite types for some special bosses.
+Fixes Honor always choosing the same Elite types for some special bosses. *(Due to a rng bug)*
 
 Fixes Vengence + Swarms spawning one of them as not an Umbra/Without any items.
 
@@ -178,7 +181,7 @@ Fixed 10 bugs or errors with Artifact of Devotion leading to :
 	- *They put the tag on Wild lemurians instead of the devoted ones*
 
 
- 
+ Artifact of Glass will now make you and minions appear as glass.
 
 ## Multiplayer / Client fixes
 Prevents Halcyon Shrine entityState nullref on client.\
@@ -191,6 +194,7 @@ Spider-Mines constantly beeping for clients
 Simulacrum teleporting Clients into the void instead of the Focus.\
 Simulacrum not pointing out enemies at the end of waves for Clients.
 
+Drone Combiner having some visual bugs on clients.
 
 ## Visual
  
@@ -204,14 +208,14 @@ Deep Void Signals Beam being flat.
 
 Shrine of Shaping and Seed of Life not using the revive effect. (They attempt to spawn a unfinished object)
 
-Artifact of Glass will now make you and minions appear as glass.
-
  
 Lunar Exploder not having a subtitleToken.
 
 Halcyon Shrine often not having its tip golden due to a redundant check.
 
 Broken Flame & Missile Drones often spawning in the ground.
+
+Aurelionite Geodes only appearing on Radar Scanner, *after* they are broken, instead of when unbroken.
 
 ## Audio
 REX m1 not playing impact sound.

@@ -134,7 +134,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : CheckIfNullBody");
+                WolfFixes.log.LogError("IL Failed : CheckIfNullBody");
             }
         }
 
@@ -148,7 +148,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed: FixOneBehindRemoveItemHerel");
+                WolfFixes.log.LogError("IL Failed: FixOneBehindRemoveItemHerel");
             }
         }
 

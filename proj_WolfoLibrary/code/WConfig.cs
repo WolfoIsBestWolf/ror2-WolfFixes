@@ -20,8 +20,6 @@ namespace WolfoLibrary
 
         public static void InitConfig()
         {
-
-
             cfgTestLogbook = ConfigFile.Bind(
                "Testing",
                "Everything Logbook",

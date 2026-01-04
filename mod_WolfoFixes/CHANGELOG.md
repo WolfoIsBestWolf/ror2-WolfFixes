@@ -1,4 +1,21 @@
 ```
+v1.3.2
+Fixed Distant Roost never spawning DLC3 interactables, with all 3 dlcs enabled.\
+Fixed Scorches Acres never spawning DLC3 interactables, with all 3 dlcs enabled.\
+Fixed Helminth Hatchery never spawning DLC1 interactables, with all 3 dlcs enabled.
+-(Mod already fixed these before but properly saying this, as fixed)
+
+Improved a lot of admin command descriptions lacking numbers.
+Added Orphan Core respawning to it's description.
+
+
+Fixed Aurielionte Geodes showing up scanners after being broken instead of before.
+Fixed Sky Meadows rocks not marking themselves as the killer.
+Fixed IL incompatibility with RestoredRaincoat.
+Removed a lot of commands for eventual Debug Tookit incorperation
+Config to remove just gameplay fixes but keep visuals.
+```
+```
 v1.3.1
 Fixed Hearty Stew randomly not working depending on your curse amount.
 Fixed Solus Heart softlocking if he has Dios.

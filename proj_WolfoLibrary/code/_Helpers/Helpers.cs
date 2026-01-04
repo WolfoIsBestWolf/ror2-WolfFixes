@@ -1,9 +1,14 @@
 using HG;
 using RoR2;
+using UnityEngine;
 
 namespace WolfoLibrary
 {
-
+    public class InstantiateModelParams : MonoBehaviour
+    {
+        public Vector3 CameraPosition = new Vector3(-1.5f, 1f, 3f);
+        public Vector3 FocusPosition = new Vector3(0f, 1f, 0f);
+    }
     public class DccsUtil
     {
         public static void RemoveCard(DirectorCardCategorySelection dccs, int cat, string card)
@@ -29,12 +34,12 @@ namespace WolfoLibrary
                 int c = FindSpawnCard(ref dccs.categories[cat].cards, card);
                 if (c != -1)
                 {
-                    WolfoLib.log.LogMessage("Removed " + card + " from " + SceneInfo.instance.sceneDef);
+                    Log.LogMessage("Removed " + card + " from " + SceneInfo.instance.sceneDef);
                     ArrayUtils.ArrayRemoveAtAndResize(ref dccs.categories[cat].cards, c);
                     return;
                 }
             }
-            WolfoLib.log.LogWarning("Failed to remove " + card + " from " + SceneInfo.instance.sceneDef);
+            Log.LogWarning("Failed to remove " + card + " from " + SceneInfo.instance.sceneDef);
 
         }
 

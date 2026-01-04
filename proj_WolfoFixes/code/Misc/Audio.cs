@@ -57,9 +57,9 @@ namespace WolfoFixes
             //Awkward and delayed
             LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/HippoRezEffect").GetComponent<EffectComponent>().soundName = "Play_item_proc_extraLife";
             LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/VoidRezEffect").GetComponent<EffectComponent>().soundName = "Play_item_void_extraLife";
-             
+
             //On.RoR2.CharacterMaster.ExtraLifeServerBehavior.Awake += ExtraLifeServerBehavior_Awake;
-           // On.RoR2.CharacterMaster.ExtraLifeServerBehavior.FixedUpdate += ExtraLifeServerBehavior_FixedUpdate;
+            // On.RoR2.CharacterMaster.ExtraLifeServerBehavior.FixedUpdate += ExtraLifeServerBehavior_FixedUpdate;
 
         }
 
@@ -151,7 +151,7 @@ namespace WolfoFixes
         }
 
 
-      
+
 
 
         private static void WarBondsNoise_OnlyIfActuallyMissile(ILContext il)
@@ -172,7 +172,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed: WarBondsNoise_OnlyIfActuallyMissile");
+                WolfFixes.log.LogError("IL Failed: WarBondsNoise_OnlyIfActuallyMissile");
             }
         }
 

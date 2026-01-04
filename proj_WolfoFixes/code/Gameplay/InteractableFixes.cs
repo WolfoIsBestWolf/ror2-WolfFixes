@@ -8,12 +8,10 @@ namespace WolfoFixes
 {
     internal class InteractableFixes
     {
-        public static void Start()
+        public static void VisualFixes()
         {
             ShrineShapingFixes.Start();
-            ShrineHalcyonFixes.Start();
-
-
+           
             //Avoid duplicate Golemplains & BlackBeach
             //Avoid Special Stages removing a choice for 3rd Seers.
             On.RoR2.BazaarController.SetUpSeerStations += FixDuplicateAndEmptyThirdSeers;

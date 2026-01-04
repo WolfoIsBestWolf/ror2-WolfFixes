@@ -102,7 +102,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : IL.RoR2.InfiniteTowerWaveController.FixedUpdate");
+                WolfFixes.log.LogError("IL Failed : IL.RoR2.InfiniteTowerWaveController.FixedUpdate");
             }
         }
 

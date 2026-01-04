@@ -1,7 +1,6 @@
 using BepInEx.Configuration;
 using RiskOfOptions;
 using RiskOfOptions.Options;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using WolfoLibrary;
@@ -21,11 +20,12 @@ namespace WolfoFixes
         public static ConfigEntry<bool> cfgLoopSeers;
 
         public static ConfigEntry<bool> cfgTextFixes;
- 
+
         public static ConfigEntry<bool> cfgItemTags;
         public static ConfigEntry<bool> cfgDevotionSpareDroneParts;
 
         public static ConfigEntry<bool> cfgDisable;
+        public static ConfigEntry<bool> cfgDisableGameplay;
 
 
         public static void Awake()
@@ -78,20 +78,25 @@ namespace WolfoFixes
                 "Add the Devotion Tag to Devoted Lemurians which will make them work with Spare Drone Parts.\n\nThis is a intended synergy, they just put in the wrong Lemurian."
             );
 
-            cfgDisable = ConfigFile_Client.Bind(
-                          "Main",
-                          "Disable all fixes",
-                          false,
-                          "Disable all fixes leaving the mod as just a library mod to be used for my other mods and debugging purposes."
-            );
+
             cfgTextFixes = ConfigFile_Client.Bind(
                 "Main",
                 "Fixed Descriptions",
                 true,
                 "Updated and fixed descriptions for items and survivors. Disable if other mods change stats or items."
             );
-
-
+            cfgDisableGameplay = ConfigFile_Client.Bind(
+                "Main",
+                "Disable all gameplay fixes",
+                false,
+                "Disable all gameplay fixes leaving visuals"
+            );
+            cfgDisable = ConfigFile_Client.Bind(
+                "Main",
+                "Disable all fixes",
+                false,
+                "Disable all fixes leaving the mod as just a library mod to be used for my other mods and debugging purposes."
+           );
 
         }
 
@@ -105,7 +110,7 @@ namespace WolfoFixes
         }
         public static void AddAllConfigAsRiskConfig()
         {
-
+            //Would need mod meta data passed along from other mods to work fine so probably better to keep stuff as is
             ConfigEntryBase[] entries = ConfigFile_Client.GetConfigEntries();
             foreach (ConfigEntryBase entry in entries)
             {
@@ -127,7 +132,7 @@ namespace WolfoFixes
                 }
                 else
                 {
-                    WolfoLib.log.LogWarning("Could not add config " + entry.Definition.Key + " of type : " + entry.SettingType);
+                    Log.LogWarning("Could not add config " + entry.Definition.Key + " of type : " + entry.SettingType);
                 }
             }
 

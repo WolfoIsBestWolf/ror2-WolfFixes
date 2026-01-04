@@ -58,142 +58,142 @@ namespace WolfoLibrary.Testing
         private static void BuffCatalog_Init(On.RoR2.BuffCatalog.orig_Init orig)
         {
             orig();
-            WolfoLib.log.LogWarning("BuffCatalog_Init");
+            Log.LogWarning("BuffCatalog_Init");
         }
 
         private static void SceneInfo_OnDestroy(On.RoR2.SceneInfo.orig_OnDestroy orig, SceneInfo self)
         {
             orig(self);
-            WolfoLib.log.LogWarning("SceneInfo_OnDestroy");
+            Log.LogWarning("SceneInfo_OnDestroy");
         }
 
         private static void SceneInfo_OnDisable(On.RoR2.SceneInfo.orig_OnDisable orig, SceneInfo self)
         {
             orig(self);
-            WolfoLib.log.LogWarning("SceneInfo_OnDisable");
+            Log.LogWarning("SceneInfo_OnDisable");
         }
 
         private static void SceneInfo_Start(On.RoR2.SceneInfo.orig_Start orig, SceneInfo self)
         {
             orig(self);
-            WolfoLib.log.LogWarning("SceneInfo_Start");
+            Log.LogWarning("SceneInfo_Start");
         }
 
         private static void SceneInfo_Awake(On.RoR2.SceneInfo.orig_Awake orig, SceneInfo self)
         {
             orig(self);
-            WolfoLib.log.LogWarning("SceneInfo_Awake");
+            Log.LogWarning("SceneInfo_Awake");
         }
 
         private static void MasterCatalog_Init(On.RoR2.MasterCatalog.orig_Init orig)
         {
-            WolfoLib.log.LogWarning("MasterCatalog");
+            Log.LogWarning("MasterCatalog");
             orig();
         }
 
         private static System.Collections.IEnumerator PickupCatalog_Init(On.RoR2.PickupCatalog.orig_Init orig)
         {
-            WolfoLib.log.LogWarning("PickupCatalog");
+            Log.LogWarning("PickupCatalog");
             return orig();
         }
 
         private static System.Collections.IEnumerator SkinCatalog_Init(On.RoR2.SkinCatalog.orig_Init orig)
         {
-            WolfoLib.log.LogWarning("SkinCatalog");
+            Log.LogWarning("SkinCatalog");
             return orig();
         }
 
         private static void ItemCatalog()
         {
-            WolfoLib.log.LogWarning("ItemCatalog");
+            Log.LogWarning("ItemCatalog");
         }
         private static void BodyCatalog()
         {
-            WolfoLib.log.LogWarning("BodyCatalog");
+            Log.LogWarning("BodyCatalog");
         }
         private static void SceneCatalog()
         {
-            WolfoLib.log.LogWarning("SceneCatalog");
+            Log.LogWarning("SceneCatalog");
         }
         private static void ArtifactCatalog()
         {
-            WolfoLib.log.LogWarning("ArtifactCatalog");
+            Log.LogWarning("ArtifactCatalog");
         }
         private static void EquipmentCatalog()
         {
-            WolfoLib.log.LogWarning("EquipmentCatalog");
+            Log.LogWarning("EquipmentCatalog");
         }
         private static void GameModeCatalog()
         {
-            WolfoLib.log.LogWarning("GameModeCatalog");
+            Log.LogWarning("GameModeCatalog");
         }
         private static void AchievementManager()
         {
-            WolfoLib.log.LogWarning("AchievementManager");
+            Log.LogWarning("AchievementManager");
         }
         private static void RuleCatalog()
         {
-            WolfoLib.log.LogWarning("RuleCatalog");
+            Log.LogWarning("RuleCatalog");
         }
         private static void UnlockableCatalog()
         {
-            WolfoLib.log.LogWarning("UnlockableCatalog");
+            Log.LogWarning("UnlockableCatalog");
         }
 
         private static void Run_onRunDestroyGlobal(Run obj)
         {
-            WolfoLib.log.LogWarning("Run_onRunDestroyGlobal");
+            Log.LogWarning("Run_onRunDestroyGlobal");
         }
 
         private static void Stage_OnDisable(On.RoR2.Stage.orig_OnDisable orig, Stage self)
         {
             orig(self);
-            WolfoLib.log.LogWarning("Stage_OnDisable");
+            Log.LogWarning("Stage_OnDisable");
         }
 
         private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
         {
             orig(self);
-            WolfoLib.log.LogWarning("SceneDirector_Start");
+            Log.LogWarning("SceneDirector_Start");
         }
 
         private static void Stage_PreStartClient(On.RoR2.Stage.orig_PreStartClient orig, Stage self)
         {
             orig(self);
-            WolfoLib.log.LogWarning("Stage_PreStartClient");
+            Log.LogWarning("Stage_PreStartClient");
         }
 
         private static void Stage_onStageStartGlobal(Stage obj)
         {
-            WolfoLib.log.LogWarning("Stage_onStageStartGlobal " + obj.sceneDef);
+            Log.LogWarning("Stage_onStageStartGlobal " + obj.sceneDef);
         }
 
         private static void Run_PreStartClient(On.RoR2.Run.orig_PreStartClient orig, Run self)
         {
             orig(self);
-            WolfoLib.log.LogWarning("Run_PreStartClient");
+            Log.LogWarning("Run_PreStartClient");
         }
 
         private static void Run_onRunStartGlobal(Run obj)
         {
-            WolfoLib.log.LogWarning("Run_onRunStartGlobal");
+            Log.LogWarning("Run_onRunStartGlobal");
         }
 
         public static void onStart()
         {
-            WolfoLib.log.LogWarning("RoR2Application.onStart");
+            Log.LogWarning("RoR2Application.onStart");
         }
         public static void onLoadFinished()
         {
-            WolfoLib.log.LogWarning("RoR2Application.onLoadFinished");
+            Log.LogWarning("RoR2Application.onLoadFinished");
         }
         public static void onLoad()
         {
-            WolfoLib.log.LogWarning("RoR2Application.onLoad");
+            Log.LogWarning("RoR2Application.onLoad");
         }
         public static void OnMainMenuInitialised()
         {
-            WolfoLib.log.LogWarning("RoR2.UI.MainMenu.MainMenuController.OnMainMenuInitialised");
+            Log.LogWarning("RoR2.UI.MainMenu.MainMenuController.OnMainMenuInitialised");
         }
 
 

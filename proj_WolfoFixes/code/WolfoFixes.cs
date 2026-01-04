@@ -5,14 +5,15 @@ using R2API.Utils;
 using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using WolfoLibrary;
 
 namespace WolfoFixes
 {
 
     [BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("com.Wolfo.WolfFixes", "WolfoBugFixes", "1.3.0")]
+    [BepInDependency("com.Wolfo.WolfoLibrary")]
+    [BepInPlugin("com.Wolfo.WolfFixes", "WolfoBugFixes", "1.3.2")]
     [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
+    //[BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     public class WolfFixes : BaseUnityPlugin
     {
         public static ManualLogSource log;
@@ -25,7 +26,7 @@ namespace WolfoFixes
             Assets.Init(base.Info);
             riskyFixes = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyFixes");
 
-           
+
         }
 
 
@@ -43,19 +44,26 @@ namespace WolfoFixes
                 WolfFixes.log.LogMessage("WolfoFixes disabled");
                 return;
             }
-         
+            if (!WConfig.cfgDisableGameplay.Value)
+            {
+                BodyFixes.Start();
+                DevotionFixes.Start();
+                GameplayMisc.Start();
+          
+                ItemFixes.Start();
+                EquipmentFixes.VisualFixes();
+                EquipmentFixes.GameplayFixes();
+                DCCS_SpawnPool.Main();
 
-            BodyFixes.Start();
-            DevotionFixes.Start();
-            GameplayMisc.Start();
-            InteractableFixes.Start();
-            ItemFixes.Start();
-            EquipmentFixes.Start();
-            DCCS_SpawnPool.Main();
+                PrayerBeads.Start();
+                Simualcrum.Start();
+               
 
-            PrayerBeads.Start();
-            Simualcrum.Start();
+                On.RoR2.BuffCatalog.Init += BuffCatalog_Init;
+            }
+
             Visuals.Start();
+            InteractableFixes.VisualFixes();
             TextFixes.Start();
             Audio.Start();
             RandomFixes.Start();
@@ -68,28 +76,24 @@ namespace WolfoFixes
             EquipmentCatalog.availability.CallWhenAvailable(MissingEliteDisplays.Start);
 
             GameModeCatalog.availability.CallWhenAvailable(ModSupport_CallLate);
-            ExtraActions.Start();
+
 
 
 
             Language.onCurrentLanguageChanged += Language_onCurrentLanguageChanged;
 
-            On.RoR2.BuffCatalog.Init += BuffCatalog_Init;
-
-            log.LogMessage("Test");
-            log.LogWarning("Test");
-            log.LogError("Test");
 
         }
 
 
 
         private void BuffCatalog_Init(On.RoR2.BuffCatalog.orig_Init orig)
-        {   try
+        {
+            try
             {
                 DLC2Content.Buffs.TeleportOnLowHealthActive.isCooldown = false;
                 DLC2Content.Buffs.TeleportOnLowHealthVictim.isCooldown = false;
-                 
+
                 //Dont allow in Tinker, because they do NOT do anything.
                 DLC3Content.Buffs.AccelerantIgnited.flags = BuffDef.Flags.ExcludeFromNoxiousThorns;
                 DLC3Content.Buffs.Electrocuted.flags = BuffDef.Flags.ExcludeFromNoxiousThorns;
@@ -119,7 +123,7 @@ namespace WolfoFixes
 
         private void Language_onCurrentLanguageChanged()
         {
-     
+
             Language.onCurrentLanguageChanged -= Language_onCurrentLanguageChanged;
             if (!riskyFixes && Language.currentLanguage.TokenIsRegistered("_ITEM_BEARVOID_DESC"))
             {
@@ -144,25 +148,28 @@ namespace WolfoFixes
             {
                 return;
             }
+            if (!WConfig.cfgDisableGameplay.Value)
+            {
+                ItemTags.CallLate();
+                BodyFixes.CallLate();
+                Simualcrum.CallLate();
+
+                //Prevent scrapping regen scrap.
+                var pdtUnscrappableItems = Addressables.LoadAssetAsync<ExplicitPickupDropTable>(key: "6db5e5eb0ec0c394da95229ad89cea29").WaitForCompletion();
+                HG.ArrayUtils.ArrayAppend(ref pdtUnscrappableItems.pickupEntries, new ExplicitPickupDropTable.PickupDefEntry()
+                {
+                    pickupDef = DLC1Content.Items.RegeneratingScrap,
+                });
+            }
+
 
             //Only ever possible to get 1 stack so shouldn't show x1.
             DLC2Content.Buffs.Boosted.canStack = false;
- 
+
 
             RoR2.Stats.StatDef.highestLunarPurchases.displayToken = "STATNAME_HIGHESTLUNARPURCHASES";
             RoR2.Stats.StatDef.highestBloodPurchases.displayToken = "STATNAME_HIGHESTBLOODPURCHASES";
 
-            //Prevent scrapping regen scrap.
-            //Tags.AddTag(DLC1Content.Items.RegeneratingScrap, ItemTag.Scrap);
-            var pdtUnscrappableItems = Addressables.LoadAssetAsync<ExplicitPickupDropTable>(key: "6db5e5eb0ec0c394da95229ad89cea29").WaitForCompletion();
-            HG.ArrayUtils.ArrayAppend(ref pdtUnscrappableItems.pickupEntries, new ExplicitPickupDropTable.PickupDefEntry()
-            {
-                pickupDef = DLC1Content.Items.RegeneratingScrap,
-            });
-
-            ItemTags.CallLate();
-
-            Simualcrum.CallLate();
 
             //Fix color having alpha of 0.
             RoR2Content.DroneDefs.MissileDrone.bodyPrefab.GetComponent<CharacterBody>().bodyColor.a = 1;

@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using HarmonyLib;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using RoR2.Navigation;
@@ -13,9 +14,9 @@ namespace WolfoFixes
         public static void Start()
         {
             IL.RoR2.CharacterBody.RecalculateStats += Stew_GettingDeletedByCurseRandomly;
-          
+
             IL.RoR2.CharacterBody.RecalculateStats += FixStoneFluxBeingAppliedTwice;
- 
+
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixChargedPerferatorCrit;
 
             //Checks for NetworkAuth instead of EffectiveAuth
@@ -43,28 +44,28 @@ namespace WolfoFixes
         {
             ILCursor c = new ILCursor(il);
             bool a = c.TryGotoNext(MoveType.After,
-            x => x.MatchCall("RoR2.CharacterBody", "get_healthComponent"),
-            x => x.MatchLdfld("RoR2.HealthComponent", "health"),
+            //x => x.MatchCall(typeof(CharacterBody), "get_healthComponent"),
+            x => x.MatchCall(AccessTools.PropertyGetter(typeof(CharacterBody), nameof(CharacterBody.healthComponent))),
+            x => x.MatchLdfld(typeof(HealthComponent), "health"),
             x => x.MatchLdarg(0),
-            x => x.MatchCall("RoR2.CharacterBody", "get_maxHealth"),
+            x => x.MatchCall(typeof(CharacterBody), "get_maxHealth"),
             x => x.MatchLdarg(0),
-            x => x.MatchCall("RoR2.CharacterBody", "get_cursePenalty"),
+            x => x.MatchCall(typeof(CharacterBody), "get_cursePenalty"),
             x => x.MatchDiv());
 
             if (a)
             {
-                //c.RemoveRange(5);
                 c.EmitDelegate<Func<float, float>>((body) =>
-                {            
+                {
                     return Mathf.Floor(body);
                 });
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : STEW getting fucked up by eclipse curse");
+                WolfFixes.log.LogError("IL Failed : STEW getting fucked up by eclipse curse");
             }
         }
-  
+
         private static void FixWEchoDoubleDippingLunarRuin(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -86,7 +87,8 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixWEchoDoubleDippingLunarRuin");
+                IL.RoR2.HealthComponent.TakeDamageProcess -= FixWEchoDoubleDippingLunarRuin;
+                WolfFixes.log.LogError("IL Failed : FixWEchoDoubleDippingLunarRuin");
             }
         }
 
@@ -111,7 +113,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixParryConsuemdOn0Damage0ProcAttacks");
+                WolfFixes.log.LogError("IL Failed : FixParryConsuemdOn0Damage0ProcAttacks");
             }
         }
 
@@ -136,7 +138,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixWarpedReducingDamageAfterOSP");
+                WolfFixes.log.LogError("IL Failed : FixWarpedReducingDamageAfterOSP");
             }
         }
 
@@ -144,7 +146,7 @@ namespace WolfoFixes
         {
             ILCursor c = new ILCursor(il);
 
-            if(c.TryGotoNext(MoveType.After,
+            if (c.TryGotoNext(MoveType.After,
             x => x.MatchCallvirt("RoR2.CharacterBody", "get_hasOneShotProtection")))
             {
                 c.Emit(OpCodes.Ldarg_0);
@@ -160,10 +162,10 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : RemoveOSPEntirelyIfYouAreBelowOSPThreshold");
+                WolfFixes.log.LogError("IL Failed : RemoveOSPEntirelyIfYouAreBelowOSPThreshold");
                 return;
             }
-          
+
         }
 
         private static void FixWEchoDamageDoubleDippingEnemyWatches(ILContext il)
@@ -178,10 +180,10 @@ namespace WolfoFixes
 
             bool b = c.TryGotoPrev(MoveType.After,
             x => x.MatchCall("UnityEngine.Object", "op_Implicit"));
- 
+
             if (!a || !b)
             {
-                WolfFixes.log.LogWarning("IL Failed : FixWEchoDamageDoubleDippingEnemyWatches Part 1");
+                WolfFixes.log.LogError("IL Failed : FixWEchoDamageDoubleDippingEnemyWatches Part 1");
                 return;
             }
             c.Emit(OpCodes.Ldarg_1);
@@ -204,14 +206,14 @@ namespace WolfoFixes
             x => x.MatchLdarg(0),
             x => x.MatchLdfld("RoR2.HealthComponent", "body"),
             x => x.MatchCallvirt("RoR2.CharacterBody", "get_armor"));
- 
+
             if (!a)
             {
-                WolfFixes.log.LogWarning("IL Failed : FixWEchoDamageNotProccingPlanulaAnymoreAC141 Part 1");
+                WolfFixes.log.LogError("IL Failed : FixWEchoDamageNotProccingPlanulaAnymoreAC141 Part 1");
                 return;
             }
             c.Emit(OpCodes.Ldarg_1);
-            c.EmitDelegate<Func<bool,DamageInfo, bool>>((var, damageInfo) =>
+            c.EmitDelegate<Func<bool, DamageInfo, bool>>((var, damageInfo) =>
             {
                 if (damageInfo.delayedDamageSecondHalf)
                 {
@@ -224,10 +226,10 @@ namespace WolfoFixes
             x => x.MatchMul(),
             x => x.MatchCall("UnityEngine.Mathf", "Max"),
             x => x.MatchStloc(10));
- 
+
             if (!a)
             {
-                WolfFixes.log.LogWarning("IL Failed : FixWEchoDamageNotProccingPlanulaAnymoreAC141 Part 2");
+                WolfFixes.log.LogError("IL Failed : FixWEchoDamageNotProccingPlanulaAnymoreAC141 Part 2");
                 return;
             }
             c.Emit(OpCodes.Ldarg_1);
@@ -255,7 +257,6 @@ namespace WolfoFixes
             x => x.MatchLdloc(112),
             x => x.MatchLdloc(46)))
             {
-                //c.RemoveRange(5);
                 c.EmitDelegate<Func<int, int>>((skill) =>
                 {
                     return 0;
@@ -263,7 +264,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixStoneFluxBeingAppliedTwice");
+                WolfFixes.log.LogError("IL Failed : FixStoneFluxBeingAppliedTwice");
             }
         }
 
@@ -291,7 +292,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixVoidsentNoLongerChaining");
+                WolfFixes.log.LogError("IL Failed : FixVoidsentNoLongerChaining");
             }
         }*/
 
@@ -310,7 +311,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : Bandolier_WrongAuthCheck");
+                WolfFixes.log.LogError("IL Failed : Bandolier_WrongAuthCheck");
             }
         }
 
@@ -357,7 +358,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : Antler_FixWrongAuth");
+                WolfFixes.log.LogError("IL Failed : Antler_FixWrongAuth");
             }
         }
 
@@ -392,7 +393,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : WECHO dont delete first hit if OSPed");
+                WolfFixes.log.LogError("IL Failed : WECHO dont delete first hit if OSPed");
             }
 
             c.TryGotoNext(MoveType.After,
@@ -417,7 +418,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixWarpedEchoNotUsingArmor");
+                WolfFixes.log.LogError("IL Failed : FixWarpedEchoNotUsingArmor");
             }
 
             //After 80%
@@ -456,7 +457,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : WARPED OSP FIX");
+                WolfFixes.log.LogError("IL Failed : WARPED OSP FIX");
             }
 
 
@@ -502,7 +503,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixChargedPerferatorCrit");
+                WolfFixes.log.LogError("IL Failed : FixChargedPerferatorCrit");
             }
 
         }
@@ -529,7 +530,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixChargedPerferatorCrit");
+                WolfFixes.log.LogError("IL Failed : FixChargedPerferatorCrit");
             }
         }
 
@@ -554,7 +555,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixWarpedEchoE8");
+                WolfFixes.log.LogError("IL Failed : FixWarpedEchoE8");
             }
         }
 

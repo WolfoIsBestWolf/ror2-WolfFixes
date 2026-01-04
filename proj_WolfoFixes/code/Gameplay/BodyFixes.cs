@@ -9,14 +9,13 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 
 namespace WolfoFixes
 {
 
     internal class BodyFixes
     {
-        
+
         public static void FixBarnalceMinorsSpammingNotImplementedWithOpsTransport(System.Action<PseudoCharacterMotor, Vector3> orig, PseudoCharacterMotor self, Vector3 newVelocity)
         {
             return;
@@ -33,7 +32,7 @@ namespace WolfoFixes
             orig(self);
             if (NetworkServer.active)
             {
-                self.characterBody.AddTimedBuff(JunkContent.Buffs.IgnoreFallDamage,0.8f, 1);
+                self.characterBody.AddTimedBuff(JunkContent.Buffs.IgnoreFallDamage, 0.8f, 1);
             }
         }
 
@@ -60,13 +59,6 @@ namespace WolfoFixes
 
         public static void Start()
         {
-            //Ice Spear wrong phys layer
-            //Addressables.LoadAssetAsync<GameObject>(key: "7a5eecba2b015474dbed965c120860d0").WaitForCompletion().layer = 8;
-
-
-            //SetSkippable(null, null);
-            // ChefFixes();
-
             //Added in AC
             //On.EntityStates.Merc.WhirlwindBase.OnEnter += WhirlwindBase_OnEnter;
 
@@ -88,10 +80,7 @@ namespace WolfoFixes
                 }
             };
 
-
-
-
-
+ 
 
             //Forgive me Please marked as ???
             CharacterBody DeathProjectile = Addressables.LoadAssetAsync<GameObject>(key: "1336d77e77299964884c3bd02757fde7").WaitForCompletion().GetComponent<CharacterBody>();
@@ -157,9 +146,11 @@ namespace WolfoFixes
             On.RoR2.Inventory.SetActiveEquipmentSlot += Inventory_SetActiveEquipmentSlot;
 
 
-            var targetMethod = typeof(PseudoCharacterMotor).GetProperty(nameof(PseudoCharacterMotor.velocityAuthority), BindingFlags.Public |  BindingFlags.Instance).GetSetMethod();
+            var targetMethod = typeof(PseudoCharacterMotor).GetProperty(nameof(PseudoCharacterMotor.velocityAuthority), BindingFlags.Public | BindingFlags.Instance).GetSetMethod();
             var destMethod = typeof(BodyFixes).GetMethod(nameof(FixBarnalceMinorsSpammingNotImplementedWithOpsTransport), System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
             var overrideHook2 = new Hook(targetMethod, destMethod);
+
+
         }
 
         public static void DLC3Fixes()
@@ -208,7 +199,7 @@ namespace WolfoFixes
                     friendInventory.ResetItemPermanent(RoR2Content.Items.WardOnLevel);
                 }
             }
-            
+
         }
 
         private static void SolusWebMissionController_EncounterHealthThresholdController_onAllMembersReachedThreshold(On.RoR2.SolusWebMissionController.orig_EncounterHealthThresholdController_onAllMembersReachedThreshold orig, SolusWebMissionController self, int threshold)
@@ -290,6 +281,24 @@ namespace WolfoFixes
             //Child shouldnt be burnable like Parents
             DLC2Content.BodyPrefabs.ChildBody.bodyFlags |= CharacterBody.BodyFlags.OverheatImmune;
 
+            //SKY MEADOW ROCKS OWN THEM  SELF
+
+            GameObject ROCK = null;
+            ROCK = Addressables.LoadAssetAsync<GameObject>(key: "1fb51531942733b469329cbcd0647a68").WaitForCompletion();
+            ROCK.GetComponent<ProjectileController>().owner = ROCK;
+            ROCK = Addressables.LoadAssetAsync<GameObject>(key: "40316250be8e9a049b87745e197820e2").WaitForCompletion();
+            ROCK.GetComponent<ProjectileController>().owner = ROCK;
+            ROCK = Addressables.LoadAssetAsync<GameObject>(key: "40316250be8e9a049b87745e197820e2").WaitForCompletion();
+            ROCK.GetComponent<ProjectileController>().owner = ROCK;
+            ROCK = Addressables.LoadAssetAsync<GameObject>(key: "fa0f995f3a42e244db914ac7d61cab47").WaitForCompletion();
+            ROCK.GetComponent<ProjectileController>().owner = ROCK;
+            ROCK = Addressables.LoadAssetAsync<GameObject>(key: "efcf575c05e1ea543be85f5cac0c12fd").WaitForCompletion();
+            ROCK.GetComponent<ProjectileController>().owner = ROCK;
+            ROCK = Addressables.LoadAssetAsync<GameObject>(key: "d59e337394dd72f418dbb1b622d2480d").WaitForCompletion();
+            ROCK.GetComponent<ProjectileController>().owner = ROCK;
+
+
+
         }
 
         public static void XI_GhostEliteMinionFix(On.RoR2.NetworkedBodySpawnSlot.orig_OnSpawnedServer orig, NetworkedBodySpawnSlot self, GameObject ownerBodyObject, SpawnCard.SpawnResult spawnResult, System.Action<MasterSpawnSlotController.ISlot, SpawnCard.SpawnResult> callback)
@@ -301,31 +310,18 @@ namespace WolfoFixes
                 Inventory component = spawnResult.spawnedInstance.GetComponent<Inventory>();
                 if (component)
                 {
-                    component.CopyEquipmentFrom(ownerBody.inventory);
-                    if (ownerBody.inventory.GetItemCount(RoR2Content.Items.Ghost) > 0)
+                    component.CopyEquipmentFrom(ownerBody.inventory, false);
+                    if (ownerBody.inventory.GetItemCountPermanent(RoR2Content.Items.Ghost) > 0)
                     {
-                        component.GiveItem(RoR2Content.Items.Ghost, 1);
-                        component.GiveItem(RoR2Content.Items.HealthDecay, 30);
-                        component.GiveItem(RoR2Content.Items.BoostDamage, 150);
+                        component.GiveItemPermanent(RoR2Content.Items.Ghost, 1);
+                        component.GiveItemPermanent(RoR2Content.Items.HealthDecay, 30);
+                        component.GiveItemPermanent(RoR2Content.Items.BoostDamage, 150);
                     }
                 }
             }
 
         }
-
-        public static void ChefFixes()
-        {
-
-            //ChefDiceEnhanced Boosted Projectile needs to be changed seperately
-            //I told them like 4 times so this has to just be intentional at this point
-            //Addressables.LoadAssetAsync<GameObject>(key: "a327aaf45e7e3b44f8b0bcc20c7eacfa").WaitForCompletion().GetComponent<ProjectileOverlapAttack>().overlapProcCoefficient = 1;
-
-            //Might need to adjust this
-            //On.EntityStates.Chef.OilSpillBase.OnExit += FallDamageImmunityOnOilSpillCancel;
-
-
-        }
-
+ 
 
 
         private static void FallDamageImmunityOnOilSpillCancel(On.EntityStates.Chef.OilSpillBase.orig_OnExit orig, EntityStates.Chef.OilSpillBase self)
@@ -352,7 +348,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixCaptainBeaconNoCrit");
+                WolfFixes.log.LogError("IL Failed : FixCaptainBeaconNoCrit");
             }
         }
 
@@ -369,7 +365,7 @@ namespace WolfoFixes
         private static void FixDumbFruit(On.EntityStates.Fauna.HabitatFruitDeathState.orig_OnEnter orig, EntityStates.Fauna.HabitatFruitDeathState self)
         {
             //self.outer.SetNextState(new EntityStates.Fauna.VultureEggDeathState());
-            
+
             orig(self);
             Transform Fruit = self.characterBody.mainHurtBox.transform;
             EffectManager.SimpleImpactEffect(Addressables.LoadAssetAsync<GameObject>(key: "RoR2/Base/Jellyfish/JellyfishDeath.prefab").WaitForCompletion(), Fruit.position, Vector3.up, false);
@@ -383,7 +379,7 @@ namespace WolfoFixes
                 gameObject.GetComponent<Rigidbody>().AddForce(UnityEngine.Random.insideUnitSphere * HabitatFruitDeathState.healPackMaxVelocity, ForceMode.VelocityChange);
                 NetworkServer.Spawn(gameObject);
             }
-           
+
         }
 
 
@@ -402,7 +398,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : CommandoReloadStateRemove");
+                WolfFixes.log.LogError("IL Failed : CommandoReloadStateRemove");
             }
         }
 

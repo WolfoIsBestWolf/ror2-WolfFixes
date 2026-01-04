@@ -99,7 +99,13 @@ namespace WolfoFixes
             //GameObject AffixCollectiveBodyAttachment = Addressables.LoadAssetAsync<GameObject>(key: "479df04eb1a9cb845bdedfaf9ea71cd6").WaitForCompletion();
             //AffixCollectiveBodyAttachment.transform.GetChild(0).GetChild(3).GetComponent<RoR2.UI.MainMenu.PlatformToggle>().Steam = true;
 
+            On.RoR2.GeodeController.ShouldShowOnScanner += GeodeController_ShouldShowOnScanner;
 
+        }
+        //Checks for !available, dont do that
+        private static bool GeodeController_ShouldShowOnScanner(On.RoR2.GeodeController.orig_ShouldShowOnScanner orig, GeodeController self)
+        {
+            return self.available;
         }
 
         private static void SkillIcon_Update(ILContext il)
@@ -120,7 +126,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed: IL.SkillIcon_Update");
+                WolfFixes.log.LogError("IL Failed: IL.SkillIcon_Update");
             }
         }
 
@@ -159,14 +165,14 @@ namespace WolfoFixes
             //Spurs visual sets diamater not radius, attack uses radius just fine.
             IL.RoR2.Items.JumpDamageStrikeBodyBehavior.UpdateAura += SpurHalfVisualRadius;
 
-         
+
             //1 Item misaligned
             //GameObject TemporaryItemsShopTerminal = Addressables.LoadAssetAsync<GameObject>(key: "d31df5066858329458b33f21b3b22d2e").WaitForCompletion();
             //TemporaryItemsShopTerminal.transform.GetChild(1).GetChild(3).localPosition = new Vector3(0f, 2.5f, 0.058f);
 
         }
 
-      
+
 
         private static void SpurHalfVisualRadius(ILContext il)
         {
@@ -181,7 +187,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed: IL.SpurHalfVisualRadius");
+                WolfFixes.log.LogError("IL Failed: IL.SpurHalfVisualRadius");
             }
         }
 
@@ -202,7 +208,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed: IL.CharacterModel_GetDroneUpgradePair");
+                WolfFixes.log.LogError("IL Failed: IL.CharacterModel_GetDroneUpgradePair");
             }
         }
 
@@ -257,7 +263,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed: IL.CharacterModel_UpdateOverlays");
+                WolfFixes.log.LogError("IL Failed: IL.CharacterModel_UpdateOverlays");
             }
         }
 

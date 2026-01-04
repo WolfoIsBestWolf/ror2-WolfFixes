@@ -1,7 +1,6 @@
 using MonoMod.Cil;
 using RoR2;
 using System;
-
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -11,12 +10,9 @@ namespace WolfoFixes
     {
         public static void Start()
         {
-
             //IL.RoR2.EquipmentSlot.FireHealAndRevive += ShrineRezEffect; //Use Seed
             IL.RoR2.CharacterMaster.RespawnExtraLifeHealAndRevive += ShrineRezEffect; //Use Seed already dead
             IL.RoR2.CharacterMaster.RespawnExtraLifeShrine += ShrineRezEffect; //Rev from Shrine already dead
-
-
         }
 
         private static void RezEffectOnDead(ILContext il)
@@ -44,7 +40,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : bro they forgot to make a rez effect2");
+                WolfFixes.log.LogError("IL Failed : bro they forgot to make a rez effect2");
             }
         }
 
@@ -59,7 +55,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : bro they forgot to make a rez effect");
+                WolfFixes.log.LogError("IL Failed : bro they forgot to make a rez effect");
             }
         }
 

@@ -23,7 +23,7 @@ namespace WolfoLibrary
         public static SceneDef Blackbeach2 = Addressables.LoadAssetAsync<SceneDef>(key: "f87198140bf9b5a4f82e206231df9091").WaitForCompletion();
         public static SceneDef Golemplains = Addressables.LoadAssetAsync<SceneDef>(key: "8ba24a95e46b3944280a4b66afd0c4dc").WaitForCompletion();
         public static SceneDef Golemplains2 = Addressables.LoadAssetAsync<SceneDef>(key: "657a62eb3e4c409429c91ba6fdb7d921").WaitForCompletion();
-        
+
         public static SceneDef SulfurPools = Addressables.LoadAssetAsync<SceneDef>(key: "796f9b67682b3db4c8c5af7294d0490c").WaitForCompletion();
         public static SceneDef RootJungle = Addressables.LoadAssetAsync<SceneDef>(key: "ced489f798226594db0d115af2101a9b").WaitForCompletion();
         public static SceneDef Habitat = Addressables.LoadAssetAsync<SceneDef>(key: "0b33829c6cdfad34a8160c6ae17edfcc").WaitForCompletion();

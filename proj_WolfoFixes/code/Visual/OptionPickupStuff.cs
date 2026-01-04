@@ -12,8 +12,7 @@ namespace WolfoFixes
         {
             On.RoR2.PickupPickerController.SetOptionsInternal += OptionPickup_Fixes;
 
-            Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/OptionPickup/OptionPickerPanel.prefab").WaitForCompletion().GetComponent<RoR2.UI.PickupPickerPanel>().maxColumnCount = 3; //Hud does not support 5 columns
-
+            
         }
 
         private static void OptionPickup_Fixes(On.RoR2.PickupPickerController.orig_SetOptionsInternal orig, PickupPickerController self, PickupPickerController.Option[] newOptions)
@@ -37,16 +36,6 @@ namespace WolfoFixes
                             {
                                 self.gameObject.GetComponent<GenericDisplayNameProvider>().displayToken = "ARTIFACT_COMMAND_CUBE_PINK_NAME";
                             }
-                            //Double checking for other mods
-                            /*if (!index.pickupDisplay.voidParticleEffect)
-                            {
-                                GameObject newVoidParticle = Object.Instantiate(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/GenericPickup").GetComponent<GenericPickupController>().pickupDisplay.voidParticleEffect, self.transform.GetChild(0));
-                                newVoidParticle.SetActive(true);
-                                GameObject newOrb = Object.Instantiate(index.pickupDisplay.tier2ParticleEffect.transform.GetChild(2).gameObject, newVoidParticle.transform);
-                                newOrb.GetComponent<ParticleSystem>().startColor = ColorCatalog.GetColor(ColorCatalog.ColorIndex.VoidItem);
-                                index.pickupDisplay.voidParticleEffect = newVoidParticle;
-                            }*/
-                             
                         }
                     }
                 }
@@ -57,7 +46,7 @@ namespace WolfoFixes
                     PickupDisplay pickupDisplay = self.transform.GetChild(0).GetComponent<PickupDisplay>();
                     pickupDisplay.pickupState = index.pickupState;
                     pickupDisplay.modelObject = self.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
-                    self.GetComponent<Highlight>().pickupIndex = index.pickupIndex;
+                    self.GetComponent<Highlight>().pickupState = index.pickupState;
                     self.GetComponent<Highlight>().isOn = true;
 
                 }

@@ -9,7 +9,18 @@ namespace WolfoFixes
 
     internal class EquipmentFixes
     {
-        public static void Start()
+        public static void VisualFixes()
+        {
+            //Always keep Wings to avoid confusion
+            On.RoR2.JetpackController.SetupWings += BugWingsAlways_SetupWings;
+            On.RoR2.JetpackController.OnDisable += BugWingsAlways_OnDisable;
+
+            //If Volatile Battery attempts to explode without a item display, it just looks bad and confusing
+            //This only happens with Engi Turrets in vanilla.
+            On.EntityStates.QuestVolatileBattery.CountDown.OnEnter += FallbackIfNoItemDisplay;
+        }
+
+        public static void GameplayFixes()
         {
             //MultiShopCard having a 0.1 cooldown is irrelevant for actual gameplay
             //It just fucks you over randomly when spamming E.
@@ -23,15 +34,6 @@ namespace WolfoFixes
 
             //Random Nullref or smth
             //On.RoR2.Util.HealthComponentToTransform += FixTwisteds_NotWorkingOnPlayers;
-
-            //Always keep Wings to avoid confusion
-            On.RoR2.JetpackController.SetupWings += BugWingsAlways_SetupWings;
-            On.RoR2.JetpackController.OnDisable += BugWingsAlways_OnDisable;
-
-
-            //If Volatile Battery attempts to explode without a item display, it just looks bad and confusing
-            //This only happens with Engi Turrets in vanilla.
-            On.EntityStates.QuestVolatileBattery.CountDown.OnEnter += FallbackIfNoItemDisplay;
         }
 
         private static void FallbackIfNoItemDisplay(On.EntityStates.QuestVolatileBattery.CountDown.orig_OnEnter orig, EntityStates.QuestVolatileBattery.CountDown self)
@@ -95,7 +97,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : FixSawmarang");
+                WolfFixes.log.LogError("IL Failed : FixSawmarang");
             }
         }
 

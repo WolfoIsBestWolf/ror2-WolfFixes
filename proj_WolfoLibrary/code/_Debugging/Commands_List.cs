@@ -18,7 +18,6 @@ namespace WolfoLibrary.Testing
             if (PlayerCharacterMasterController.instances.Count != 0)
             {
                 stats = PlayerCharacterMasterController.instances[0].master.playerStatsComponent.currentStats;
-                ;
             }
             else
             {
@@ -179,26 +178,6 @@ namespace WolfoLibrary.Testing
 
         }
 
-
-        [ConCommand(commandName = "list_mods", flags = ConVarFlags.None, helpText = "List installed mod names to get them for compatibility.")]
-        public static void CCMods(ConCommandArgs args)
-        {
-            string log1 = "";
-            string log2 = "";
-            foreach (var a in BepInEx.Bootstrap.Chainloader.PluginInfos)
-            {
-                log1 += a.ToString() + "\n";
-            }
-
-            foreach (var a in NetworkModCompatibilityHelper._networkModList)
-            {
-                log2 += a.ToString() + "\n";
-            }
-            Debug.Log("All loaded mods");
-            Debug.Log(log1);
-            Debug.Log("All RequiredByAllTaggedMods");
-            Debug.Log(log2);
-        }
 
         [ConCommand(commandName = "list_pickupdef", flags = ConVarFlags.None, helpText = "Give Radar Scanner and Equipment Cooldown Reduction hidden item")]
         public static void CCList_PickupDef(ConCommandArgs args)

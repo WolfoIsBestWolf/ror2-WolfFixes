@@ -1,12 +1,4 @@
-﻿using RoR2;
-using RoR2.UI;
-using System;
-using System.Collections;
-using System.IO;
-using UnityEngine;
-using UnityEngine.Rendering;
-
-namespace WolfoLibrary
+﻿namespace WolfoLibrary
 {   /*
     public class PortraitGenerator
     {

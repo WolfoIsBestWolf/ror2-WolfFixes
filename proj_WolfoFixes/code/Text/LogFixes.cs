@@ -2,15 +2,11 @@
 using RoR2.Stats;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using WolfoLibrary;
 
 namespace WolfoFixes
 {
-    public class InstantiateModelParams : MonoBehaviour
-    {
-        public Vector3 CameraPosition = new Vector3(-1.5f, 1f, 3f);
-        public Vector3 FocusPosition = new Vector3(0f, 1f, 0f);
 
-    }
     internal class LogFixes
     {
         public static void Start()
@@ -30,11 +26,11 @@ namespace WolfoFixes
 
 
             //Sulfur Pools Diagram is Red instead of Yellow ???
-           /* GameObject SulfurpoolsDioramaDisplay = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/sulfurpools/SulfurpoolsDioramaDisplay.prefab").WaitForCompletion();
-            MeshRenderer SPDiaramaRenderer = SulfurpoolsDioramaDisplay.transform.GetChild(2).GetComponent<MeshRenderer>();
-            Material SPRingAltered = Object.Instantiate(SPDiaramaRenderer.material);
-            SPRingAltered.SetTexture("_SnowTex", Addressables.LoadAssetAsync<Texture2D>(key: "RoR2/DLC1/sulfurpools/texSPGroundDIFVein.tga").WaitForCompletion());
-            SPDiaramaRenderer.material = SPRingAltered;*/
+            /* GameObject SulfurpoolsDioramaDisplay = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/sulfurpools/SulfurpoolsDioramaDisplay.prefab").WaitForCompletion();
+             MeshRenderer SPDiaramaRenderer = SulfurpoolsDioramaDisplay.transform.GetChild(2).GetComponent<MeshRenderer>();
+             Material SPRingAltered = Object.Instantiate(SPDiaramaRenderer.material);
+             SPRingAltered.SetTexture("_SnowTex", Addressables.LoadAssetAsync<Texture2D>(key: "RoR2/DLC1/sulfurpools/texSPGroundDIFVein.tga").WaitForCompletion());
+             SPDiaramaRenderer.material = SPRingAltered;*/
 
             //Way too zoomed in
             //ModelPanelParameters VoidStageDiorama = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/voidstage/VoidStageDiorama.prefab").WaitForCompletion().GetComponent<ModelPanelParameters>();

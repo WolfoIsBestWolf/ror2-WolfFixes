@@ -46,7 +46,7 @@ namespace WolfoFixes
 
         private static void EliteOnlyArtifactManager_PromoteIfHonor(On.RoR2.Artifacts.EliteOnlyArtifactManager.orig_PromoteIfHonor orig, CharacterMaster instanceMaster, Xoroshiro128Plus rng, EliteDef[] eliteDefs)
         {
-            orig(instanceMaster,Run.instance.bossRewardRng,eliteDefs);
+            orig(instanceMaster, Run.instance.bossRewardRng, eliteDefs);
         }
 
 
@@ -69,7 +69,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : HealthComponent_ServerFixedUpdateHealthComponent_Suicide1");
+                WolfFixes.log.LogError("IL Failed : HealthComponent_ServerFixedUpdateHealthComponent_Suicide1");
             }
         }
 
@@ -95,7 +95,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed: SwarmsArtifactManager_OnSpawnCardOnSpawnedServerGlobal");
+                WolfFixes.log.LogError("IL Failed: SwarmsArtifactManager_OnSpawnCardOnSpawnedServerGlobal");
             }
         }
 

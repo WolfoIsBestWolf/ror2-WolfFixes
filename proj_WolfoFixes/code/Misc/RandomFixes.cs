@@ -4,7 +4,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace WolfoFixes
 {
@@ -50,7 +49,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : ScrapperInfoPanelHelper_AddQuantityToPickerButton");
+                WolfFixes.log.LogError("IL Failed : ScrapperInfoPanelHelper_AddQuantityToPickerButton");
             }
         }
 
@@ -105,7 +104,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : PingerController_GeneratePingInfo");
+                WolfFixes.log.LogError("IL Failed : PingerController_GeneratePingInfo");
             }
         }
 
@@ -130,7 +129,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : IncreaseDamageOnMultiKillItemDisplayUpdater");
+                WolfFixes.log.LogError("IL Failed : IncreaseDamageOnMultiKillItemDisplayUpdater");
             }
         }
 

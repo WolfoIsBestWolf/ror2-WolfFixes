@@ -1,5 +1,6 @@
 ﻿using HG;
 using RoR2;
+using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -11,9 +12,19 @@ namespace WolfoLibrary
         {
             ArrayUtils.ArrayAppend(ref def.tags, tag);
         }
+
         public static void RemoveTag(ItemDef def, ItemTag tag)
         {
-            def.tags = def.tags.Remove(tag);
+            int index = Array.IndexOf<ItemTag>(def.tags, tag);
+            if (index != -1)
+            {
+                HG.ArrayUtils.ArrayRemoveAtAndResize(ref def.tags, index);
+            }
+            //def.tags = def.tags.Remove(tag);
+        }
+        public static void RemoveTag(ItemDef def, int index)
+        {
+            HG.ArrayUtils.ArrayRemoveAtAndResize(ref def.tags, index);
         }
         public static ItemTag EvolutionBlacklist = (ItemTag)94; //Blacklisted from Evolution
         public static ItemTag ScavengerBlacklist = (ItemTag)95; //Scav specific blacklist.

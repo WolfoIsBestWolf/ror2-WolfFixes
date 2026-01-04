@@ -60,7 +60,7 @@ namespace WolfoFixes
             }
             else
             {
-                WolfFixes.log.LogWarning("IL Failed : BossSubtitleMissingSpace");
+                WolfFixes.log.LogError("IL Failed : BossSubtitleMissingSpace");
             }
         }
 

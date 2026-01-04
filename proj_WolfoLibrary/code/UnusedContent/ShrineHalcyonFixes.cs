@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace WolfoFixes
+namespace WolfoLibrary
 {
     internal class ShrineHalcyonFixes
     {
@@ -14,6 +14,10 @@ namespace WolfoFixes
             On.RoR2.CombatDirector.SpendAllCreditsOnMapSpawns_Transform += CombatDirector_SpendAllCreditsOnMapSpawns;
             On.RoR2.CombatDirector.HalcyoniteShrineActivation += CombatDirector_HalcyoniteShrineActivation;
             On.RoR2.HalcyoniteShrineInteractable.IsDraining += HalcyoniteShrineInteractable_IsDraining;
+
+            //Clients need these values for Visuals
+            On.RoR2.HalcyoniteShrineInteractable.Awake += MoreValuesForClients;
+            On.RoR2.HalcyoniteShrineInteractable.Start += MoreValuesClient2;
  
             IL.EntityStates.ShrineHalcyonite.ShrineHalcyoniteBaseState.ModifyVisuals += FixVisualsBeingInconsistent;
         }
@@ -35,7 +39,7 @@ namespace WolfoFixes
             }
             else
             {
-               WolfoLibrary.Log.LogError("IL Failed: FixVisualsBeingInconsistent");
+               Log.LogError("IL Failed: FixVisualsBeingInconsistent");
             }
         }
   
@@ -53,7 +57,7 @@ namespace WolfoFixes
         {
             if (!NetworkServer.active)
             {
-                WolfoLibrary.Log.LogError("CombatDirector_SpendAllCreditsOnMapSpawns | This isn't meant to run on Client, Gearbox Software");
+                Log.LogError("CombatDirector_SpendAllCreditsOnMapSpawns | This isn't meant to run on Client, Gearbox Software");
                 return;
             }
             orig(self, mapSpawnTarget);
@@ -63,12 +67,39 @@ namespace WolfoFixes
         {
             if (!NetworkServer.active)
             {
-                WolfoLibrary.Log.LogError("CombatDirector_HalcyoniteShrineActivation | This isn't meant to run on Client, Gearbox Software");
+                Log.LogError("CombatDirector_HalcyoniteShrineActivation | This isn't meant to run on Client, Gearbox Software");
                 return;
             }
             orig(self, monsterCredit, chosenDirectorCard, difficultyLevel, shrineTransform);
         }
- 
+
+        private static void MoreValuesForClients(On.RoR2.HalcyoniteShrineInteractable.orig_Awake orig, HalcyoniteShrineInteractable self)
+        {
+            orig(self);
+            if (!NetworkServer.active)
+            {
+
+            }
+        }
+        private static void MoreValuesClient2(On.RoR2.HalcyoniteShrineInteractable.orig_Start orig, HalcyoniteShrineInteractable self)
+        {
+            orig(self);
+            if (!NetworkServer.active)
+            {
+                self.lowGoldCost = Run.instance.GetDifficultyScaledCost(self.lowGoldCost);
+                self.midGoldCost = Run.instance.GetDifficultyScaledCost(self.midGoldCost);
+                self.maxGoldCost = Run.instance.GetDifficultyScaledCost(self.maxGoldCost);
+                if (self.purchaseInteraction.Networkcost > 0)
+                {
+                    self.goldDrainValue = self.purchaseInteraction.Networkcost; //Personal mod use
+                }
+                self.goldDrainValue = Run.instance.GetDifficultyScaledCost(self.goldDrainValue);
+                GoldSiphonNearbyBodyController controller = self.transform.GetChild(1).GetComponent<GoldSiphonNearbyBodyController>();
+                controller.goldDrainValue = self.goldDrainValue;
+            }
+        }
+
+
     }
 
 }

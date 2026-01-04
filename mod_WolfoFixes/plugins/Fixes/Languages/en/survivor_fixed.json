@@ -1,9 +1,6 @@
 {
 	"strings":
 	{
-		"DRONE_GUNNER_PRIMARY_SKILL_DESCRIPTION": "Shoots a 4-Round burst.",
-        
-
 	 
 	 
 		"CHEF_UTILITY_ALT_BOOST_DESCRIPTION_SKILL": "Twirl upwards then slam down, exploding with <style=cIsUtility>activated oil</style> for <style=cIsDamage>200% damage</style>. <style=cIsDamage>Launch again</style> by reactivating this ability before landing.",
@@ -29,7 +26,7 @@
 //Transport -> mention 400% flat damage
 //Junk -> Mention specifics and cooldown
 
-//Emergency -> Written as 250% instead of 50%/s, 5s duration
+//Emergency -> Written as 250% instead of 50%/s to match other drones, 5s duration
 //Cleanup -> Radius, slow%
 
 //Jailer -> Utiltiy not damage (not important)
