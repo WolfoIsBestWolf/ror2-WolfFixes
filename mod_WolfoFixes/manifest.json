@@ -1,6 +1,6 @@
 {
     "name": "WolfFixes",
-    "version_number": "1.3.3",
+    "version_number": "1.3.4",
     "website_url": "https://github.com/WolfoIsBestWolf/ror2-WolfFixes",
     "description": "Mod focused on fixing confirmed gameplay bugs, and various visual, text and audio fixes.",
     "dependencies": [

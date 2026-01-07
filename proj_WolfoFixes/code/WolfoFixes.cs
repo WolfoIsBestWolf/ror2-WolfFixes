@@ -11,7 +11,7 @@ namespace WolfoFixes
 
     [BepInDependency("com.bepis.r2api")]
     [BepInDependency("com.Wolfo.WolfoLibrary")]
-    [BepInPlugin("com.Wolfo.WolfFixes", "WolfoBugFixes", "1.3.2")]
+    [BepInPlugin("com.Wolfo.WolfFixes", "WolfoBugFixes", "1.3.4")]
     [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
     //[BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     public class WolfFixes : BaseUnityPlugin
@@ -19,7 +19,7 @@ namespace WolfoFixes
         public static ManualLogSource log;
 
         public static bool riskyFixes;
-         public static bool riskyTweaks;
+        public static bool riskyTweaks;
         public void Awake()
         {
             WConfig.Awake();
@@ -51,7 +51,7 @@ namespace WolfoFixes
                 BodyFixes.Start();
                 DevotionFixes.Start();
                 GameplayMisc.Start();
-          
+
                 ItemFixes.Start();
                 EquipmentFixes.VisualFixes();
                 EquipmentFixes.GameplayFixes();
@@ -59,7 +59,7 @@ namespace WolfoFixes
 
                 PrayerBeads.Start();
                 Simualcrum.Start();
-               
+
 
                 On.RoR2.BuffCatalog.Init += BuffCatalog_Init;
             }

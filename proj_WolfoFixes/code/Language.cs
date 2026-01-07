@@ -28,30 +28,34 @@ namespace WolfoFixes
             {
                 return;
             }
-            if (Directory.Exists(GetPathToFile(Folder + "Languages")))
-            {
-                On.RoR2.Language.SetFolders += SetFolders;
-            }
-            else
-            {
-                Debug.LogError("COULD NOT FIND LANGUAGES FOLDER");
-            }
+            On.RoR2.Language.SetFolders += SetFolders;
         }
 
         private static void SetFolders(On.RoR2.Language.orig_SetFolders orig, RoR2.Language self, System.Collections.Generic.IEnumerable<string> newFolders)
         {
-            var dirs = System.IO.Directory.EnumerateDirectories(Path.Combine(GetPathToFile(Folder + "Languages")), self.name);
+            var dirs = System.IO.Directory.EnumerateDirectories(Path.Combine(GetPathToFile("Languages")), self.name);
             orig(self, newFolders.Union(dirs));
         }
 
 
         internal static string GetPathToFile(string folderName)
         {
-            return Path.Combine(assemblyDir, folderName);
+            string path = Path.Combine(assemblyDir, Folder + folderName);
+            if (Directory.Exists(path))
+            {
+                return path;
+            }
+            path = Path.Combine(assemblyDir, "plugins\\" + Folder + folderName);
+            if (Directory.Exists(path))
+            {
+                return path;
+            }
+            else
+            {
+                Debug.LogError($"COULD NOT FIND {folderName} FOLDER");
+            }
+            return assemblyDir;
         }
-        internal static string GetPathToFile(string folderName, string fileName)
-        {
-            return Path.Combine(assemblyDir, folderName, fileName);
-        }
+
     }
 }

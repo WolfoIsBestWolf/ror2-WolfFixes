@@ -1,22 +1,20 @@
 ﻿using BepInEx;
-using BepInEx.Logging;
 using R2API.Utils;
+using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using RoR2;
 using WolfoLibrary.Testing;
 //[assembly: NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
 [assembly: NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.DifferentModVersionsAreOk)]
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 namespace WolfoLibrary
 {
-
     //[BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("com.Wolfo.WolfoLibrary", "WolfoLibrary", "1.3.2")]
+    [BepInPlugin("com.Wolfo.WolfoLibrary", "WolfoLibrary", "1.3.4")]
     //[NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
     public class WolfoLib : BaseUnityPlugin
     {
-   
+
         public void Awake()
         {
             Log.log = base.Logger;
@@ -59,21 +57,4 @@ namespace WolfoLibrary
 
     }
 
-    public static class Log
-    {
-        public static ManualLogSource log;
-
-        public static void LogMessage(object message)
-        {
-            log.LogMessage(message);
-        }
-        public static void LogWarning(object message)
-        {
-            log.LogWarning(message);
-        }
-        public static void LogError(object message)
-        {
-            log.LogError(message);
-        }
-    }
 }

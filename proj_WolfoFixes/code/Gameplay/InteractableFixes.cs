@@ -11,7 +11,7 @@ namespace WolfoFixes
         public static void VisualFixes()
         {
             ShrineShapingFixes.Start();
-           
+
             //Avoid duplicate Golemplains & BlackBeach
             //Avoid Special Stages removing a choice for 3rd Seers.
             On.RoR2.BazaarController.SetUpSeerStations += FixDuplicateAndEmptyThirdSeers;

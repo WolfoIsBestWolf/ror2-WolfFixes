@@ -1,6 +1,5 @@
 ﻿using MonoMod.Cil;
 using RoR2;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -18,7 +17,7 @@ namespace WolfoLibrary
             //Clients need these values for Visuals
             On.RoR2.HalcyoniteShrineInteractable.Awake += MoreValuesForClients;
             On.RoR2.HalcyoniteShrineInteractable.Start += MoreValuesClient2;
- 
+
             IL.EntityStates.ShrineHalcyonite.ShrineHalcyoniteBaseState.ModifyVisuals += FixVisualsBeingInconsistent;
         }
 
@@ -39,10 +38,10 @@ namespace WolfoLibrary
             }
             else
             {
-               Log.LogError("IL Failed: FixVisualsBeingInconsistent");
+                Log.LogError("IL Failed: FixVisualsBeingInconsistent");
             }
         }
-  
+
         private static void HalcyoniteShrineInteractable_IsDraining(On.RoR2.HalcyoniteShrineInteractable.orig_IsDraining orig, HalcyoniteShrineInteractable self, bool drainingActive)
         {
             if (!NetworkServer.active)

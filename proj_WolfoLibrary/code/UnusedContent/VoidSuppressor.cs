@@ -20,7 +20,6 @@ namespace WolfoLibrary
             MissedContent.Items.ScrapRedSuppressed.descriptionToken = "ITEM_SCRAPRED_DESC";
 
             On.RoR2.PickupCatalog.Init += MakeTiered;
-            On.RoR2.PickupCatalog.SetEntries += MakeUntiered;
             Run.onRunStartGlobal += MakeTieredAgain;
             On.RoR2.GameCompletionStatsHelper.ctor += RemoveFromCompletion;
         }
@@ -81,16 +80,6 @@ namespace WolfoLibrary
 
         }
 
-
-
-        private static void MakeUntiered(On.RoR2.PickupCatalog.orig_SetEntries orig, PickupDef[] pickupDefs)
-        {
-            orig(pickupDefs);
-            MissedContent.Items.ScrapWhiteSuppressed.tier = ItemTier.NoTier;
-            MissedContent.Items.ScrapGreenSuppressed.tier = ItemTier.NoTier;
-            MissedContent.Items.ScrapRedSuppressed.tier = ItemTier.NoTier;
-        }
-
         private static void MakeTieredAgain(Run obj)
         {
 
@@ -102,10 +91,19 @@ namespace WolfoLibrary
 
         private static System.Collections.IEnumerator MakeTiered(On.RoR2.PickupCatalog.orig_Init orig)
         {
+            if (MissedContent.Items.ScrapWhiteSuppressed.tier != ItemTier.NoTier)
+            {
+                //Would indicate someone else modified it and it is their problem now.
+                return orig();
+            }
             MissedContent.Items.ScrapWhiteSuppressed.tier = ItemTier.Tier1;
             MissedContent.Items.ScrapGreenSuppressed.tier = ItemTier.Tier2;
             MissedContent.Items.ScrapRedSuppressed.tier = ItemTier.Tier3;
-            return orig();
+            var a = orig();
+            MissedContent.Items.ScrapWhiteSuppressed.tier = ItemTier.NoTier;
+            MissedContent.Items.ScrapGreenSuppressed.tier = ItemTier.NoTier;
+            MissedContent.Items.ScrapRedSuppressed.tier = ItemTier.NoTier;
+            return a;
         }
 
         private static void RemoveFromCompletion(On.RoR2.GameCompletionStatsHelper.orig_ctor orig, GameCompletionStatsHelper self)

@@ -1,4 +1,7 @@
 ```
+v1.3.4
+Language folder just decided to not be uploaded last time???
+
 v1.3.3
 Fixed IL Incompat with other mods affected Lunar Ruin. (ie RiskyMod)
 

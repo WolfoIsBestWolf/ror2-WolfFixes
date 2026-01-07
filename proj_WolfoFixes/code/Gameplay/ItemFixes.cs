@@ -39,7 +39,7 @@ namespace WolfoFixes
             {
                 IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDoubleDippingLunarRuin;
             }
-        
+
 
             IL.RoR2.HealthComponent.TakeDamageProcess += FixParryConsuemdOn0Damage0ProcAttacks;
         }
@@ -157,7 +157,7 @@ namespace WolfoFixes
                 c.EmitDelegate<Func<bool, HealthComponent, bool>>((var, self) =>
                 {
                     //Debug.Log(self.combinedHealthFraction);
-                    if (self.combinedHealthFraction < (1 - self.body.oneShotProtectionFraction))
+                    if (self.combinedHealthFraction <= (1 - self.body.oneShotProtectionFraction))
                     {
                         return false;
                     }

@@ -80,7 +80,7 @@ namespace WolfoFixes
                 }
             };
 
- 
+
 
             //Forgive me Please marked as ???
             CharacterBody DeathProjectile = Addressables.LoadAssetAsync<GameObject>(key: "1336d77e77299964884c3bd02757fde7").WaitForCompletion().GetComponent<CharacterBody>();
@@ -321,7 +321,7 @@ namespace WolfoFixes
             }
 
         }
- 
+
 
 
         private static void FallDamageImmunityOnOilSpillCancel(On.EntityStates.Chef.OilSpillBase.orig_OnExit orig, EntityStates.Chef.OilSpillBase self)
