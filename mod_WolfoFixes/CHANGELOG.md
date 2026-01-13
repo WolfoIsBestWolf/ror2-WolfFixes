@@ -1,4 +1,15 @@
 ```
+v1.3.5
+Removed un-scrapable RegenScrap as per request. (Not really fix + inteferring with item reworks)
+Removed Acrid Spawn protection as per request. (Not really fix anyways.)
+Added config to remove Elite XI spawning Elite Alphas.
+
+Now filters out all debuffs from working with Growth Nectar, including modded ones.
+(Many mods forget to tag them because it's a rather recent addition to look out for)
+
+Fixed some config descriptions being outdated.
+```
+```
 v1.3.4
 Language folder just decided to not be uploaded last time???
 

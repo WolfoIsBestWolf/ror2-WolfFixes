@@ -3,6 +3,7 @@ using BepInEx.Logging;
 using R2API;
 using R2API.Utils;
 using RoR2;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -101,9 +102,13 @@ namespace WolfoFixes
                 DLC3Content.Buffs.Electrocuted.flags = BuffDef.Flags.ExcludeFromNoxiousThorns;
                 DLC3Content.Buffs.Conductive.flags = 0;
 
-                DLC3Content.Buffs.Accelerant.ignoreGrowthNectar = true;
+            
+
+                DLC3Content.Buffs.Brittle.isDebuff = false; //Removing all fire effects is not a debuff bro
+
+                //They forgot to tag like all these buffs.
+                /*DLC3Content.Buffs.Accelerant.ignoreGrowthNectar = true;
                 DLC3Content.Buffs.AccelerantIgnited.ignoreGrowthNectar = true;
-                DLC3Content.Buffs.Brittle.isDebuff = false;
                 DLC3Content.Buffs.Conductive.ignoreGrowthNectar = true;
                 DLC3Content.Buffs.Electrocuted.ignoreGrowthNectar = true;
                 DLC3Content.Buffs.GravitySlow.ignoreGrowthNectar = true;
@@ -114,13 +119,40 @@ namespace WolfoFixes
                 DLC3Content.Buffs.SolusWingWeakpointDestroyed.ignoreGrowthNectar = true;
                 DLC3Content.Buffs.Taunted.ignoreGrowthNectar = true;
                 DLC3Content.Buffs.Underclock.ignoreGrowthNectar = true;
-                DLC3Content.Buffs.VultureRoot.ignoreGrowthNectar = true;
-
+                DLC3Content.Buffs.VultureRoot.ignoreGrowthNectar = true;*/
+                DLC3Content.Buffs.TrashToTreasureWhite.isCooldown = false;
+                DLC3Content.Buffs.TrashToTreasureGreen.isCooldown = false;
+                DLC3Content.Buffs.TrashToTreasureRed.isCooldown = false;
+                DLC3Content.Buffs.TrashToTreasureYellow.isCooldown = false; 
+ 
+                DLC3Content.Buffs.PowerCubeBuff.isCooldown = false; 
+                DLC3Content.Buffs.PowerPyramidBuff.isCooldown = false; 
+                DLC3Content.Buffs.PowerOrbBuff.isCooldown = false; 
+ 
             }
             catch { }
-
-
+ 
             orig();
+
+
+
+            //var listPre = BuffCatalog.ignoreGrowthNectarIndices.ToList();
+
+            //For better support with DLC3, because forgot to tag a bunch of buffs.
+            //For better support with, literally all modded content.
+            BuffCatalog.ignoreGrowthNectarIndices = (from buffDef in BuffCatalog.buffDefs
+                                                     where (buffDef.ignoreGrowthNectar || buffDef.isDebuff || buffDef.isDOT)
+                                                     select buffDef.buffIndex).ToArray<BuffIndex>();
+ 
+            /*var listPost = BuffCatalog.ignoreGrowthNectarIndices.ToList();
+            foreach (var index in listPost)
+            {
+                if (!listPre.Contains(index))
+                {
+                    Debug.Log(BuffCatalog.GetBuffDef(index));
+                }
+            }*/
+
         }
 
         private void Language_onCurrentLanguageChanged()
@@ -157,11 +189,11 @@ namespace WolfoFixes
                 Simualcrum.CallLate();
 
                 //Prevent scrapping regen scrap.
-                var pdtUnscrappableItems = Addressables.LoadAssetAsync<ExplicitPickupDropTable>(key: "6db5e5eb0ec0c394da95229ad89cea29").WaitForCompletion();
+                /*var pdtUnscrappableItems = Addressables.LoadAssetAsync<ExplicitPickupDropTable>(key: "6db5e5eb0ec0c394da95229ad89cea29").WaitForCompletion();
                 HG.ArrayUtils.ArrayAppend(ref pdtUnscrappableItems.pickupEntries, new ExplicitPickupDropTable.PickupDefEntry()
                 {
                     pickupDef = DLC1Content.Items.RegeneratingScrap,
-                });
+                });*/
             }
 
 

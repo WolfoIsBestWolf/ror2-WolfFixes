@@ -62,7 +62,8 @@ namespace WolfoFixes
             //Added in AC
             //On.EntityStates.Merc.WhirlwindBase.OnEnter += WhirlwindBase_OnEnter;
 
-            On.EntityStates.Croco.Spawn.OnEnter += (orig, self) =>
+            //Move this somewhere
+            /*On.EntityStates.Croco.Spawn.OnEnter += (orig, self) =>
             {
                 orig(self);
                 if (NetworkServer.active)
@@ -78,7 +79,7 @@ namespace WolfoFixes
                     self.characterBody.RemoveBuff(RoR2Content.Buffs.HiddenInvincibility);
                     self.characterBody.AddTimedBuff(RoR2Content.Buffs.HiddenInvincibility, 3f);
                 }
-            };
+            };*/
 
 
 
@@ -145,10 +146,10 @@ namespace WolfoFixes
 
             On.RoR2.Inventory.SetActiveEquipmentSlot += Inventory_SetActiveEquipmentSlot;
 
-
-            var targetMethod = typeof(PseudoCharacterMotor).GetProperty(nameof(PseudoCharacterMotor.velocityAuthority), BindingFlags.Public | BindingFlags.Instance).GetSetMethod();
+            //Scores problem now.
+            /*var targetMethod = typeof(PseudoCharacterMotor).GetProperty(nameof(PseudoCharacterMotor.velocityAuthority), BindingFlags.Public | BindingFlags.Instance).GetSetMethod();
             var destMethod = typeof(BodyFixes).GetMethod(nameof(FixBarnalceMinorsSpammingNotImplementedWithOpsTransport), System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-            var overrideHook2 = new Hook(targetMethod, destMethod);
+            var overrideHook2 = new Hook(targetMethod, destMethod);*/
 
 
         }
@@ -310,7 +311,10 @@ namespace WolfoFixes
                 Inventory component = spawnResult.spawnedInstance.GetComponent<Inventory>();
                 if (component)
                 {
-                    component.CopyEquipmentFrom(ownerBody.inventory, false);
+                    if (WConfig.cfgXIEliteFix.Value)
+                    {
+                        component.CopyEquipmentFrom(ownerBody.inventory, false);
+                    }
                     if (ownerBody.inventory.GetItemCountPermanent(RoR2Content.Items.Ghost) > 0)
                     {
                         component.GiveItemPermanent(RoR2Content.Items.Ghost, 1);

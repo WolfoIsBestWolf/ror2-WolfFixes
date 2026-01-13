@@ -31,9 +31,7 @@ namespace WolfoFixes
             //Sawmerang checks for Sawmerang Equip which isnt logical at all lol.
             Addressables.LoadAssetAsync<GameObject>(key: "9ca7d392fa3bb444b827d475b36b9253").WaitForCompletion().AddComponent<ThisIsASawmarang>();
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixSawmarang;
-
-            //Random Nullref or smth
-            //On.RoR2.Util.HealthComponentToTransform += FixTwisteds_NotWorkingOnPlayers;
+ 
         }
 
         private static void FallbackIfNoItemDisplay(On.EntityStates.QuestVolatileBattery.CountDown.orig_OnEnter orig, EntityStates.QuestVolatileBattery.CountDown self)

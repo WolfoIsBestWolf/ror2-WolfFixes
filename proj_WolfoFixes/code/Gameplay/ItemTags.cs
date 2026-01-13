@@ -47,22 +47,19 @@ namespace WolfoFixes
             AddTag(RoR2Content.Items.LunarTrinket, ItemTag.AIBlacklist);
             AddTag(RoR2Content.Items.FocusConvergence, ItemTag.AIBlacklist);
             AddTag(DLC2Content.Items.OnLevelUpFreeUnlock, ItemTag.AIBlacklist);
-
-
-            //AIBlacklisted because EquipRelated for Arena
-            //But those drop tables filter those out nowadays
-            //And Scavs can use these just fine
-            RemoveTag(RoR2Content.Items.EquipmentMagazine, ItemTag.AIBlacklist);
-            RemoveTag(RoR2Content.Items.EnergizedOnEquipmentUse, ItemTag.AIBlacklist);
-            RemoveTag(RoR2Content.Items.Talisman, ItemTag.AIBlacklist);
-
-
+ 
             #endregion
 
             if (!WConfig.cfgItemTags.Value)
             {
                 return;
             }
+            //AIBlacklisted because EquipRelated for Arena
+            //But those drop tables filter those out nowadays
+            //And Scavs can use these just fine
+            RemoveTag(RoR2Content.Items.EquipmentMagazine, ItemTag.AIBlacklist);
+            RemoveTag(RoR2Content.Items.EnergizedOnEquipmentUse, ItemTag.AIBlacklist);
+            RemoveTag(RoR2Content.Items.Talisman, ItemTag.AIBlacklist);
 
             #region AI Blacklist
             #region White, Green, Red
@@ -72,15 +69,13 @@ namespace WolfoFixes
             AddTag(RoR2Content.Items.Infusion, ItemTag.AIBlacklist); //Useless
             AddTag(DLC1Content.Items.PrimarySkillShuriken, EvolutionBlacklist); //Borderline for runs, Keeping in Vfields
 
-            AddTag(DLC3Content.Items.ShieldBooster, ItemTag.AIBlacklist); //Borderline for runs, Keeping in Vfields
+            AddTag(DLC3Content.Items.ShieldBooster, ItemTag.AIBlacklist); //Damage reflection items aren't for enemies
             #endregion
             #region Red
             AddTag(RoR2Content.Items.NovaOnHeal, ItemTag.AIBlacklist); //Overpowered
 
             AddTag(RoR2Content.Items.BarrierOnOverHeal, EvolutionBlacklist); //Useless
             AddTag(DLC1Content.Items.MoreMissile, EvolutionBlacklist);       //Useless
-
-            //AddTag(RoR2Content.Items.CaptainDefenseMatrix.tags, ItemTag.CannotSteal); //Passive shouldnt be stealable ig?
             #endregion
             #region Boss
             AddTag(RoR2Content.Items.TitanGoldDuringTP, ItemTag.AIBlacklist); //Cant use
@@ -104,8 +99,6 @@ namespace WolfoFixes
             AddTag(DLC1Content.Items.ExplodeOnDeathVoid, ScavengerBlacklist); //Op
 
             #endregion
-
-
             #region Modded
             ItemDef tempDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex("WatchMetronome"));
             if (tempDef != null)

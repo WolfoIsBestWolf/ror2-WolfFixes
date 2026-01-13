@@ -22,6 +22,7 @@ namespace WolfoFixes
 
         public static ConfigEntry<bool> cfgItemTags;
         public static ConfigEntry<bool> cfgDevotionSpareDroneParts;
+        public static ConfigEntry<bool> cfgXIEliteFix;
 
         public static ConfigEntry<bool> cfgDisable;
         public static ConfigEntry<bool> cfgDisableGameplay;
@@ -42,25 +43,31 @@ namespace WolfoFixes
              "Main",
              "Plains Roost weight",
              0.75f,
-             "They are counted as 2 stages due to the 2 variants, so they essentially have double the weight."
-          );
+             "They are in the pool twice, because they are 2 variants. Leading to them being twice as common as other stage 1s with if a weight of 1."
+            );
             cfgTempShopWeight = ConfigFile_Client.Bind(
              "Main",
              "Fix Temp Shop Weights",
              true,
-             "Temporary shops are 10x more common than intended on Verdant Falls, Reformed Altar, Helminth Hatchery"
+             "Temporary shops are 10x more common than intended on:\n-Verdant Falls\n-Reformed Altar\n-Helminth Hatchery\n\nDue to not using standardized chest weights."
+          );
+            cfgXIEliteFix = ConfigFile_Client.Bind(
+             "Main",
+             "Elite XI Elite Minions",
+             true,
+             "This is definitely a overseight, as Ghost XI don't spawn Ghost Alpha either.\n\nBut could be considered too gameplay affecting."
           );
             cfgLoopSeers = ConfigFile_Client.Bind(
                "Main",
                "No Pre-Loop Stage Seers during loops",
                true,
-               "You can get PreLoop variants of stages that have loop variants as Lunar Seer Destinations.\nVanilla : True\nAt least a dev thought it was a funny quirk but still just feels like a bug."
+               "Prevent seing Pre-Loop variants from appearing in Lunar Seers, after you have looped.\n\n(ie Shattered Abodes as a Stage 6)\n\nVanilla: false\n\nThis definitely seems like a bug."
             );
             cfgFixWarpedOSP = ConfigFile_Client.Bind(
               "Main",
-              "Fix Warped Echo OSP",
+              "Fix Warped Echo allowing OSP with curse",
               true,
-              "You can get PreLoop variants of stages that have loop variants as Lunar Seer Destinations.\nVanilla : True\nAt least a dev thought it was a funny quirk but still just feels like a bug."
+              "One Shot Protection never truly goes away, and Warped Echo can abuse that to make it so you can live even if Curse is meant to remove OSP.\n\n(With Curse, OSP limits damage taken to a 100%, this normally kills you, but Warped Echo splits and reduces this damage, saving you)\n\nThis fix makes it so OSP is just skipped if you would die anyways."
            );
 
 
@@ -68,7 +75,7 @@ namespace WolfoFixes
                 "Main",
                 "Item Tag Changes",
                 true,
-                "This may slightly affect balance of Mithrix Phase 4, if you think playing around items that should be blacklisted is fun then go ahead and disable it.\n\nAIBlacklist Nkuhanas Opinion and Infusion.\nMoves around certain categories on items.\nBug fixes like Harpoon not being tagged as OnKill still happen even if turned of"
+                "AIBlacklisted:\nNkuhanas Opinion, Kinetic Dampner.\n\nMithrixBlacklisted:\nEgocentrism\n\nUnAiblacklisted:\nFuel Cell, WarHorn, Soulbound Catalyst\n\nBug fixes like Harpoon not being tagged as OnKill still happen even if turned of"
             );
             cfgDevotionSpareDroneParts = ConfigFile_Client.Bind(
                 "Main",
@@ -88,13 +95,13 @@ namespace WolfoFixes
                 "Main",
                 "Disable all gameplay fixes",
                 false,
-                "Disable all gameplay fixes leaving visuals"
+                "Disable all gameplay fixes, but leaving visual fixes."
             );
             cfgDisable = ConfigFile_Client.Bind(
                 "Main",
                 "Disable all fixes",
                 false,
-                "Disable all fixes leaving the mod as just a library mod to be used for my other mods and debugging purposes."
+                "Disable all fixes, leaving the mod as just a library mod to be used for my other mods and debugging purposes."
            );
 
         }

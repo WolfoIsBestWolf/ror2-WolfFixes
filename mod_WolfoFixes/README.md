@@ -28,30 +28,28 @@ Deus Ex Machina Blessing being consumed on attacks that cannot proc. *(0 damage 
 Stone Flux Pauldron reducing speed twice. *(-200% rather than -100%)*
  
 Hearty Stew never working on certain amounts of Eclipse curse. *(Due to a floating point discrepancy)*
- 
-Most AC debuffs activating Growth Nectar. *(Because debuffs are not filtered out automatically, and they forgot to tag them manually)*
- 
+
+Most AC debuffs activating Growth Nectar. 
+*(Only buffs specifically tagged to not work with Nectar dont activate it, instead of more logically filtering out debuffs automatically.)*
+*(Mod makes it so that debuffs will be filtered out automatically, including modded ones.)*
  
 Elusive Antler producing errors on things that move differently. (Stationary Turrets, RemoteOp Drones)\
-Elusive Antler not working on Devoted Lemurians due to wrong authority check.
+Elusive Antler not working on Devoted Lemurians. *(Due to wrong authority check.*)
 
-Bandolier not working on some drones & allies due to wrong authority check.
+Bandolier not working on some drones & allies. *(Due to wrong authority check.*)
  
 Charged Perferator rolling for crit instead of inheriting like other procs.
 
 Unstable Transmitters effect being removed by cleansing effects. *(Accidentally tagged as a cooldown buff)*
+ 
+Executive Card no longer fails if you open Multi Shops too quickly. *(The 0.1 cooldown has no gameplay implications, it just messes you up)*
 
-Regenerative Scrap being scrappable
-
-
-Executive Card no longer fails if you open Multi Shops *too quickly*.
-
-For Retool, Enigma, Bottled Chaos, Functional Couple:
-- Sawmerang not bleeding if you don't have the equipment.
-- Milky Chrysalis flight will always have wings.
+For Retool, Enigma, Bottled Chaos, Functional Coupler:
+- Sawmerang not bleeding if you don't have the equipment in your main slot.
+- Milky Chrysalis wings disappearing mid-flight.
 
 
-Removes Warbanner from Best Buddy's above level 99, to avoid spam and lag.
+Removes Warbanner from Best Buddies above level 99, to avoid spam and lag. *(Minions aren't supposed to get it in the first place)*
 
 ```
 Some item tags were adjusted, to better match others.
@@ -72,12 +70,10 @@ Deskplant visual being too small.
 ```
 #
 ## Survivor & Drone Fixes
-Jailer Drone just firing, instead of getting into a good position before Jailing.
+Jailer Drone just firing, instead of getting into a good position before Jailing. *(It is meant to hover above the enemy like Bombardment drones, instead of often firing below or not aiming at enemies.*)
 
 Chef Boosted Sear Oil Puddles dealing 0% instead of 20% damage.   
  
-Acrid now has spawn invulnerability.  
-
 Captain Beacons being unable to crit. 
 
 Drifter's Tinker being able to apply 3 debuffs that do literally nothing.
@@ -104,9 +100,9 @@ Lunar Golems having strange unneeded spawn restrictions.\
 
 Child now immune to the sun. *(Like Parents)*  \
 Twisted Scavs now immune to void implosions. *(Like other final bosses)*\
-SPEX & Memory Probes now immune to void implosions.
+SPEX & Memory Probes now immune to void implosions. *(For consistency*)
 
-Solus Heart softlocking the game if he has Dios.
+Solus Heart softlocking the game, if he has Dios.
 
  ```
 Mob Visuals:
@@ -133,7 +129,7 @@ Helminth Hatchery never spawning DLC1 interactables, with all 3 DLCs enabled.
 
 Verdant Falls: No longer half as likely as other stage 1s.\ *(AC changed this for literally no reason)*
 Distant Roost: No longer twice as likely. *(1.5x now, they are still variants)*\
-Titanic Plains: No longer twice as likely. *^*  
+Titanic Plains: No longer twice as likely. *^ Can be configured to your liking*)  
  
 
 
@@ -142,7 +138,7 @@ Repurposed Crater not spawning the Access Node after Solus Wing. *(I was told th
 Bazaar Seers being able to select Pre-Loop variants, Post-Loop.\
 Bazaar Seers being able to select 2 Plains/2 Roosts.
 
-Simu-Sanctuary & Simu-Commencement not able to spawn Lunar Pods. *(but still take credits)*
+Simu-Sanctuary & Simu-Commencement not being able to spawn Lunar Pods. *(But still take credits)*
 
  
 A Bulwarks Ambry using the wrong DLC1 spawn pool\
@@ -165,7 +161,7 @@ Removed Chance Doll from Simulacrum, as there are no Shrine of Chance.\
   
 ## Artifact Fixes
 
-Fixes Honor always choosing the same Elite types for some special bosses. *(Due to a rng bug)*
+Fixes Honor always choosing the same Elite types for some special bosses. *(Due to static RNG being used)*
 
 Fixes Vengence + Swarms spawning one of them as not an Umbra/Without any items.
 
@@ -175,10 +171,10 @@ Fixed 10 bugs or errors with Artifact of Devotion leading to :
 - Lemurians gotten from Trials will be able evolve into elites.
 - Lemurian evolution wont fail anymore if 1 or more Lemurians are in a quantum state.
 - Lemurian inventories get properly deleted on all run ends.
-- Devoted Lemurians now being tagged as such.
+- Devoted Lemurians being tagged as Devoted, instead of Wild Lemurians.
 	- Different spawn sound
 	- Works with Spare Drone Parts & Box of Dynamite. (Strange but intended synergy)
-	- *They put the tag on Wild lemurians instead of the devoted ones*
+	
 
 
  Artifact of Glass will now make you and minions appear as glass.
@@ -188,7 +184,7 @@ Prevents Halcyon Shrine entityState nullref on client.\
 Removes the log spam from Halcyon Shrines on client.
 
 Aurelionite Fragments & Potentials now spin for clients.\
-Prayer Beads desyncing for clients, leading to various issues.\
+Prayer Beads desyncing for clients, leading to various visual issues.\
 Spider-Mines constantly beeping for clients
 
 Simulacrum teleporting Clients into the void instead of the Focus.\
@@ -206,7 +202,7 @@ Adds various missing item displays :
 
 Deep Void Signals Beam being flat.
 
-Shrine of Shaping and Seed of Life not using the revive effect. (They attempt to spawn a unfinished object)
+Shrine of Shaping and Seed of Life not using the revive effect. *(They attempt to spawn a unfinished object)*
 
  
 Lunar Exploder not having a subtitleToken.
@@ -231,23 +227,20 @@ Logbook Fixes :
 - Eclipse not incrementing Wins / (Thus not unlocking logs)
 - Devoted Lemurians being in log instead of wild.
  
-
-
-Blue/Green/Access Portal messages will now open chat when they appear at the start of a stage.
-
+ 
+Blue/Green/Access Portal messages will now open chat if they appear at the start of a stage.
 
  
 Golden Diebacks Mushruum Fruit not dropping healing orbs or playing effects.
 
 
-Chef Boost showing stacks of the buff, despite not functioning as such.
-
-Item/Survivor description fixes can be turned off in case you play with rebalance mods.\
-But should work fine even if you don't.
+Chef Boost showing stacks of the buff, despite not being a stackable buff.
 
 
 Treeborn Canopy & Helminth Hatchery being blacklisted from Random Stage Order.
 
+Item/Survivor description fixes can be turned off in case you play with rebalance mods.\
+But should work fine even if you don't.
 
 ## For Other Mods
 Fixes up some unused content, should have no impact on regular gameplay.
@@ -259,7 +252,10 @@ Void Eradicators are less unfinished:
 - Doesnt vanish when too close to camera
 - Suppresed Scrap is tiered and usable, but kept hidden from log.
 - Suppresed Items tab wider so item icons arent clipping
- 
+
+This mod contains a library mod that my other mods require, for now I don't really see any issues with bundling these together.\
+If people would prefer these to be seperate, tell me. 
+
 ###
 
 Report bugs to @Wolfo.wolfo in the Risk of Rain 2 discord or RoR2 Modding discord.\
