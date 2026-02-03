@@ -40,18 +40,16 @@ namespace WolfoLibrary
             VoidSuppressor.SuppresedScrap();
             VoidSuppressor.FixInteractable();
 
-            ItemCatalog.availability.CallWhenAvailable(HideItems);
+            RoR2.RoR2Application.onLoad += CallLate;
+             
             Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/OptionPickup/OptionPickerPanel.prefab").WaitForCompletion().GetComponent<RoR2.UI.PickupPickerPanel>().maxColumnCount = 3; //Hud does not support 5 columns
-
+ 
         }
+  
 
-
-        public void HideItems()
+        public void CallLate()
         {
-            RoR2Content.Items.BoostDamage.hidden = true;
-            RoR2Content.Items.BoostHp.hidden = true;
-            RoR2Content.Items.BoostEquipmentRecharge.hidden = true;
-            RoR2Content.Items.BoostAttackSpeed.hidden = true;
+            DLC3Content.Equipment.GroundEnemies.colorIndex = ColorCatalog.ColorIndex.Equipment;
 
         }
 

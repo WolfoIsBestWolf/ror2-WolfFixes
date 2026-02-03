@@ -21,24 +21,16 @@ namespace WolfoFixes
             return;
         }
 
-        private static void Inventory_SetActiveEquipmentSlot(On.RoR2.Inventory.orig_SetActiveEquipmentSlot orig, Inventory self, byte slotIndex)
+        private static void MulT_DontHighlightEveryTime(On.RoR2.Inventory.orig_SetActiveEquipmentSlot orig, Inventory self, byte slotIndex)
         {
             self.wasRecentlyExtraEquipmentSwapped = true;
             orig(self, slotIndex);
         }
-
-        private static void WhirlwindGround_OnEnter(On.EntityStates.Merc.WhirlwindGround.orig_OnEnter orig, EntityStates.Merc.WhirlwindGround self)
-        {
-            orig(self);
-            if (NetworkServer.active)
-            {
-                self.characterBody.AddTimedBuff(JunkContent.Buffs.IgnoreFallDamage, 0.8f, 1);
-            }
-        }
+ 
 
         //On.RoR2.GenericSkill.SetSkillOverride += FixHeresyForEnemies;
         //Is this even still needed check that
-        private static void FixHeresyForEnemies(On.RoR2.GenericSkill.orig_SetSkillOverride orig, GenericSkill self, object source, RoR2.Skills.SkillDef skillDef, GenericSkill.SkillOverridePriority priority)
+        /*private static void FixHeresyForEnemies(On.RoR2.GenericSkill.orig_SetSkillOverride orig, GenericSkill self, object source, RoR2.Skills.SkillDef skillDef, GenericSkill.SkillOverridePriority priority)
         {
             if (priority == GenericSkill.SkillOverridePriority.Replacement && self.characterBody && !self.characterBody.isPlayerControlled)
             {
@@ -55,34 +47,10 @@ namespace WolfoFixes
             {
                 orig(self, source, skillDef, priority);
             }
-        }
+        }*/
 
         public static void Start()
         {
-            //Added in AC
-            //On.EntityStates.Merc.WhirlwindBase.OnEnter += WhirlwindBase_OnEnter;
-
-            //Move this somewhere
-            /*On.EntityStates.Croco.Spawn.OnEnter += (orig, self) =>
-            {
-                orig(self);
-                if (NetworkServer.active)
-                {
-                    self.characterBody.AddBuff(RoR2Content.Buffs.HiddenInvincibility);
-                }
-            };
-            On.EntityStates.Croco.Spawn.OnExit += (orig, self) =>
-            {
-                orig(self);
-                if (NetworkServer.active)
-                {
-                    self.characterBody.RemoveBuff(RoR2Content.Buffs.HiddenInvincibility);
-                    self.characterBody.AddTimedBuff(RoR2Content.Buffs.HiddenInvincibility, 3f);
-                }
-            };*/
-
-
-
             //Forgive me Please marked as ???
             CharacterBody DeathProjectile = Addressables.LoadAssetAsync<GameObject>(key: "1336d77e77299964884c3bd02757fde7").WaitForCompletion().GetComponent<CharacterBody>();
             DeathProjectile.baseNameToken = "EQUIPMENT_DEATHPROJECTILE_NAME";
@@ -109,7 +77,7 @@ namespace WolfoFixes
             #region XI 
             //Fix Ghost XI not spawning Ghosts
             //Fix Elite XI not spawning Elites
-            //Hopoo forgor
+            //Hopoo forgot for sure
             On.RoR2.NetworkedBodySpawnSlot.OnSpawnedServer += XI_GhostEliteMinionFix;
             //Fix XI Tail lagging
             //GameObject MegaConstructBody = Addressables.LoadAssetAsync<GameObject>(key: "64b97b2c7e3e0d949b41abbe57bf3c2d").WaitForCompletion();
@@ -128,7 +96,7 @@ namespace WolfoFixes
 
             //Twisted Scavengers are final bosses
             //Final bosses are *meant* to be immune to Newly Hatched Zoea
-            //Hopoo forgor
+            //Hopoo forgot
 
             Addressables.LoadAssetAsync<GameObject>(key: "746b53f076ca9af4d89f67c981d2bbf9").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
             Addressables.LoadAssetAsync<GameObject>(key: "a0a8fa4272069874b9e538c59bbda5ed").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
@@ -140,20 +108,53 @@ namespace WolfoFixes
             Addressables.LoadAssetAsync<GameObject>(key: "9d63f2d3bc6c52c44883128cc4b97bf4").WaitForCompletion().GetComponent<CharacterBody>().bodyFlags |= CharacterBody.BodyFlags.ImmuneToVoidDeath; //ScavLunar
 
             DLC3Fixes();
-
-
-            On.EntityStates.Merc.WhirlwindGround.OnEnter += WhirlwindGround_OnEnter;
-
-            On.RoR2.Inventory.SetActiveEquipmentSlot += Inventory_SetActiveEquipmentSlot;
+ 
+            On.RoR2.Inventory.SetActiveEquipmentSlot += MulT_DontHighlightEveryTime;
 
             //Scores problem now.
             /*var targetMethod = typeof(PseudoCharacterMotor).GetProperty(nameof(PseudoCharacterMotor.velocityAuthority), BindingFlags.Public | BindingFlags.Instance).GetSetMethod();
             var destMethod = typeof(BodyFixes).GetMethod(nameof(FixBarnalceMinorsSpammingNotImplementedWithOpsTransport), System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
             var overrideHook2 = new Hook(targetMethod, destMethod);*/
+ 
+            On.EntityStates.Drone.DeathState.OnImpactServer += DontSpawnBrokenDronesForDronesWithRevives;
+            IL.RoR2.CharacterMaster.IsDeadAndOutOfLivesServer += ReplaceDroneCheckWithRemoteOpDroneCheck;
 
-
+            On.RoR2.Inventory.SetActiveEquipmentSlot += FixMulTWeirdEquipmentThing;
         }
 
+        private static void FixMulTWeirdEquipmentThing(On.RoR2.Inventory.orig_SetActiveEquipmentSlot orig, Inventory self, byte slotIndex)
+        {
+            self.activeEquipmentSlot = slotIndex;
+            orig(self, slotIndex);
+        }
+
+        private static void ReplaceDroneCheckWithRemoteOpDroneCheck(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchCallvirt("RoR2.CharacterBody", "get_IsDrone")))
+            {
+                c.Remove();
+                c.EmitDelegate<System.Func<CharacterBody, bool>>((body) =>
+                {
+                    return body.isRemoteOp;
+                });
+            }
+            else
+            {
+                WolfFixes.log.LogError("IL Failed : IsDeadAndOutOfLivesServer");
+            }
+        }
+
+        private static void DontSpawnBrokenDronesForDronesWithRevives(On.EntityStates.Drone.DeathState.orig_OnImpactServer orig, EntityStates.Drone.DeathState self, Vector3 contactPoint)
+        {
+            if (self.characterBody.master && !self.characterBody.master.IsDeadAndOutOfLivesServer())
+            {
+                return;
+            }
+            orig(self, contactPoint);
+        }
+ 
         public static void DLC3Fixes()
         {
             //Broke close to launch; No longer gets into position and just fucking sucks because of it.
@@ -161,36 +162,17 @@ namespace WolfoFixes
             DroneJailerTrapSkillDef.activationState.typeName = "EntityStates.Drone.DroneJailer.AssumePosition";
 
             //Fucked up pathing or smth I don't really know much about it
-            Hook hook = new Hook(typeof(CharacterBody).GetProperty("footPosition", BindingFlags.Instance | BindingFlags.Public).GetGetMethod(), FuckedUpFootPosition);
+            //Hook hook = new Hook(typeof(CharacterBody).GetProperty("footPosition", BindingFlags.Instance | BindingFlags.Public).GetGetMethod(), FuckedUpFootPosition);
 
             On.RoR2.CharacterBody.CheckDroneHasItems += CharacterBody_CheckDroneHasItems;
 
             //On.RoR2.SolusWebMissionController.EncounterHealthThresholdController_onAllMembersReachedThreshold += SolusWebMissionController_EncounterHealthThresholdController_onAllMembersReachedThreshold;
 
-            On.RoR2.Items.PhysicsProjectileBehavior.InheritMovementItems += PhysicsProjectileBehavior_InheritMovementItems;
-
-            On.EntityStates.SolusHeart.Death.MissionCompleted.FixedUpdate += MissionCompleted_FixedUpdate;
+            On.RoR2.Items.PhysicsProjectileBehavior.InheritMovementItems += RequestedWarbannerBehavior;
+ 
         }
-
-        private static void MissionCompleted_FixedUpdate(On.EntityStates.SolusHeart.Death.MissionCompleted.orig_FixedUpdate orig, EntityStates.SolusHeart.Death.MissionCompleted self)
-        {
-            for (int i = 0; i < self.combatSquad.readOnlyMembersList.Count; i++)
-            {
-                CharacterMaster characterMaster = self.combatSquad.readOnlyMembersList[i];
-                if (characterMaster)
-                {
-                    CharacterBody body = characterMaster.GetBody();
-                    if (body)
-                    {
-                        characterMaster.TrueKill();
-                        //body.healthComponent.Suicide(null, null, default(DamageTypeCombo));
-                    }
-                }
-            }
-            orig(self);
-        }
-
-        private static void PhysicsProjectileBehavior_InheritMovementItems(On.RoR2.Items.PhysicsProjectileBehavior.orig_InheritMovementItems orig, RoR2.Items.PhysicsProjectileBehavior self, Inventory friendInventory)
+ 
+        private static void RequestedWarbannerBehavior(On.RoR2.Items.PhysicsProjectileBehavior.orig_InheritMovementItems orig, RoR2.Items.PhysicsProjectileBehavior self, Inventory friendInventory)
         {
             orig(self, friendInventory);
             if (friendInventory)
@@ -202,22 +184,7 @@ namespace WolfoFixes
             }
 
         }
-
-        private static void SolusWebMissionController_EncounterHealthThresholdController_onAllMembersReachedThreshold(On.RoR2.SolusWebMissionController.orig_EncounterHealthThresholdController_onAllMembersReachedThreshold orig, SolusWebMissionController self, int threshold)
-        {
-            if (threshold == 3)
-            {
-                foreach (var master in self.combatSquad.readOnlyMembersList)
-                {
-                    if (!master.IsDeadAndOutOfLivesServer())
-                    {
-                        threshold = 2;
-                    }
-                }
-            }
-            orig(self, threshold);
-        }
-
+ 
         private static bool CharacterBody_CheckDroneHasItems(On.RoR2.CharacterBody.orig_CheckDroneHasItems orig, CharacterBody self)
         {
             bool item = orig(self);
@@ -263,7 +230,7 @@ namespace WolfoFixes
             return item;
         }
 
-        public delegate Vector3 orig_footPosition(CharacterBody self);
+        /*public delegate Vector3 orig_footPosition(CharacterBody self);
         public static Vector3 FuckedUpFootPosition(BodyFixes.orig_footPosition orig, CharacterBody self)
         {
             Vector3 a = orig(self);
@@ -272,18 +239,14 @@ namespace WolfoFixes
                 a.y += self.characterMotor.capsuleYOffset;
             }
             return a;
-        }
+        }*/
 
         public static void CallLate()
         {
-            //Makes artifact borderline unusable, but probably overstepping fix territory
-            //CU8Content.BodyPrefabs.DevotedLemurianBody.bodyFlags |= CharacterBody.BodyFlags.ImmuneToLava;
-            //CU8Content.BodyPrefabs.DevotedLemurianBruiserBody.bodyFlags |= CharacterBody.BodyFlags.ImmuneToLava;
             //Child shouldnt be burnable like Parents
             DLC2Content.BodyPrefabs.ChildBody.bodyFlags |= CharacterBody.BodyFlags.OverheatImmune;
 
             //SKY MEADOW ROCKS OWN THEM  SELF
-
             GameObject ROCK = null;
             ROCK = Addressables.LoadAssetAsync<GameObject>(key: "1fb51531942733b469329cbcd0647a68").WaitForCompletion();
             ROCK.GetComponent<ProjectileController>().owner = ROCK;
@@ -297,9 +260,7 @@ namespace WolfoFixes
             ROCK.GetComponent<ProjectileController>().owner = ROCK;
             ROCK = Addressables.LoadAssetAsync<GameObject>(key: "d59e337394dd72f418dbb1b622d2480d").WaitForCompletion();
             ROCK.GetComponent<ProjectileController>().owner = ROCK;
-
-
-
+ 
         }
 
         public static void XI_GhostEliteMinionFix(On.RoR2.NetworkedBodySpawnSlot.orig_OnSpawnedServer orig, NetworkedBodySpawnSlot self, GameObject ownerBodyObject, SpawnCard.SpawnResult spawnResult, System.Action<MasterSpawnSlotController.ISlot, SpawnCard.SpawnResult> callback)
@@ -325,19 +286,7 @@ namespace WolfoFixes
             }
 
         }
-
-
-
-        private static void FallDamageImmunityOnOilSpillCancel(On.EntityStates.Chef.OilSpillBase.orig_OnExit orig, EntityStates.Chef.OilSpillBase self)
-        {
-            //Intended for when cancelled with YES Chef,
-            //Would be more ideal to have a way where hitting an enemy and dropping still does damage
-            //Like how Acrid has it
-            self.characterBody.AddTimedBuff(JunkContent.Buffs.IgnoreFallDamage, 0.25f);
-            orig(self);
-
-        }
-
+         
         private static void FixCaptainBeaconNoCrit(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -355,17 +304,7 @@ namespace WolfoFixes
                 WolfFixes.log.LogError("IL Failed : FixCaptainBeaconNoCrit");
             }
         }
-
-        private static void XI_LaserFix(On.EntityStates.MajorConstruct.Weapon.FireLaser.orig_OnExit orig, EntityStates.MajorConstruct.Weapon.FireLaser self)
-        {
-            orig(self);
-            self.outer.SetNextState(self.GetNextState());
-        }
-
-
-
-
-        //public static GameObject JellyfishDeath;
+ 
         private static void FixDumbFruit(On.EntityStates.Fauna.HabitatFruitDeathState.orig_OnEnter orig, EntityStates.Fauna.HabitatFruitDeathState self)
         {
             //self.outer.SetNextState(new EntityStates.Fauna.VultureEggDeathState());
@@ -406,15 +345,7 @@ namespace WolfoFixes
             }
         }
 
-
-        private static void WhirlwindBase_OnEnter(On.EntityStates.Merc.WhirlwindBase.orig_OnEnter orig, EntityStates.Merc.WhirlwindBase self)
-        {
-            orig(self);
-            if (NetworkServer.active)
-            {
-                self.characterBody.AddTimedBuff(JunkContent.Buffs.IgnoreFallDamage, self.duration);
-            }
-        }
+ 
     }
 
     internal class MithrixPhase4Fix : MonoBehaviour

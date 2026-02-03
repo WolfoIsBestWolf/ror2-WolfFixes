@@ -12,7 +12,9 @@ namespace WolfoLibrary
         public static Action onFalseSonPhase1;
         public static Action onSolusWing;
         public static Action onSolusHeart;
+        public static Action onStagePreStartClient;
         public static Action<DirectorCardCategorySelection> onMonsterDCCS;
+        
 
         public static void Start()
         {
@@ -22,8 +24,21 @@ namespace WolfoLibrary
             On.EntityStates.SolusWing2.Mission1Tunnel.OnExit += Mission1Tunnel_OnExit;
             On.EntityStates.SolusHeart.CutsceneTransformation.OnEnter += CutsceneTransformation_OnEnter;
 
+            On.RoR2.Stage.PreStartClient += Stage_PreStartClient;
+
             IL.RoR2.ClassicStageInfo.RebuildCards += MonsterDCCSGenerateHook;
 
+        }
+
+        private static void Stage_PreStartClient(On.RoR2.Stage.orig_PreStartClient orig, Stage self)
+        {
+            orig(self);
+            Action action = onStagePreStartClient;
+            if (action == null)
+            {
+                return;
+            }
+            action();
         }
 
         private static void CutsceneTransformation_OnEnter(On.EntityStates.SolusHeart.CutsceneTransformation.orig_OnEnter orig, EntityStates.SolusHeart.CutsceneTransformation self)

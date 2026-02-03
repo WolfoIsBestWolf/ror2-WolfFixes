@@ -12,7 +12,10 @@ namespace WolfoLibrary
         public static readonly Dictionary<Type, byte> message_to_index = new Dictionary<Type, byte>();
         public static readonly Dictionary<byte, Type> index_to_message = new Dictionary<byte, Type>();
 
-
+        public static byte wqol_startByte = 0;
+        public static byte artifacts_startByte = 32;
+ 
+ 
         public static void SendWQoLMessage(ChatMessageBase message)
         {
             SendBroadcastChat(message, QosChannelIndex.chat.intVal);

@@ -24,14 +24,18 @@ namespace WolfoFixes
         {
             //MultiShopCard having a 0.1 cooldown is irrelevant for actual gameplay
             //It just fucks you over randomly when spamming E.
-            Addressables.LoadAssetAsync<EquipmentDef>(key: "f2ddbb7586240e648945ad494ebe3984").WaitForCompletion().cooldown = 0;
+            EquipmentDef Card = Addressables.LoadAssetAsync<EquipmentDef>(key: "f2ddbb7586240e648945ad494ebe3984").WaitForCompletion();
+            if (Card.cooldown == 0.1f)
+            {
+                Card.cooldown -= 0.1f;
+            }
 
 
             //Why does this have a cooldown it just fucks you up when buying shops quickly
             //Sawmerang checks for Sawmerang Equip which isnt logical at all lol.
             Addressables.LoadAssetAsync<GameObject>(key: "9ca7d392fa3bb444b827d475b36b9253").WaitForCompletion().AddComponent<ThisIsASawmarang>();
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixSawmarang;
- 
+
         }
 
         private static void FallbackIfNoItemDisplay(On.EntityStates.QuestVolatileBattery.CountDown.orig_OnEnter orig, EntityStates.QuestVolatileBattery.CountDown self)

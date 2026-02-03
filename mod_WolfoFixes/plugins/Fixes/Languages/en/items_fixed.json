@@ -25,7 +25,11 @@
 		"ITEM_FIREBALLSONHIT_DESC": "<style=cIsDamage>10%</style> chance on hit to call forth <style=cIsDamage>3 magma balls</style> from an enemy, dealing <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> TOTAL damage and <style=cIsDamage>igniting</style> all enemies for an additional <style=cIsDamage>50%</style> TOTAL damage over time.",		
 		"ITEM_BEETLEGLAND_DESC": "<style=cIsUtility>Summon a Beetle Guard</style> with <style=cIsDamage>400%</style> damage and <style=cIsHealing>200% health</style>. Can have up to <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> Guards at a time.",
 		
-		
+		   
+		"ITEM_POWERCUBE_DESC" : "Increases <style=cIsUtility>base armor</style> by <style=cIsUtility>50%</style>. Can be placed in a Matrix Terminal.",
+        "ITEM_POWERCUBE_PICKUP" : "Gain +50% base armor. Can be placed in a Matrix Terminal.",
+		"ITEM_POWERPYRAMID_PICKUP" : "Gain +15% move speed. Can be placed in a Sentry Terminal.",
+       
 		
 		"ITEM_ONLEVELUPFREEUNLOCK_DESC": "<style=cIsUtility>On level up</style> gain 1 <style=cStack>(+1 per stack)</style> free purchases <style=cIsHealth>but all gold is converted to experience</style>. <style=cStack>Stacks increase experience gained.</style> Anything that costs gold is <style=cIsUtility>increased by 50%</style> <style=cStack>(+50% per stack)</style>.",		
 		"ITEM_LUNARDAGGER_DESC": "Increase base damage by <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style>. <style=cIsHealth>Reduce maximum health by 50%</style> <style=cStack>(+50% per stack)</style>.",		

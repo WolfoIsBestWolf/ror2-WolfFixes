@@ -99,7 +99,7 @@ namespace WolfoLibrary.Testing
             EntitlementManager.CCEntitlementForceRefresh(args);
         }
 
-        [ConCommand(commandName = "purchase_all", flags = (ConVarFlags.None), helpText = "Purchase everything on the map")]
+        /*[ConCommand(commandName = "purchase_all", flags = (ConVarFlags.None), helpText = "Purchase everything on the map")]
         private static void CCPurchaseAll(ConCommandArgs args)
         {
             //This dont even work bro
@@ -121,7 +121,7 @@ namespace WolfoLibrary.Testing
             {
                 purchaseInteraction.FullyChargeHoldoutZone();
             }
-        }
+        }*/
 
         [ConCommand(commandName = "load", flags = (ConVarFlags.None), helpText = "Load given asset")]
         private static void CCLoad(ConCommandArgs args)

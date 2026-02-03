@@ -15,8 +15,6 @@ namespace WolfoFixes
 
 
             On.RoR2.PortalStatueBehavior.PreStartClient += NewtAvailableFix12;
-            On.RoR2.TeleporterInteraction.OnSyncShouldAttemptToSpawnShopPortal += NewtAvailableFix2;
-
 
             //Some interactables have empty holograms
             On.RoR2.PurchaseInteraction.ShouldDisplayHologram += DisableEmptyHologram;
@@ -35,6 +33,17 @@ namespace WolfoFixes
 
             //Fixed 1.4.1
             //IL.RoR2.UI.ScrapperInfoPanelHelper.AddQuantityToPickerButton += ScrapperInfoPanelHelper_AddQuantityToPickerButton;
+
+            On.RoR2.UI.ItemIcon.Awake += ItemIcon_Awake_ShutUpAboutTheError;
+        }
+
+        private static void ItemIcon_Awake_ShutUpAboutTheError(On.RoR2.UI.ItemIcon.orig_Awake orig, RoR2.UI.ItemIcon self)
+        {
+            try
+            {
+                orig(self);
+            }
+            catch { }
         }
 
         private static void ScrapperInfoPanelHelper_AddQuantityToPickerButton(ILContext il)
@@ -172,32 +181,6 @@ namespace WolfoFixes
             orig(self);
             self.GetComponent<PurchaseInteraction>().setUnavailableOnTeleporterActivated = true;
         }
-
-        private static void NewtAvailableFix2(On.RoR2.TeleporterInteraction.orig_OnSyncShouldAttemptToSpawnShopPortal orig, TeleporterInteraction self, bool newValue)
-        {
-            orig(self, newValue);
-            if (newValue == true)
-            {
-                foreach (PortalStatueBehavior portalStatueBehavior in UnityEngine.Object.FindObjectsOfType<PortalStatueBehavior>())
-                {
-                    if (portalStatueBehavior.portalType == PortalStatueBehavior.PortalType.Shop)
-                    {
-                        PurchaseInteraction component = portalStatueBehavior.GetComponent<PurchaseInteraction>();
-                        if (component)
-                        {
-                            component.Networkavailable = false;
-                            portalStatueBehavior.CallRpcSetPingable(portalStatueBehavior.gameObject, false);
-                        }
-                    }
-                }
-            }
-
-        }
-
-
-
-
-
 
     }
 

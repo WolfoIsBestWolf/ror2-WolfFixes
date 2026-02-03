@@ -1,6 +1,7 @@
 ﻿//using System;
 using MonoMod.Cil;
 using RoR2;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using WolfoLibrary;
@@ -29,9 +30,29 @@ namespace WolfoFixes
             SceneList.itDampCave.requiredExpansion = DLCS.DLC1;
             SceneList.itSkyMeadow.requiredExpansion = DLCS.DLC1;
             SceneList.itMoon.requiredExpansion = DLCS.DLC1;
+
+            On.RoR2.InfiniteTowerWaveController.OnDisable += DisableIndicatorHelper;
         }
 
+        private static void DisableIndicatorHelper(On.RoR2.InfiniteTowerWaveController.orig_OnDisable orig, InfiniteTowerWaveController self)
+        {
+            orig(self);
+            simu_enabledIndicators = false;
+            TeamComponent.onJoinTeamGlobal -= FixIndicatorsGettingLostAfterRevive;
+        }
 
+        private static GameObject simu_indicator;
+        private static bool simu_enabledIndicators = false;
+        private static void FixIndicatorsGettingLostAfterRevive(TeamComponent arg1, TeamIndex arg2)
+        {
+            //If a enemy respawned with Dios they lose the indicator pointing to them.
+            //Probably helps Client-Side stuff too
+            if (simu_enabledIndicators && arg1.indicator == null)
+            {
+                arg1.RequestDefaultIndicator(simu_indicator);
+            }
+        }
+ 
         public static void CallLate()
         {
             bool simulacrumAdds = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("Wolfo.SimulacrumAdditions");
@@ -79,15 +100,17 @@ namespace WolfoFixes
         public static void FixRequestIndicatorsClient(ILContext il)
         {
             ILCursor c = new ILCursor(il);
-            c.TryGotoNext(MoveType.After,
-             x => x.MatchCallvirt("RoR2.CombatSquad", "get_readOnlyMembersList"));
-
-            if (c.TryGotoPrev(MoveType.Before,
-             x => x.MatchLdfld("RoR2.InfiniteTowerWaveController", "combatSquad")
+            if (c.TryGotoNext(MoveType.Before,
+            x => x.MatchLdfld("RoR2.InfiniteTowerWaveController", "combatSquad"),
+            x => x.MatchCallvirt("RoR2.CombatSquad", "get_readOnlyMembersList") 
             ))
             {
-                c.EmitDelegate<System.Func<InfiniteTowerWaveController, InfiniteTowerWaveController>>((wave) =>
+                
+                c.EmitDelegate<System.Func<InfiniteTowerWaveController, InfiniteTowerWaveController>>((System.Func<InfiniteTowerWaveController, InfiniteTowerWaveController>)((wave) =>
                 {
+                    TeamComponent.onJoinTeamGlobal += FixIndicatorsGettingLostAfterRevive;
+                    simu_enabledIndicators = true;
+                    simu_indicator = wave.defaultEnemyIndicatorPrefab;
                     if (wave.combatSquad.readOnlyMembersList.Count == 0)
                     {
                         WolfFixes.log.LogMessage("Couln't do indicators the normal way");
@@ -97,7 +120,7 @@ namespace WolfoFixes
                         }
                     }
                     return wave;
-                });
+                }));
                 //WolfFixes.Logger.LogMessage("IL Found : IL.RoR2.InfiniteTowerWaveController.FixedUpdate");
             }
             else
@@ -106,6 +129,7 @@ namespace WolfoFixes
             }
         }
 
+     
     }
 
 

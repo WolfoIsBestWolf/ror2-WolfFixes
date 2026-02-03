@@ -1,8 +1,10 @@
 ﻿using RoR2;
+using RoR2.ExpansionManagement;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
+using static WolfoLibrary.DLCS;
 
 namespace WolfoFixes
 {
@@ -24,6 +26,22 @@ namespace WolfoFixes
             Addressables.LoadAssetAsync<InteractableSpawnCard>(key: "592ddd0e913440844b42eff65663abda").WaitForCompletion().slightlyRandomizeOrientation = false;
 
             On.EntityStates.DroneCombiner.DroneCombinerCombining.OnDeserialize += FixBrokenAH_DroneCombinerCombining_OnDeserialize;
+
+          
+        }
+
+        public static void MissingDLCRequirements()
+        {
+            Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/VoidCoinBarrel/VoidCoinBarrel.prefab").WaitForCompletion().AddComponent<ExpansionRequirementComponent>().requiredExpansion = DLC1;
+            
+            Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC2/ShrineColossusAccess.prefab").WaitForCompletion().AddComponent<ExpansionRequirementComponent>().requiredExpansion = DLC2;
+            
+            Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC3/DroneCombinerStation/DroneCombinerStation.prefab").WaitForCompletion().AddComponent<ExpansionRequirementComponent>().requiredExpansion = DLC3;
+            Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC3/DroneScrapper/DroneScrapper.prefab").WaitForCompletion().AddComponent<ExpansionRequirementComponent>().requiredExpansion = DLC3;
+            Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC3/TripleDroneShop/TripleDroneShop.prefab").WaitForCompletion().AddComponent<ExpansionRequirementComponent>().requiredExpansion = DLC3;
+            Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC3/TemporaryItemsDistributor/TemporaryItemsShopTerminal.prefab").WaitForCompletion().AddComponent<ExpansionRequirementComponent>().requiredExpansion = DLC3;
+             
+
         }
 
         private static void FixBrokenAH_DroneCombinerCombining_OnDeserialize(On.EntityStates.DroneCombiner.DroneCombinerCombining.orig_OnDeserialize orig, EntityStates.DroneCombiner.DroneCombinerCombining self, NetworkReader reader)

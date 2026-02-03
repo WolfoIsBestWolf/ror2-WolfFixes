@@ -1,4 +1,16 @@
 ```
+v1.3.6
+Fixed Eclipse Lobby disconnecting all-players whenever the run ends.
+Fixed Mul-T phantom equipment slot bug.
+Fixed not truly dead drones leaving broken drones. (Dios, Seed of Life)
+Fixed playing as a Drone breakign Vengence. (Wont spawn Umbras, like dead players usually would)
+Fixed DLC3 interactables & Shrine of Shaping not having dlc requirement set. (Causing them to appear without dlcs in modded content)
+Fixed Simulacrum Enemy Indicators not re-appearing if a enemy respawns due to Dio.
+Checked for other mods modifying Executive Cards cooldown.
+Specified in Prison Matrix description that it's base armor. (Request)
+Removed Newt-Shrine auto disabling itself if teleporter already spawned with a blue portal. (As per request)
+
+ 
 v1.3.5
 Removed un-scrapable RegenScrap as per request. (Not really fix + inteferring with item reworks)
 Removed Acrid Spawn protection as per request. (Not really fix anyways.)

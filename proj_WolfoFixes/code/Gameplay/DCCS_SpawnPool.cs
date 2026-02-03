@@ -84,7 +84,7 @@ namespace WolfoFixes
         private static void FixRareStagesWithoutNodesWhenCalledFor(On.RoR2.Stage.orig_PreStartClient orig, Stage self)
         {
             orig(self);
-            if (NetworkServer.active)
+            if (NetworkServer.active && SceneInfo.instance)
             {
                 string scene = SceneInfo.instance.sceneDef.baseSceneName;
                 switch (scene)

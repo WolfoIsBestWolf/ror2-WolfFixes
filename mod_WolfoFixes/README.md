@@ -70,6 +70,8 @@ Deskplant visual being too small.
 ```
 #
 ## Survivor & Drone Fixes
+Mul-T Retool creating phantom equipment slots leading to lost equipment.
+
 Jailer Drone just firing, instead of getting into a good position before Jailing. *(It is meant to hover above the enemy like Bombardment drones, instead of often firing below or not aiming at enemies.*)
 
 Chef Boosted Sear Oil Puddles dealing 0% instead of 20% damage.   
@@ -103,6 +105,8 @@ Twisted Scavs now immune to void implosions. *(Like other final bosses)*\
 SPEX & Memory Probes now immune to void implosions. *(For consistency*)
 
 Solus Heart softlocking the game, if he has Dios.
+
+Drones with revives still leaving new broken drones despite reviving.
 
  ```
 Mob Visuals:
@@ -148,22 +152,31 @@ Child & Grandparent not spawning during Parent family event.
 
 ## Gameplay Other Fixes
  
-Newt Altars will no longer purchasable after Teleporter. (Like pre SotS)\
-Newt Altars will not be purchasable if Teleporter starts with Blue Orb.
+Newt Altars will no longer purchasable after Teleporter. (Like pre SotS)
 
 Drone Combiner no longer spawns with Devotion.\
 Drone Shop can now spawn with Sacrifice.\
 Limits Altar of Gold to 1 per stage.
+
+
+## Gamemode Fixes 
  
+Eclipse Runs kicking all players out of the lobby, forcing you to restart the lobby every time. 
+
+
+EndOfWave Enemy Indicators not re-appearing if a enemy respawns from Dios.
+
 Simulacrums Fog ramping up 25x slower than what is intended.\
 Removed Chance Doll from Simulacrum, as there are no Shrine of Chance.\
 *-(Unless SimulacrumAdditions is installed)*
-  
+
+
 ## Artifact Fixes
 
 Fixes Honor always choosing the same Elite types for some special bosses. *(Due to static RNG being used)*
 
-Fixes Vengence + Swarms spawning one of them as not an Umbra/Without any items.
+Fixes Vengence breaking if someone is a RemoteOp drone. *(Dead players dont spawn Umbras normally, so players playing as Drones wont try to either.)(Also they'd be awful to fight)*
+Fixes Vengence + Swarms spawning one of them as not an Umbra/Without any items.\
 
 Fixed 10 bugs or errors with Artifact of Devotion leading to :
 - Lemurian evolution no longer results in all but 1 Lemurian having less items than intended.
@@ -180,6 +193,8 @@ Fixed 10 bugs or errors with Artifact of Devotion leading to :
  Artifact of Glass will now make you and minions appear as glass.
 
 ## Multiplayer / Client fixes
+(Most fixes in the mod are host-dependent, these ones only matter if you have it installed)
+
 Prevents Halcyon Shrine entityState nullref on client.\
 Removes the log spam from Halcyon Shrines on client.
 
@@ -262,6 +277,8 @@ Report bugs to @Wolfo.wolfo in the Risk of Rain 2 discord or RoR2 Modding discor
 If you're reporting a bug that isn't something obvious include the log file.
 
 
-
+###
+Thank you to:
+- EclipseMultiplayerDisconnectFix By NotABot
 
 

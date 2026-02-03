@@ -41,6 +41,7 @@ namespace WolfoFixes
             //POT MOBILE JUMP SCARE
             Addressables.LoadAssetAsync<GameObject>(key: "525b404e87c469f4ab8034de0913d11a").WaitForCompletion().transform.GetChild(4).gameObject.SetActive(false);
 
+            InteractableFixes.MissingDLCRequirements();
 
             if (WConfig.cfgDisable.Value)
             {
@@ -50,6 +51,7 @@ namespace WolfoFixes
             if (!WConfig.cfgDisableGameplay.Value)
             {
                 BodyFixes.Start();
+                ArtifactFixes.Start();
                 DevotionFixes.Start();
                 GameplayMisc.Start();
 
@@ -96,13 +98,14 @@ namespace WolfoFixes
             {
                 DLC2Content.Buffs.TeleportOnLowHealthActive.isCooldown = false;
                 DLC2Content.Buffs.TeleportOnLowHealthVictim.isCooldown = false;
+                //DLC2Content.Buffs.Oiled.isDebuff = true;
 
                 //Dont allow in Tinker, because they do NOT do anything.
                 DLC3Content.Buffs.AccelerantIgnited.flags = BuffDef.Flags.ExcludeFromNoxiousThorns;
                 DLC3Content.Buffs.Electrocuted.flags = BuffDef.Flags.ExcludeFromNoxiousThorns;
                 DLC3Content.Buffs.Conductive.flags = 0;
 
-            
+
 
                 DLC3Content.Buffs.Brittle.isDebuff = false; //Removing all fire effects is not a debuff bro
 
@@ -123,15 +126,15 @@ namespace WolfoFixes
                 DLC3Content.Buffs.TrashToTreasureWhite.isCooldown = false;
                 DLC3Content.Buffs.TrashToTreasureGreen.isCooldown = false;
                 DLC3Content.Buffs.TrashToTreasureRed.isCooldown = false;
-                DLC3Content.Buffs.TrashToTreasureYellow.isCooldown = false; 
- 
-                DLC3Content.Buffs.PowerCubeBuff.isCooldown = false; 
-                DLC3Content.Buffs.PowerPyramidBuff.isCooldown = false; 
-                DLC3Content.Buffs.PowerOrbBuff.isCooldown = false; 
- 
+                DLC3Content.Buffs.TrashToTreasureYellow.isCooldown = false;
+
+                DLC3Content.Buffs.PowerCubeBuff.isCooldown = false;
+                DLC3Content.Buffs.PowerPyramidBuff.isCooldown = false;
+                DLC3Content.Buffs.PowerOrbBuff.isCooldown = false;
+
             }
             catch { }
- 
+
             orig();
 
 
@@ -143,7 +146,7 @@ namespace WolfoFixes
             BuffCatalog.ignoreGrowthNectarIndices = (from buffDef in BuffCatalog.buffDefs
                                                      where (buffDef.ignoreGrowthNectar || buffDef.isDebuff || buffDef.isDOT)
                                                      select buffDef.buffIndex).ToArray<BuffIndex>();
- 
+
             /*var listPost = BuffCatalog.ignoreGrowthNectarIndices.ToList();
             foreach (var index in listPost)
             {

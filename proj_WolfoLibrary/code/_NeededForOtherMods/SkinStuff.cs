@@ -152,4 +152,16 @@ namespace WolfoLibrary
 
     }
 
+    public class SandyInteractableMaterialOverrider : MonoBehaviour
+    {
+        public SceneDef sceneDef;
+        public Material material;
+        public void OnEnable()
+        {
+            if (SceneCatalog.mostRecentSceneDef == sceneDef)
+            {
+
+            }
+        }
+    }
 }

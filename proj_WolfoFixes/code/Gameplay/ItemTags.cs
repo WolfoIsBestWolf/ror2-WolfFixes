@@ -47,7 +47,7 @@ namespace WolfoFixes
             AddTag(RoR2Content.Items.LunarTrinket, ItemTag.AIBlacklist);
             AddTag(RoR2Content.Items.FocusConvergence, ItemTag.AIBlacklist);
             AddTag(DLC2Content.Items.OnLevelUpFreeUnlock, ItemTag.AIBlacklist);
- 
+
             #endregion
 
             if (!WConfig.cfgItemTags.Value)

@@ -1,8 +1,10 @@
 ﻿using MonoMod.Cil;
 using RoR2;
+using RoR2.Networking;
 using RoR2.Projectile;
 using System;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.AddressableAssets;
 
 namespace WolfoFixes
@@ -11,12 +13,7 @@ namespace WolfoFixes
     {
         public static void Start()
         {
-            //Set destination beforehand so the process can't be skipped accidentally
-            //On.RoR2.SceneExitController.OnEnable += PathOfColossusSkipFix;
-            IL.RoR2.Artifacts.SwarmsArtifactManager.OnSpawnCardOnSpawnedServerGlobal += SwarmsVengenceGooboFix;
-
-
-
+ 
             //Helminth Roost should realistically be blocked from Stage 1 in WeeklyRun specifically
             //But both of these should be allowed for RandomStage order
             //At least 2 of my mods used it so i'm putting here.
@@ -40,19 +37,22 @@ namespace WolfoFixes
             //Remove Deployable from Beetle Guard
             GameObject.Destroy(Addressables.LoadAssetAsync<GameObject>(key: "5459e8ded89cd0f4d84219750a7e10ac").WaitForCompletion().GetComponent<Deployable>());
 
-            //Fix Honor sometimes always choosing the same elites
-            On.RoR2.Artifacts.EliteOnlyArtifactManager.PromoteIfHonor += EliteOnlyArtifactManager_PromoteIfHonor;
+
+            On.RoR2.EclipseRun.HandlePostRunDestination += FixEclipseRunsKickingOutOfLobby;
         }
 
-        private static void EliteOnlyArtifactManager_PromoteIfHonor(On.RoR2.Artifacts.EliteOnlyArtifactManager.orig_PromoteIfHonor orig, CharacterMaster instanceMaster, Xoroshiro128Plus rng, EliteDef[] eliteDefs)
+        private static void FixEclipseRunsKickingOutOfLobby(On.RoR2.EclipseRun.orig_HandlePostRunDestination orig, EclipseRun self)
         {
-            orig(instanceMaster, Run.instance.bossRewardRng, eliteDefs);
+            if (NetworkServer.active)
+            {
+                NetworkManager.singleton.ServerChangeScene("lobby");
+            }
         }
 
 
 
         //Fixed in AC
-        public static void AllowGhostsToSuicideProperly(ILContext il)
+        /*public static void AllowGhostsToSuicideProperly(ILContext il)
         {
             ILCursor c = new ILCursor(il);
             c.TryGotoNext(MoveType.Before,
@@ -71,33 +71,10 @@ namespace WolfoFixes
             {
                 WolfFixes.log.LogError("IL Failed : HealthComponent_ServerFixedUpdateHealthComponent_Suicide1");
             }
-        }
+        }*/
 
 
-        private static void SwarmsVengenceGooboFix(MonoMod.Cil.ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdfld("RoR2.SpawnCard/SpawnResult", "spawnRequest"),
-                x => x.MatchCallvirt("RoR2.DirectorCore", "TrySpawnObject")))
-            {
-                c.EmitDelegate<Func<SpawnCard.SpawnResult, SpawnCard.SpawnResult>>((result) =>
-                {
-                    if (result.spawnedInstance)
-                    {
-                        if (result.spawnRequest.spawnCard is MasterCopySpawnCard)
-                        {
-                            result.spawnRequest.spawnCard = MasterCopySpawnCard.FromMaster(result.spawnedInstance.GetComponent<CharacterMaster>(), true, true, null);
-                        }
-                    }
-                    return result;
-                });
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed: SwarmsArtifactManager_OnSpawnCardOnSpawnedServerGlobal");
-            }
-        }
+
 
     }
 
