@@ -21,7 +21,7 @@ namespace WolfoFixes
             //Doubt it'd come up in vanilla.
             On.RoR2.SeerStationController.SetRunNextStageToTarget += BazaarDisableAllSeers;
 
-            //Disable Broken Missile & FlameDrone rotation, so it no longer fucking clips in the ground all the god damn time.
+            //Disable Broken Missile & FlameDrone rotation, so it no longer clips in the ground all the time.
             Addressables.LoadAssetAsync<InteractableSpawnCard>(key: "749e2ff7e1839074885efb0f82197ba7").WaitForCompletion().slightlyRandomizeOrientation = false;
             Addressables.LoadAssetAsync<InteractableSpawnCard>(key: "592ddd0e913440844b42eff65663abda").WaitForCompletion().slightlyRandomizeOrientation = false;
 

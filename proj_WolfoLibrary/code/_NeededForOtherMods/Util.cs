@@ -28,7 +28,7 @@ namespace WolfoLibrary
 
                 if (!droppableOnly)
                 {
-                    eliteEquips.Remove(MissedContent.Equipment.EliteSecretSpeedEquipment.equipmentIndex);
+                    //eliteEquips.Remove(MissedContent.Equipment.EliteSecretSpeedEquipment.equipmentIndex);
                     eliteEquips.Remove(JunkContent.Equipment.EliteYellowEquipment.equipmentIndex);
                     eliteEquips.Remove(JunkContent.Equipment.EliteGoldEquipment.equipmentIndex);
                 }

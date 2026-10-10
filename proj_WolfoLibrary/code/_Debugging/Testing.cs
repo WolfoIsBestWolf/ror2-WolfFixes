@@ -33,19 +33,10 @@ namespace WolfoLibrary.Testing
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        private static NetworkConnection ServerAuthManager_FindConnectionForSteamID(On.RoR2.Networking.ServerAuthManager.orig_FindConnectionForSteamID orig, PlatformID steamId)
+        {
+            throw new System.NotImplementedException();
+        }
 
         private static void SteamworksLobbyManager_OnLobbyJoined_bool_string(On.RoR2.SteamworksLobbyManager.orig_OnLobbyJoined_bool_string orig, SteamworksLobbyManager self, bool success, string tokenReasonFailed)
         {
@@ -69,8 +60,8 @@ namespace WolfoLibrary.Testing
         public static void ServerAuthManager_HandleSetClientAuth(MonoMod.Cil.ILContext il)
         {
             ILCursor c = new ILCursor(il);
-            if (c.TryGotoNext(MoveType.After,
-                x => x.MatchLdloc(3)
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchStloc(3)
                 ))
             {
                 c.EmitDelegate<System.Func<NetworkConnection, NetworkConnection>>((self) =>

@@ -26,8 +26,6 @@ namespace WolfoFixes
             //Addressables.LoadAssetAsync<BasicPickupDropTable>(key: "e291748f54c927a47ad44789d295c39f").WaitForCompletion().bannedItemTags = new ItemTag[] { ItemTag.HalcyoniteShrine };
 
 
-
-
             //Tanker Grease always leaves the puddle, regardless if it hit anything or not
             //This leads to it spawning in sky boxes which is ugly
             //This happens because ProjectileSimple.lifetime < ProjectileImpactExplosion.lifetime
@@ -35,6 +33,7 @@ namespace WolfoFixes
             TankerAccelerantProjectile.GetComponent<ProjectileSimple>().lifetime = 3;
 
             //Remove Deployable from Beetle Guard
+            //Due to some rare edge case with Collective Elites not dropping the item
             GameObject.Destroy(Addressables.LoadAssetAsync<GameObject>(key: "5459e8ded89cd0f4d84219750a7e10ac").WaitForCompletion().GetComponent<Deployable>());
 
 
@@ -50,31 +49,7 @@ namespace WolfoFixes
         }
 
 
-
-        //Fixed in AC
-        /*public static void AllowGhostsToSuicideProperly(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.TryGotoNext(MoveType.Before,
-                x => x.MatchCall("RoR2.HealthComponent", "Suicide"));
-
-            if (c.TryGotoPrev(MoveType.After,
-                x => x.MatchLdarg(0)))
-            {
-                c.EmitDelegate<System.Func<HealthComponent, HealthComponent>>((stock) =>
-                {
-                    stock.health = 1;
-                    return stock;
-                });
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed : HealthComponent_ServerFixedUpdateHealthComponent_Suicide1");
-            }
-        }*/
-
-
-
+         
 
     }
 

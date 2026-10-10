@@ -1,4 +1,37 @@
 ```
+v.1.4.0 - DLC4
+New Fixes:
+* 3 new items descriptions being a bit wrong.
+* Totem of Sacrifice is no longer affected by Eclipse2 and Focused Convergence.
+* Hex of Greed will no longer say "??? picked up" when a dead enemy gains an item.
+* Fixes the Scavenger in the Logbook being one with less health than regular Scavs.
+
+
+Removed fixes and changes due to be added officially:
+* Elite XI Constructs spawning elite Alpha Constructs.
+* Elite equipment displays for XI Construct.
+* Perfected elite displays for regular enemies.
+* Fuel Array displays for engi turrets.
+* Commando fire rate being capped at 2 frames instead of 1.
+* Stage 1 weight fixes.
+* MUL-T Retool weirdness.
+* REX M1 sound being missing.
+* REX M4 Vines disappearing permanently after 1 use on a stage.
+* Faraday Spur visual radius being half of the attack radius.
+* Hearty Stew randomly breaking if the player has Curse.
+* Halcyonite Shrine spamming the console for clients.
+* Grandparent Rock being invisible.
+
+
+Removed due to age:
+* Access Node on Repurposed Crater after Solus Wing. (Was told this was a bug ages ago but surely would've been fixed by now if needed)
+* Disabled Warped Echo letting you live due to OSP despite Curse ""disabling"" it. (Can still be turned on)
+
+```
+```
+v.1.3.7
+Halcyon shrine fix remove dir
+
 v1.3.6
 Fixed Eclipse Lobby disconnecting all-players whenever the run ends.
 Fixed Mul-T phantom equipment slot bug.

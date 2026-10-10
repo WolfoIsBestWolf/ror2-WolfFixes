@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace WolfoFixes
 {
-    //Taken from EnFucker, Thank you EnFucker
     public static class Assets
     {
         public static PluginInfo PluginInfo;

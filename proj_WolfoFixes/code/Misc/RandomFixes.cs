@@ -31,35 +31,16 @@ namespace WolfoFixes
             //Always update hud if rebuild cards
             On.RoR2.ClassicStageInfo.RebuildCards += MarkHudAsDirtyForKin;
 
-            //Fixed 1.4.1
-            //IL.RoR2.UI.ScrapperInfoPanelHelper.AddQuantityToPickerButton += ScrapperInfoPanelHelper_AddQuantityToPickerButton;
-
-            On.RoR2.UI.ItemIcon.Awake += ItemIcon_Awake_ShutUpAboutTheError;
+            On.RoR2.Chat.PlayerPickupChatMessage.ConstructChatString += PlayerPickupChatMessage_ConstructChatString;
         }
 
-        private static void ItemIcon_Awake_ShutUpAboutTheError(On.RoR2.UI.ItemIcon.orig_Awake orig, RoR2.UI.ItemIcon self)
+        private static string PlayerPickupChatMessage_ConstructChatString(On.RoR2.Chat.PlayerPickupChatMessage.orig_ConstructChatString orig, Chat.PlayerPickupChatMessage self)
         {
-            try
+            if (!self.subjectAsNetworkUser && !self.subjectAsCharacterBody)
             {
-                orig(self);
+                return null;
             }
-            catch { }
-        }
-
-        private static void ScrapperInfoPanelHelper_AddQuantityToPickerButton(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            if (c.TryGotoNext(MoveType.Before,
-            x => x.MatchCallvirt("RoR2.Inventory", "GetItemCountEffective")
-            ))
-            {
-
-                c.Next.Operand = AccessTools.Method(typeof(Inventory), nameof(Inventory.GetItemCountPermanent), new[] { typeof(ItemIndex) });
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed : ScrapperInfoPanelHelper_AddQuantityToPickerButton");
-            }
+            return orig(self);
         }
 
         private static void MarkHudAsDirtyForKin(On.RoR2.ClassicStageInfo.orig_RebuildCards orig, ClassicStageInfo self, DirectorCardCategorySelection forcedMonsterCategory, DirectorCardCategorySelection forcedInteractableCategory)
@@ -95,13 +76,14 @@ namespace WolfoFixes
         private static void FixUnpingableHelminthRocks(ILContext il)
         {
             ILCursor c = new ILCursor(il);
-            if (c.TryGotoNext(MoveType.Before,
-            x => x.MatchLdloc(11),
+            if (c.TryGotoNext(MoveType.After,
+            x => x.MatchStloc(14),
+            x => x.MatchLdloc(14),
             x => x.MatchCall("UnityEngine.Object", "op_Implicit")
             ))
             {
                 //Missing Null Check
-                c.Index++;
+                c.Index--;
                 c.EmitDelegate<System.Func<EntityLocator, EntityLocator>>((entitylocator) =>
                 {
                     if (entitylocator && entitylocator.entity == null)

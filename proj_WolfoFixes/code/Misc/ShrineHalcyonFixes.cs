@@ -9,10 +9,9 @@ namespace WolfoFixes
     {
         public static void Start()
         {
-            //Running Host only code on Client
-            On.RoR2.CombatDirector.SpendAllCreditsOnMapSpawns_Transform += CombatDirector_SpendAllCreditsOnMapSpawns;
-            On.RoR2.CombatDirector.HalcyoniteShrineActivation += CombatDirector_HalcyoniteShrineActivation;
-            On.RoR2.HalcyoniteShrineInteractable.IsDraining += HalcyoniteShrineInteractable_IsDraining;
+
+            //Clients need these values for Visuals
+            On.RoR2.HalcyoniteShrineInteractable.Start += MoreValuesForClients;
 
             IL.EntityStates.ShrineHalcyonite.ShrineHalcyoniteBaseState.ModifyVisuals += FixVisualsBeingInconsistent;
         }
@@ -38,35 +37,21 @@ namespace WolfoFixes
             }
         }
 
-        private static void HalcyoniteShrineInteractable_IsDraining(On.RoR2.HalcyoniteShrineInteractable.orig_IsDraining orig, HalcyoniteShrineInteractable self, bool drainingActive)
+        private static void MoreValuesForClients(On.RoR2.HalcyoniteShrineInteractable.orig_Start orig, HalcyoniteShrineInteractable self)
         {
+            orig(self);
             if (!NetworkServer.active)
             {
-                //STFU
-                return;
+                if (self.automaticallyScaleCostWithDifficulty)
+                {
+                    self.lowGoldCost = Run.instance.GetDifficultyScaledCost(self.lowGoldCost);
+                    self.midGoldCost = Run.instance.GetDifficultyScaledCost(self.midGoldCost);
+                    self.maxGoldCost = Run.instance.GetDifficultyScaledCost(self.maxGoldCost);
+                    self.goldDrainValue = Run.instance.GetDifficultyScaledCost(self.goldDrainValue);
+                }
             }
-            orig(self, drainingActive);
         }
 
-        private static void CombatDirector_SpendAllCreditsOnMapSpawns(On.RoR2.CombatDirector.orig_SpendAllCreditsOnMapSpawns_Transform orig, CombatDirector self, Transform mapSpawnTarget)
-        {
-            if (!NetworkServer.active)
-            {
-                Log.LogError("CombatDirector_SpendAllCreditsOnMapSpawns | This isn't meant to run on Client, Gearbox Software");
-                return;
-            }
-            orig(self, mapSpawnTarget);
-        }
-
-        private static void CombatDirector_HalcyoniteShrineActivation(On.RoR2.CombatDirector.orig_HalcyoniteShrineActivation orig, CombatDirector self, float monsterCredit, DirectorCard chosenDirectorCard, int difficultyLevel, Transform shrineTransform)
-        {
-            if (!NetworkServer.active)
-            {
-                Log.LogError("CombatDirector_HalcyoniteShrineActivation | This isn't meant to run on Client, Gearbox Software");
-                return;
-            }
-            orig(self, monsterCredit, chosenDirectorCard, difficultyLevel, shrineTransform);
-        }
 
     }
 

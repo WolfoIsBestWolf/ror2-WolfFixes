@@ -18,10 +18,8 @@ Corrects or details various wrong item, survivor, drone, admin command descripti
 
 
 ## Item & EquipmentFixes
-Warped Echo echoed hits no longer activating Planula & Repulsion Armor Plate. *(Like how it was specifically added to do that in prior versions)*\
+Warped Echo echoed hits no longer activating Planula & Repulsion Armor Plate. *(It worked in some prior versions)*\
 Warped Echo echoed hits double-dipping some damage *increases* of the attacker. *(i.e. Watch, Lunar Ruin)*\
-Warped Echo letting you live through OSP, even when OSP is meant to be disabled *(Curse, Low Health)*\
-Warped Echo reducing damage further after OSP. *(OSP is meant to be last damage limit)*
 
 Deus Ex Machina Blessing being consumed on attacks that cannot proc. *(0 damage or 0 procCoefficient attacks)*
 
@@ -42,36 +40,30 @@ Charged Perferator rolling for crit instead of inheriting like other procs.
 
 Unstable Transmitters effect being removed by cleansing effects. *(Accidentally tagged as a cooldown buff)*
  
-Executive Card no longer fails if you open Multi Shops too quickly. *(The 0.1 cooldown has no gameplay implications, it just messes you up)*
+Executive Card no longer fails if you open Multi Shops too quickly. *(Removing the 0.1 cooldown does should not impact gameplay in other ways)*
 
 For Retool, Enigma, Bottled Chaos, Functional Coupler:
 - Sawmerang not bleeding if you don't have the equipment in your main slot.
 - Milky Chrysalis wings disappearing mid-flight.
 
 
-Removes Warbanner from Best Buddies above level 99, to avoid spam and lag. *(Minions aren't supposed to get it in the first place)*
+Removes Warbanner from Best Buddies above level 99, to avoid spam and lag.
 
 ```
 Some item tags were adjusted, to better match others.
 - Equipment items unblacklisted for Scavs.
-- Nkuhanas Opinion blacklisted from all monsters. (Undodgeable instant death, unpredictable activations)
-- Kinetic Dampner blacklisted from all monsters. (Undodgeable instant death as melee)
-- Egocentrism blacklisted for Mithrix.  (Too opressive against melee, like Mired Urn)
+- Kinetic Dampner and Egocentrism AIBlacklisted. (Too oppressive and high damage against melee survivors)
 - Hunters Harpoon missing OnKill.
 ```
 ```
 Item Visuals:
 
-Faraday Spur visual radius being half of the attack radius.
+Mercurial Rachis visual radius being slightly too big.
 
-Mercurial Rachis visual radius being slightly bigger than buff radius.
-
-Deskplant visual being too small.
+Deskplant visual being small.
 ```
 #
 ## Survivor & Drone Fixes
-Mul-T Retool creating phantom equipment slots leading to lost equipment.
-
 Jailer Drone just firing, instead of getting into a good position before Jailing. *(It is meant to hover above the enemy like Bombardment drones, instead of often firing below or not aiming at enemies.*)
 
 Chef Boosted Sear Oil Puddles dealing 0% instead of 20% damage.   
@@ -81,9 +73,6 @@ Captain Beacons being unable to crit.
 Drifter's Tinker being able to apply 3 debuffs that do literally nothing.
 ```
 Player Visuals:
-
-REXs flower vines disappearing quickly
-
 Railgunners Scope being more opaque than in the past
 
 "DroneBuff" icon not appearing for non-drone mechanical allies, despite those being buffed as well.\
@@ -93,20 +82,15 @@ Broken Flame & Missile Drone clip less into the ground.
 ```
 #
 ## Monster Fixes
-XI Construct Elites not spawning Elite Minions.\
-XI Construct Ghosts not spawning Ghost Minions.\
 XI Construct Exit Shield state not playing.
 
-Lunar Golems having strange unneeded spawn restrictions.\
-*(Often prevents them from spawning with Dissonance)*  
+Lunar Golems only being able to spawn on places that have a ceiling. 
+*(Only noticible during Dissonance and Family Event)*
 
-Child now immune to the sun. *(Like Parents)*  \
-Twisted Scavs now immune to void implosions. *(Like other final bosses)*\
-SPEX & Memory Probes now immune to void implosions. *(For consistency*)
+Childs are now immune to the sun. *(Like Parents)*  \
+Twisted Scavengers are now immune to void implosions. *(Like other final bosses)*
 
-Solus Heart softlocking the game, if he has Dios.
-
-Drones with revives still leaving new broken drones despite reviving.
+Drones no longer leave a repairable drone, dulicating themselves, if they have a revive.
 
  ```
 Mob Visuals:
@@ -120,31 +104,12 @@ False Son using wrong Death Message since launch.
 Gilded Elite corpses looking like blazing elite.
 ```
 
-
-
 ## Stage Fixes
-
-Temporary Item Vendors being 10x more common than intended on SotS stages.
-
-Distant Roost never spawning DLC3 interactables, with all 3 DLCs enabled.\
-Scorches Acres never spawning DLC3 interactables, with all 3 DLCs enabled.\
-Helminth Hatchery never spawning DLC1 interactables, with all 3 DLCs enabled.
-
-
-Verdant Falls: No longer half as likely as other stage 1s.\ *(AC changed this for literally no reason)*
-Distant Roost: No longer twice as likely. *(1.5x now, they are still variants)*\
-Titanic Plains: No longer twice as likely. *^ Can be configured to your liking*)  
- 
-
-
-Repurposed Crater not spawning the Access Node after Solus Wing. *(I was told this was a bug)*
-
 Bazaar Seers being able to select Pre-Loop variants, Post-Loop.\
 Bazaar Seers being able to select 2 Plains/2 Roosts.
 
-Simu-Sanctuary & Simu-Commencement not being able to spawn Lunar Pods. *(But still take credits)*
+Simu-Sanctuary & Simu-Commencement not being able to spawn Lunar Pods. *(But they still take credits)*
 
- 
 A Bulwarks Ambry using the wrong DLC1 spawn pool\
 A Bulwarks Ambry spawning the wrong Alpha & XI Construct
  
@@ -152,10 +117,10 @@ Child & Grandparent not spawning during Parent family event.
 
 ## Gameplay Other Fixes
  
-Newt Altars will no longer purchasable after Teleporter. (Like pre SotS)
+Newt Altars will no longer be purchasable after the Teleporter. (Like pre SotS)
 
-Drone Combiner no longer spawns with Devotion.\
-Drone Shop can now spawn with Sacrifice.\
+Drone Combiner no longer spawns with Devotion. *(Other drone interactables dont spawn*)\
+Drone Shop can now spawn with Sacrifice. *(Presumably an overseight from copy pasting*)\
 Limits Altar of Gold to 1 per stage.
 
 
@@ -164,7 +129,7 @@ Limits Altar of Gold to 1 per stage.
 Eclipse Runs kicking all players out of the lobby, forcing you to restart the lobby every time. 
 
 
-EndOfWave Enemy Indicators not re-appearing if a enemy respawns from Dios.
+Simulacrum End-of-Wave Enemy Indicators not re-appearing if a enemy respawns from Dios.
 
 Simulacrums Fog ramping up 25x slower than what is intended.\
 Removed Chance Doll from Simulacrum, as there are no Shrine of Chance.\
@@ -175,28 +140,26 @@ Removed Chance Doll from Simulacrum, as there are no Shrine of Chance.\
 
 Fixes Honor always choosing the same Elite types for some special bosses. *(Due to static RNG being used)*
 
-Fixes Vengence breaking if someone is a RemoteOp drone. *(Dead players dont spawn Umbras normally, so players playing as Drones wont try to either.)(Also they'd be awful to fight)*
+Fixes Vengence breaking if someone is a RemoteOp drone. *(Dead players dont spawn Umbras normally, so players playing as Drones either. They would also be awful to fight.)*
 Fixes Vengence + Swarms spawning one of them as not an Umbra/Without any items.\
 
 Fixed 10 bugs or errors with Artifact of Devotion leading to :
-- Lemurian evolution no longer results in all but 1 Lemurian having less items than intended.
+- Lemurian evolution no longer results in all but 1 Lemurian having less items than intended, until gaining/losing a Lemurian
 - Lemurian wont randomly lose item effects such as Opal, Focus Crystal, etc.
-- Lemurians gotten from Trials will be able evolve into elites.
-- Lemurian evolution wont fail anymore if 1 or more Lemurians are in a quantum state.
+- Lemurians gotten from the Artifact Trial will be able evolve into elites.
+- Lemurian evolution wont fail anymore if 1 or more Lemurians are in a bugged state.
 - Lemurian inventories get properly deleted on all run ends.
 - Devoted Lemurians being tagged as Devoted, instead of Wild Lemurians.
 	- Different spawn sound
-	- Works with Spare Drone Parts & Box of Dynamite. (Strange but intended synergy)
+	- Work with Spare Drone Parts & Box of Dynamite. 
+	*(Strange but intended synergy, that without this mod can be seen with Happiest Mask instead)*
 	
 
 
- Artifact of Glass will now make you and minions appear as glass.
+ Artifact of Glass will now make you and minions appear glass-like, like Shaped Glass.
 
 ## Multiplayer / Client fixes
 (Most fixes in the mod are host-dependent, these ones only matter if you have it installed)
-
-Prevents Halcyon Shrine entityState nullref on client.\
-Removes the log spam from Halcyon Shrines on client.
 
 Aurelionite Fragments & Potentials now spin for clients.\
 Prayer Beads desyncing for clients, leading to various visual issues.\
@@ -208,12 +171,6 @@ Simulacrum not pointing out enemies at the end of waves for Clients.
 Drone Combiner having some visual bugs on clients.
 
 ## Visual
- 
-Adds various missing item displays :
-- Elite Displays for XI Constructs, Mithrix.
-- Perfected Elite Displays for all Monsters
-- Fuel Array Display for Engineer Turrets.
- 
 
 Deep Void Signals Beam being flat.
 
@@ -229,13 +186,11 @@ Broken Flame & Missile Drones often spawning in the ground.
 Aurelionite Geodes only appearing on Radar Scanner, *after* they are broken, instead of when unbroken.
 
 ## Audio
-REX m1 not playing impact sound.
-
 War Bonds should no longer play the Horn if 0 missiles would be fired.
 
 Scavengers not playing their Spawn Sound
 
-Soup not playing their Soup sound
+Cauldrons not playing their sounds
 
 ## Misc
 Logbook Fixes : 

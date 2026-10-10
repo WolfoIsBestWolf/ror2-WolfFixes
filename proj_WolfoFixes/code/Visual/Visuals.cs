@@ -36,7 +36,7 @@ namespace WolfoFixes
             RachisObject.transform.GetChild(1).GetChild(2).GetChild(1).localScale = new Vector3(2f, 2f, 2f);
 
             //Too small plant normally
-            Addressables.LoadAssetAsync<GameObject>(key: "RoR2/Base/Plant/InterstellarDeskPlant.prefab").WaitForCompletion().transform.GetChild(0).localScale = new Vector3(0.6f, 0.6f, 0.6f);
+            Addressables.LoadAssetAsync<GameObject>(key: "RoR2/Base/Plant/InterstellarDeskPlant.prefab").WaitForCompletion().transform.GetChild(0).localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
             //Unused like blue explosion so he doesn't use magma explosion ig, probably unused for a reason but it looks fine
             Addressables.LoadAssetAsync<GameObject>(key: "RoR2/Base/ElectricWorm/ElectricWormBody.prefab").WaitForCompletion().GetComponent<WormBodyPositions2>().blastAttackEffect = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/Junk/ElectricWorm/ElectricWormImpactExplosion.prefab").WaitForCompletion();
@@ -59,25 +59,6 @@ namespace WolfoFixes
             IL.RoR2.CharacterModel.UpdateOverlays += ArtifactOfGlassGlassVisual1;
             IL.RoR2.CharacterModel.UpdateOverlayStates += ArtifactOfGlassGlassVisual1;
 
-            //REX vine dissappears too fast
-            GameObject EntangleOrbEffect = Addressables.LoadAssetAsync<GameObject>(key: "6e330e0a639bc3d4a9c1c282d70705b1").WaitForCompletion();
-            AnimateShaderAlpha[] alphas = EntangleOrbEffect.transform.GetChild(0).GetComponents<AnimateShaderAlpha>();
-            alphas[0].continueExistingAfterTimeMaxIsReached = false;
-            alphas[1].continueExistingAfterTimeMaxIsReached = true;
-            //EntangleOrbEffect.GetComponent<DetachParticleOnDestroyAndEndEmission>().enabled = false;
-
-
-
-            bool otherGrandparent = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyFixes");
-            if (true)
-            {
-                //Grandparent invisible rock
-                GameObject miniRock = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Grandparent/GrandparentMiniBoulderGhost.prefab").WaitForCompletion();
-                //MeshFilter mesh = miniRock.transform.GetChild(0).GetChild(0).GetComponent<MeshFilter>();
-                //mesh.sharedMesh = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/skymeadow/SMRockAngular.fbx").WaitForCompletion().GetComponent<MeshFilter>().mesh;
-                miniRock.transform.GetChild(0).localScale *= 30;
-            }
-
 
             On.RoR2.DetachParticleOnDestroyAndEndEmission.OnDisable += RenableParticlesOnEnable;
 
@@ -85,14 +66,9 @@ namespace WolfoFixes
 
             DLC3Fixes();
 
-            //Fix random white ugly fuck donut appearing since SotS
-            GameObject PortalVoid = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/PortalVoid/PortalVoid.prefab").WaitForCompletion();
-            PortalVoid.transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
-            PortalVoid.transform.GetChild(0).GetChild(6).gameObject.SetActive(false);
-
 
             //Show extra stocks
-            IL.RoR2.UI.SkillIcon.Update += SkillIcon_Update;
+            IL.RoR2.UI.SkillIcon.LateUpdate += SkillIcon_Update;
             Addressables.LoadAssetAsync<SkillDef>(key: "067364fa932fb5b4793f0546a08709ca").WaitForCompletion().hideStockCount = true;
 
             //Collective bubble not visible from inside
@@ -146,70 +122,17 @@ namespace WolfoFixes
                 Extractor_params.rendererInfos[i].ignoreOverlays = false;
             }
             #endregion
-            #region Tanker
-            Material matTankerGlass = Addressables.LoadAssetAsync<Material>(key: "561bdde5eaee70747ab98b0245a1d786").WaitForCompletion();
-
-            //Not really feasible unless we removed a render info?
-            //But would that matter?
-
-            #endregion
+ 
             #region Distributer
             //Does not cast shadows
             SkinDefParams MinePod_params = Addressables.LoadAssetAsync<SkinDefParams>(key: "e149ed8a264a5a64a99c42e590e997f6").WaitForCompletion();
             MinePod_params.rendererInfos[0].defaultShadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
             #endregion
 
-            //Fix Tier2 Drone Colors
-            IL.RoR2.CharacterModel.GetDroneUpgradePair += CharacterModel_GetDroneUpgradePair;
-
-            //Spurs visual sets diamater not radius, attack uses radius just fine.
-            IL.RoR2.Items.JumpDamageStrikeBodyBehavior.UpdateAura += SpurHalfVisualRadius;
-
-
             //1 Item misaligned
             //GameObject TemporaryItemsShopTerminal = Addressables.LoadAssetAsync<GameObject>(key: "d31df5066858329458b33f21b3b22d2e").WaitForCompletion();
             //TemporaryItemsShopTerminal.transform.GetChild(1).GetChild(3).localPosition = new Vector3(0f, 2.5f, 0.058f);
 
-        }
-
-
-
-        private static void SpurHalfVisualRadius(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            if (c.TryGotoNext(MoveType.Before,
-            x => x.MatchCall("RoR2.SphereZone", "set_Networkradius")))
-            {
-                c.EmitDelegate<System.Func<float, float>>((fake) =>
-                {
-                    return fake * 2f;
-                });
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed: IL.SpurHalfVisualRadius");
-            }
-        }
-
-        private static void CharacterModel_GetDroneUpgradePair(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            if (c.TryGotoNext(MoveType.Before,
-            x => x.MatchLdcI4(0)))
-            {
-                c.EmitDelegate<System.Func<int, int>>((fake) =>
-                {
-                    if (fake == 0)
-                    {
-                        return 1;
-                    }
-                    return fake;
-                });
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed: IL.CharacterModel_GetDroneUpgradePair");
-            }
         }
 
         private static void FixOrbOverlap(On.RoR2.TeleporterInteraction.orig_Start orig, TeleporterInteraction self)

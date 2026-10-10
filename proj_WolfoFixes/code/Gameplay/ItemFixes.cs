@@ -5,6 +5,7 @@ using RoR2;
 using RoR2.Navigation;
 using System;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace WolfoFixes
 {
@@ -13,7 +14,6 @@ namespace WolfoFixes
     {
         public static void Start()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += Stew_GettingDeletedByCurseRandomly;
 
             IL.RoR2.CharacterBody.RecalculateStats += FixStoneFluxBeingAppliedTwice;
 
@@ -31,7 +31,7 @@ namespace WolfoFixes
             if (WConfig.cfgFixWarpedOSP.Value)
             {
                 IL.RoR2.HealthComponent.TakeDamageProcess += RemoveOSPEntirelyIfYouAreBelowOSPThreshold;
-                IL.RoR2.HealthComponent.TakeDamageProcess += FixWarpedReducingDamageAfterOSP;
+         
             }
             IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDamageNotProccingPlanulaAnymoreAC141;
             IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDamageDoubleDippingEnemyWatches;
@@ -40,8 +40,12 @@ namespace WolfoFixes
                 IL.RoR2.HealthComponent.TakeDamageProcess += FixWEchoDoubleDippingLunarRuin;
             }
 
+            IL.RoR2.HealthComponent.TakeDamageProcess += FixParryConsumedOn0Damage0ProcAttacks;
 
-            IL.RoR2.HealthComponent.TakeDamageProcess += FixParryConsuemdOn0Damage0ProcAttacks;
+            //Shouldn't apply them like Enforcer
+            var SpawnAltar = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC4/SpawnAltar/SpawnAltar.prefab").WaitForCompletion().GetComponent<HoldoutZoneController>();
+            SpawnAltar.ignoreRadiusModifiers = true;
+            SpawnAltar.applyFocusConvergence = false;
         }
 
         private static void Stew_GettingDeletedByCurseRandomly(ILContext il)
@@ -96,7 +100,7 @@ namespace WolfoFixes
             }
         }
 
-        private static void FixParryConsuemdOn0Damage0ProcAttacks(ILContext il)
+        private static void FixParryConsumedOn0Damage0ProcAttacks(ILContext il)
         {
             ILCursor c = new ILCursor(il);
             bool a = c.TryGotoNext(MoveType.After,
@@ -118,31 +122,6 @@ namespace WolfoFixes
             else
             {
                 WolfFixes.log.LogError("IL Failed : FixParryConsuemdOn0Damage0ProcAttacks");
-            }
-        }
-
-        private static void FixWarpedReducingDamageAfterOSP(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            bool a = c.TryGotoNext(MoveType.After,
-            x => x.MatchLdsfld("RoR2.DLC2Content/Items", "DelayedDamage"));
-
-            if (a & c.TryGotoNext(MoveType.After,
-            x => x.MatchLdcR4(0.9f)))
-            {
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<float, HealthComponent, float>>((var, self) =>
-                {
-                    if (self.ospTimer > 0f)
-                    {
-                        return 1;
-                    }
-                    return var;
-                });
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed : FixWarpedReducingDamageAfterOSP");
             }
         }
 
@@ -203,6 +182,9 @@ namespace WolfoFixes
 
         private static void FixWEchoDamageNotProccingPlanulaAnymoreAC141(ILContext il)
         {
+            //Part1 : Let echo damage go into the general armor code section
+            //Part2 : Make echo damage specifically only ignore armor, not all other effects
+
             ILCursor c = new ILCursor(il);
             bool a = false;
             a = c.TryGotoNext(MoveType.Before,
@@ -229,7 +211,7 @@ namespace WolfoFixes
             a = c.TryGotoNext(MoveType.Before,
             x => x.MatchMul(),
             x => x.MatchCall("UnityEngine.Mathf", "Max"),
-            x => x.MatchStloc(10));
+            x => x.MatchStloc(12));
 
             if (!a)
             {
@@ -251,15 +233,15 @@ namespace WolfoFixes
         {
             ILCursor c = new ILCursor(il);
             bool a = c.TryGotoNext(MoveType.Before,
-            x => x.MatchLdloc(112),
-            x => x.MatchLdloc(46),
+            x => x.MatchLdloc(136),
+            x => x.MatchLdloc(47),
             x => x.MatchConvR4(),
             x => x.MatchAdd(),
-            x => x.MatchStloc(112));
+            x => x.MatchStloc(136));
 
             if (a && c.TryGotoNext(MoveType.After,
-            x => x.MatchLdloc(112),
-            x => x.MatchLdloc(46)))
+            x => x.MatchLdloc(136),
+            x => x.MatchLdloc(47)))
             {
                 c.EmitDelegate<Func<int, int>>((skill) =>
                 {
@@ -277,28 +259,6 @@ namespace WolfoFixes
             orig(self);
             self.hasOneShotProtection = self.hasOneShotProtection && self.oneShotProtectionFraction > 0;
         }
-
-        //Fix 1.4.1
-        /*private static void FixVoidsentNoLongerChaining(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            bool a = c.TryGotoNext(MoveType.After,
-            x => x.MatchLdsfld("RoR2.DLC1Content/Items", "ExplodeOnDeathVoid"));
-
-            if (a && c.TryGotoNext(MoveType.Before,
-            x => x.MatchLdflda("RoR2.DelayBlast", "procChainMask")))
-            {
-                c.RemoveRange(3);
-                c.TryGotoPrev(MoveType.Before,
-                x => x.MatchDup());
-                c.Remove();
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed : FixVoidsentNoLongerChaining");
-            }
-        }*/
 
         private static void Bandolier_WrongAuthCheck(ILContext il)
         {
@@ -365,152 +325,7 @@ namespace WolfoFixes
                 WolfFixes.log.LogError("IL Failed : Antler_FixWrongAuth");
             }
         }
-
-        private static void WEchoFirstHitIntoDanger(On.RoR2.CharacterBody.orig_OnTakeDamageServer orig, CharacterBody self, DamageReport damageReport)
-        {
-            //Pre for better compat?
-            if (damageReport.damageInfo.firstHitOfDelayedDamageSecondHalf)
-            {
-                self.outOfDangerStopwatch = 0;
-            }
-            orig(self, damageReport);
-        }
-
-        private static void FixWarpedEchoNotUsingArmor(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            //WEchos first hit is rejected if OSP Happens
-            //Because it happens during the OSPTimer that rejects ALL Damage
-            if (c.TryGotoNext(MoveType.After,
-            x => x.MatchLdfld("RoR2.HealthComponent", "ospTimer")))
-            {
-                c.Emit(OpCodes.Ldarg_1);
-                c.EmitDelegate<Func<float, DamageInfo, float>>((timer, damageInfo) =>
-                {
-                    if (damageInfo.delayedDamageSecondHalf)
-                    {
-                        return 0;
-                    }
-                    return timer;
-                });
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed : WECHO dont delete first hit if OSPed");
-            }
-
-            c.TryGotoNext(MoveType.After,
-            x => x.MatchLdsfld("RoR2.DLC2Content/Items", "DelayedDamage"));
-
-            if (c.TryGotoNext(MoveType.After,
-           //x => x.MatchLdloc(8) //This will break like instantly on update but probably fine mods right idk
-           x => x.MatchLdloc(10) //This will break like instantly on update but probably fine mods right idk
-           ))
-            {
-                //c.Next.Operand = 7; //Why does this not work?
-                //Testing
-                //c.Emit(OpCodes.Ldloc, 7); 
-                c.Emit(OpCodes.Ldloc, 9);
-                c.EmitDelegate<Func<float, float, float>>((aaa, bbb) =>
-                {
-                    /*WolfoMain.Logger.LogMessage(aaa);
-                    WolfoMain.Logger.LogMessage(bbb);
-                    WolfoMain.Logger.LogMessage(bbb*0.8f);*/
-                    return bbb;
-                });
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed : FixWarpedEchoNotUsingArmor");
-            }
-
-            //After 80%
-            //if (c.TryGotoNext(MoveType.Before, x => x.MatchStloc(57)))
-            if (c.TryGotoNext(MoveType.After,
-              //x => x.MatchStloc(50) //This will break like instantly on update but probably fine with other mods right idk
-              x => x.MatchLdcR4(0.8f),
-              x => x.MatchMul()
-              //x => x.MatchStloc(57) //This will break like instantly on update but probably fine with other mods right idk
-              ))
-            {
-                c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldarg_1);
-                c.EmitDelegate<Func<float, HealthComponent, DamageInfo, float>>((damage, self, damageInfo) =>
-                {
-                    //I do not like copying it like this
-                    //But I do not trust myself to do it in a more "official way" with breaks or moving pointers
-                    //WolfoMain.Logger.LogMessage("Pre" + damage);
-                    if (self.body.hasOneShotProtection && (damageInfo.damageType & DamageType.BypassOneShotProtection) != DamageType.BypassOneShotProtection)
-                    {
-                        float maxDamageOSP = (self.fullCombinedHealth + self.barrier) * (1f - self.body.oneShotProtectionFraction);
-                        float b = Mathf.Max(0f, maxDamageOSP - self.serverDamageTakenThisUpdate); //What is this?
-                        float huh = damage;
-                        damage = Mathf.Min(damage, b); //This is what OSP does
-                        if (damage != huh) //If you already took exactly 90% damage, dont do OSP (??)
-                        {
-                            WolfFixes.log.LogMessage("Trigger Warped OSP");
-                            self.TriggerOneShotProtection();
-                        }
-                    }
-                    //WolfoMain.Logger.LogMessage("Post" + damage);
-
-                    return damage;
-                });
-
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed : WARPED OSP FIX");
-            }
-
-
-        }
-
-        private static void FixEchoOSP(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            int beforeEcho = -1;
-            int beforeOSP = -1;
-            int afterOSP = -1;
-
-            ILCursor cbeforeEcho;
-            ILCursor cbeforeOSP;
-            ILCursor cafterOSP;
-
-
-
-            //Goto X
-            //Y
-            //Echo Code
-            //Goto Z
-            //X
-            //OSP
-            //Goto Y
-            //Z
-
-            c.TryGotoNext(MoveType.After,
-            x => x.MatchLdsfld("RoR2.DLC2Content/Buff", "DelayedDamageBuff"));
-            c.TryGotoNext(MoveType.After,
-            x => x.MatchNewobj("RoR2.Orbs.SimpleLightningStrikeOrb"));
-
-
-            if (c.TryGotoNext(MoveType.Before,
-            x => x.MatchStfld("RoR2.Orbs.GenericDamageOrb", "isCrit")
-            ))
-            {
-
-                cbeforeEcho = c.Emit(OpCodes.Break);
-
-
-            }
-            else
-            {
-                WolfFixes.log.LogError("IL Failed : FixChargedPerferatorCrit");
-            }
-
-        }
+           
 
         public static void FixChargedPerferatorCrit(ILContext il)
         {

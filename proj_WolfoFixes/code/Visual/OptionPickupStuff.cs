@@ -26,7 +26,7 @@ namespace WolfoFixes
                 {
                     if (index.pickupDisplay)
                     {
-                        var pickupDef = index.pickupIndex.pickupDef;
+                        var pickupDef = index.pickupState.pickupIndex.pickupDef;
                         if (pickupDef.itemTier >= ItemTier.VoidTier1 && pickupDef.itemTier <= ItemTier.VoidBoss)
                         {
                             //Not default token so double checking

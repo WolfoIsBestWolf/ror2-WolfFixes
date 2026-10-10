@@ -13,9 +13,8 @@ namespace WolfoFixes
         {
             //DLC3 weird tag stuff
             //Randomly got rebirth blacklisted;
-            RemoveTag(DLC1Content.Items.BearVoid, ItemTag.RebirthBlacklist);
-            RemoveTag(DLC1Content.Items.RandomlyLunar, ItemTag.RebirthBlacklist);
-            RemoveTag(DLC3Content.Items.TransferDebuffOnHit, ItemTag.RebirthBlacklist);
+           
+            RemoveTag(RoR2Content.Items.CaptainDefenseMatrix, ItemTag.HiddenForDroneBuffIcon);
 
             //Better DroneBuffArrow stuff
             AddTag(RoR2Content.Items.BoostHp, ItemTag.HiddenForDroneBuffIcon);
@@ -72,8 +71,6 @@ namespace WolfoFixes
             AddTag(DLC3Content.Items.ShieldBooster, ItemTag.AIBlacklist); //Damage reflection items aren't for enemies
             #endregion
             #region Red
-            AddTag(RoR2Content.Items.NovaOnHeal, ItemTag.AIBlacklist); //Overpowered
-
             AddTag(RoR2Content.Items.BarrierOnOverHeal, EvolutionBlacklist); //Useless
             AddTag(DLC1Content.Items.MoreMissile, EvolutionBlacklist);       //Useless
             #endregion
@@ -112,7 +109,7 @@ namespace WolfoFixes
             }
             #endregion
             #endregion
-
+          
             #region Category stuff
             //General rule changes
             //Barrier -> Healing : Instead of Healing+Utility
@@ -122,23 +119,21 @@ namespace WolfoFixes
             //How Barrier is Utility? Like it's not DR 
             //Healing is a small pool it shouldnt overlap with much other stuff
 
-
-
             //RemoveTag(RoR2Content.Items.BarrierOnKill, 0); //Remove Utility
             RemoveTag(RoR2Content.Items.Infusion, 0); //Remove Utility
-            AddTag(DLC2Content.Items.TeleportOnLowHealth, ItemTag.Healing);//Barrier is Healing.
+            AddTag(DLC2Content.Items.TeleportOnLowHealth, ItemTag.Healing); //Barrier is Healing.
             AddTag(DLC3Content.Items.JumpDamageStrike, ItemTag.Utility);
 
 
             //Red
             //RemoveTag(RoR2Content.Items.HeadHunter, 0); //Remove Utility
             //RemoveTag(RoR2Content.Items.BarrierOnOverHeal, 0); //Remove Utility, Barrier is Healing.
-            AddTag(RoR2Content.Items.NovaOnHeal, ItemTag.Healing); //Healing related
+            //AddTag(RoR2Content.Items.NovaOnHeal, ItemTag.Healing); //Healing related
 
             // Boss
             RemoveTag(RoR2Content.Items.Knurl, 0); //Remove Utility
-            AddTag(DLC1Content.Items.MinorConstructOnKill, ItemTag.Utility); //Healing related
-            AddTag(DLC3Content.Items.ExtraEquipment, ItemTag.Utility); //Healing related
+            AddTag(DLC1Content.Items.MinorConstructOnKill, ItemTag.Utility);
+            AddTag(DLC3Content.Items.ExtraEquipment, ItemTag.Utility); 
 
             #region Lunar
 
@@ -155,7 +150,7 @@ namespace WolfoFixes
             #endregion
 
             #endregion
-
+           
         }
 
 

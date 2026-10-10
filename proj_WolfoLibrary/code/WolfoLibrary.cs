@@ -35,7 +35,6 @@ namespace WolfoLibrary
 
             Tags.Start();
 
-            ShrineHalcyonFixes.Start(); //Needs to be here for Mod Support.
             VoidElite.VoidAffix();
             VoidSuppressor.SuppresedScrap();
             VoidSuppressor.FixInteractable();

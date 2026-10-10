@@ -11,11 +11,12 @@ namespace WolfoFixes
     {
         public static void Start()
         {
-
-            GameObject DevotedLemurian = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/CU8/DevotedLemurianBody.prefab").WaitForCompletion();
-            GameObject DevotedLemurianElder = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/CU8/DevotedLemurianBruiserBody.prefab").WaitForCompletion();
-            DevotedLemurian.GetComponent<DeathRewards>().logUnlockableDef = null;
-            DevotedLemurianElder.GetComponent<DeathRewards>().logUnlockableDef = null;
+            DeathRewards remove = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC4/ScavSanctum/ScavSanctum1Body.prefab").WaitForCompletion().GetComponent<DeathRewards>();
+            remove.logUnlockableDef = null;
+            remove = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC4/ScavSanctum/ScavSanctum2Body.prefab").WaitForCompletion().GetComponent<DeathRewards>();
+            remove.logUnlockableDef = null;
+            remove = Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC4/ScavSanctum/ScavSanctum3Body.prefab").WaitForCompletion().GetComponent<DeathRewards>();
+            remove.logUnlockableDef = null;
 
             On.RoR2.Stats.StatManager.OnServerGameOver += CountEclipseSimuAsWins;
 

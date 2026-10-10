@@ -12,7 +12,7 @@ namespace WolfoFixes
 
     [BepInDependency("com.bepis.r2api")]
     [BepInDependency("com.Wolfo.WolfoLibrary")]
-    [BepInPlugin("com.Wolfo.WolfFixes", "WolfoBugFixes", "1.3.4")]
+    [BepInPlugin("com.Wolfo.WolfFixes", "WolfoBugFixes", "1.4.0")]
     [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
     //[BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     public class WolfFixes : BaseUnityPlugin
@@ -78,12 +78,9 @@ namespace WolfoFixes
             OptionPickupStuff.Start();
             SkinFixes.Start();
 
-            EquipmentCatalog.availability.CallWhenAvailable(MissingEliteDisplays.Start);
+            //EquipmentCatalog.availability.CallWhenAvailable(MissingEliteDisplays.Start);
 
             GameModeCatalog.availability.CallWhenAvailable(ModSupport_CallLate);
-
-
-
 
             Language.onCurrentLanguageChanged += Language_onCurrentLanguageChanged;
 

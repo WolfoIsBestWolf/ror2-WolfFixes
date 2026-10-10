@@ -6,6 +6,7 @@ using static WolfoLibrary.MissedContent.Equipment;
 
 namespace WolfoFixes
 {
+    /*
     internal class MissingEliteDisplays
     {
         public static GameObject MithrixCrystalYellow = null;
@@ -2022,4 +2023,5 @@ namespace WolfoFixes
 
         }
     }
+    */
 }

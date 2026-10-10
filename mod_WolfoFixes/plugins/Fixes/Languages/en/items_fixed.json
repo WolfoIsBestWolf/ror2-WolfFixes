@@ -47,6 +47,10 @@
 		"ITEM_VOIDMEGACRABITEM_DESC": "Every <style=cIsUtility>60</style><style=cStack>(-50% per stack)</style> seconds, gain a random <style=cIsVoid>Void</style> ally. Can have up to <style=cIsUtility>1</style><style=cStack>(+1 per stack)</style> allies at a time. <style=cIsVoid>Corrupts all </style><style=cIsTierBoss>yellow items</style><style=cIsVoid>.</style>",		
 	 
 	 
+		"CURSEDBOOK_SPELL_WARPGATE_DESC": "Unlocks the ritual <style=cHumanObjective>Warp Gate</style> within the N'tormat. Conjures a <style=cIsUtility>Warp Gate</style> that can be used to <style=cIsDamage>explosively teleport</style> to anywhere you can see. On arrival, spatial backlash damages enemies for <style=cIsDamage>150% to 15000%</style> based on distance traveled and <style=cIsUtility>Freezing</style> enemies for 2s. <style=cIsUtility>Limited to 4 uses per stage.</style>",
+        "ITEM_HEXHAUNTING_DESC": "Summons a <style=cDeath>Poltergeist</style> every <style=cIsUtility>48</style> seconds <style=cStack>(-20% per stack)</style> that haunts an <style=cIsUtility>interactable</style>. Haunted interactables float and get thrown towards you, dealing damage.",
+        "ITEM_VILECENSER_DESC": "Gain upwards of a <style=cIsDamage>25%</style> chance to <style=cIsDamage>stun</style> on hit, depending on the targets remaining health. Hitting a <style=cIsDamage>stunned</style> target with a <style=cIsUtility>skill</style> releases tendrils of black smoke, dealing <style=cIsDamage>200% <style=cStack>(+100% per stack)</style></style> damage and <style=cIsDamage>chaining to all other enemies</style> within <style=cIsUtility>14m <style=cStack>(+4m per stack)</style></style>. This effect can repeat.",
+        
 	 
 	 
 		"EQUIPMENT_JETPACK_DESC": "Sprout wings and <style=cIsUtility>fly for 15 seconds</style>. Jumping causes you to perform a dash.",		"EQUIPMENT_BFG_DESC": "Fires preon tendrils, zapping enemies within 35m for up to <style=cIsDamage>1200% damage/second</style>. On contact, detonate in an enormous 20m explosion for <style=cIsDamage>8000% damage</style>.",		"": "",		"": "",	 
@@ -67,6 +71,7 @@
 
 //BOUNCENEARBY,					MeatHook:			Unmentioned Radius
 //INTERSTELLARDESKPLANT,	 	Deskplant:			10m + 5m, not 5+5
+->Stacks as 2 + 1: 	
 //BEHEMOTH,						Behemoth:			4m + 2.5m, not 4+1.5
 //GHOSTONKILL					HappiestMask:		Bonus 1500%, not just 1500%
 //ITEMDROPCHANCEONKILL			Sonorous:			5% not 4%, Unmentioned Rarities
@@ -74,7 +79,8 @@
 //PHYSICSPROJECTILE				Unmentioned Respawn time
 
 
-//NOVAONLOWHEALTH,				Genesis Loop:		15s on first stack, closer to -33% per stack.
+//NOVAONLOWHEALTH,				Genesis Loop:		15s on first stack
+->Stacks as 2 + 1: 
 //FIREBALLSONHIT				Perferator: 		TOTAL Damage
 //LIGHTNINGSTRIKEONHIT			Perferator: 		TOTAL Damage
 //BLEEDONHITANDEXPLODE,			ShatterSpleen:		Unmentioned 5% Crit
@@ -83,21 +89,26 @@
 
 
 //ONLEVELUPFREEUNLOCK			Longstanding:		Does not mention stacking increase XP gain.
-//LUNARDAGGER					ShapedGlass:		Downside isnt Red :(
+//LUNARDAGGER					ShapedGlass:		Downside isnt Red
 
 //TREASURECACHEVOID				Encrusted Key:		Wrong rarities
 //BEARVOID, 					Safer Spaces: 		13.5s not 15s.
--> Could be a overseight
+-> Likely bug
 
 //MISSILEVOID, 					Plasma Shrimp: 		40+40 not 40+50
 //EQUIPMENTMAGAZINEVOID, 		Lysate Cell: 		Unmentioned 33% Special CDR
 
-//VOIDMEGACRABITEM, 			HatchedZoea: 		Unmentioned Item Corruption (Log Only)
+//VOIDMEGACRABITEM	 			HatchedZoea: 		Unmentioned Item Corruption (Log Only)
+
+
+
+//PAGEWARP					No longer applies Frost, just Freeze
+//Hex of Haunting         	Stacks as 2 + 1, starting at 48s instead of 60s
+//Vile Censer				1 stack increases radius like 2nd stacks. Extra stacks only 4m not 5m				
 
 
 ////Equipment
 //JETPACK						MilkyChrisalis:		MovementSpeed was removed when dashing was added iirc.
 //BFG							PreonAccumelator: 	Double both the damages that are stated.
-
 
 

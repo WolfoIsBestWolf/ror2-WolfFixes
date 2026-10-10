@@ -21,7 +21,6 @@ namespace WolfoFixes
             On.RoR2.Artifacts.DoppelgangerInvasionManager.CreateDoppelganger += Vengence_NoUmbraForRemoteOpPlayers;
             On.RoR2.MasterCatalog.FindAiMasterIndexForBody += Vengence_BreakingWithRemoteOp;
     
-            On.EntityStates.SolusHeart.Death.MissionCompleted.FixedUpdate += Evol_SolusHeartSoftlockWithDios;
             On.DroneTechController.OnDestroy += MetaMorph_StopDronesFollowingOperatorIfOperatorGone;
 
             //Fix Honor always choosing the same elites for some bosses
@@ -63,24 +62,6 @@ namespace WolfoFixes
             orig(instanceMaster, Run.instance.bossRewardRng, eliteDefs);
         }
 
-        private static void Evol_SolusHeartSoftlockWithDios(On.EntityStates.SolusHeart.Death.MissionCompleted.orig_FixedUpdate orig, EntityStates.SolusHeart.Death.MissionCompleted self)
-        {
-            for (int i = 0; i < self.combatSquad.readOnlyMembersList.Count; i++)
-            {
-                CharacterMaster characterMaster = self.combatSquad.readOnlyMembersList[i];
-                if (characterMaster)
-                {
-                    CharacterBody body = characterMaster.GetBody();
-                    if (body)
-                    {
-                        characterMaster.TrueKill();
-                        //body.healthComponent.Suicide(null, null, default(DamageTypeCombo));
-                    }
-                }
-            }
-            orig(self);
-        }
- 
         private static void MetaMorph_StopDronesFollowingOperatorIfOperatorGone(On.DroneTechController.orig_OnDestroy orig, DroneTechController self)
         {
             orig(self);

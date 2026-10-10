@@ -114,7 +114,7 @@ namespace WolfoFixes
                     if (model.currentEquipmentDisplayIndex != RoR2Content.Equipment.Jetpack.equipmentIndex)
                     {
                         DisplayRuleGroup equipmentDisplayRuleGroup = model.itemDisplayRuleSet.GetEquipmentDisplayRuleGroup(RoR2Content.Equipment.Jetpack.equipmentIndex);
-                        model.InstantiateDisplayRuleGroup(equipmentDisplayRuleGroup, ItemIndex.None, RoR2Content.Equipment.Jetpack.equipmentIndex);
+                        model.InstantiateDisplayRuleGroup(equipmentDisplayRuleGroup, ItemIndex.None, RoR2Content.Equipment.Jetpack.equipmentIndex, KeyItemIndex.None);
                     }
                 }
             }

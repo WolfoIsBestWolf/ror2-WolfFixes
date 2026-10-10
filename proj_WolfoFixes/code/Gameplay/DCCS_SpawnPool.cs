@@ -16,64 +16,27 @@ namespace WolfoFixes
             DCCSFixes();
             SpawnCardFixes();
 
-
-            //Make GolemPlains & Roost not twice as common as other stage 1s
-            SceneCollection sgStage1 = Addressables.LoadAssetAsync<SceneCollection>(key: "RoR2/Base/SceneGroups/sgStage1.asset").WaitForCompletion();
-            sgStage1._sceneEntries[0].weight = WConfig.cfgStage1Weight.Value;
-            sgStage1._sceneEntries[1].weight = WConfig.cfgStage1Weight.Value;
-            sgStage1._sceneEntries[2].weight = WConfig.cfgStage1Weight.Value;
-            sgStage1._sceneEntries[3].weight = WConfig.cfgStage1Weight.Value;
-
-            //For no fucking reason at all
-            //They made VerdantFalls twice as rare as a stage 1.
-            sgStage1._sceneEntries[5].weight = 1; //Lakes
-
-            SceneCollection loopSgStage1 = Addressables.LoadAssetAsync<SceneCollection>(key: "RoR2/Base/SceneGroups/loopSgStage1.asset").WaitForCompletion();
-            loopSgStage1._sceneEntries[0].weight = WConfig.cfgStage1Weight.Value;
-            loopSgStage1._sceneEntries[1].weight = WConfig.cfgStage1Weight.Value;
-            loopSgStage1._sceneEntries[2].weight = WConfig.cfgStage1Weight.Value;
-            loopSgStage1._sceneEntries[3].weight = WConfig.cfgStage1Weight.Value;
-
-
             On.RoR2.BazaarController.IsUnlockedBeforeLooping += NoPreLoopPostLoop;
             On.RoR2.Stage.PreStartClient += FixRareStagesWithoutNodesWhenCalledFor;
-            On.RoR2.AccessCodesMissionController.OnStartServer += AccessCodesMissionController_OnStartServer;
 
-            SceneDirector.onGenerateInteractableCardSelection += SceneDirector_onGenerateInteractableCardSelection;
+            //I was told this was a bug, but they should've fixed it by now if 
+            //On.RoR2.AccessCodesMissionController.OnStartServer += AccessNode_RepurposedCrater_EvenAfterSolusWing;
 
+            //Some rare stupid thing
             On.RoR2.DCCSBlender.GetBlendedDCCS += DCCSBlender_GetBlendedDCCS;
         }
 
         private static DirectorCardCategorySelection DCCSBlender_GetBlendedDCCS(On.RoR2.DCCSBlender.orig_GetBlendedDCCS orig, DccsPool.Category dccsPoolCategory, ref Xoroshiro128Plus rng, ClassicStageInfo stageInfo, int contentSourceMixLimit, System.Collections.Generic.List<RoR2.ExpansionManagement.ExpansionDef> acceptableExpansionList)
         {
-            return orig(dccsPoolCategory, ref rng, stageInfo, contentSourceMixLimit, null);
-        }
-
-        private static void SceneDirector_onGenerateInteractableCardSelection(SceneDirector self, DirectorCardCategorySelection dccs)
-        {
-            if (WConfig.cfgTempShopWeight.Value)
+            if (WConfig.cfgRemoveContentSourceLimit.Value)
             {
-                int chest = dccs.FindCategoryIndexByName("Chests");
-                if (chest != -1)
-                {
-                    var tempshop = DccsUtil.GetDirectorCard(ref dccs.categories[chest].cards, "ItemsShop");
-                    if (tempshop != null)
-                    {
-                        var chest1 = DccsUtil.GetDirectorCard(ref dccs.categories[chest].cards, "1");
-                        if (chest1 != null && chest1.selectionWeight == 24)
-                        {
-                            tempshop.selectionWeight = 1;
-                            Debug.Log("Fixing TempShop weight on SotS stage");
-                        }
-                    }
-
-                }
+                contentSourceMixLimit = int.MaxValue;
             }
+            return orig(dccsPoolCategory, ref rng, stageInfo, contentSourceMixLimit, acceptableExpansionList);
         }
-
-        private static void AccessCodesMissionController_OnStartServer(On.RoR2.AccessCodesMissionController.orig_OnStartServer orig, AccessCodesMissionController self)
+  
+        private static void AccessNode_RepurposedCrater_EvenAfterSolusWing(On.RoR2.AccessCodesMissionController.orig_OnStartServer orig, AccessCodesMissionController self)
         {
-            //Intended to be this way they just forgor
             if (SceneInfo.instance.sceneDef.baseSceneName == "repurposedcrater")
             {
                 self.ignoreSolusWingDeath = true;
@@ -134,7 +97,7 @@ namespace WolfoFixes
         {
             //Wrong Spawn Pool used in DPPool
             DccsPool dpArtifactWorld02Monsters = Addressables.LoadAssetAsync<DccsPool>(key: "RoR2/DLC2/artifactworld02/dpArtifactWorld02Monsters.asset").WaitForCompletion();
-            dpArtifactWorld02Monsters.poolCategories[0].includedIfConditionsMet[0].dccs = Addressables.LoadAssetAsync<DirectorCardCategorySelection>(key: "RoR2/DLC2/artifactworld02/dccsArtifactWorld02Monsters_DLC1.asset").WaitForCompletion(); ;
+            dpArtifactWorld02Monsters.poolCategories[0].includedIfConditionsMet[0].dccs = Addressables.LoadAssetAsync<DirectorCardCategorySelection>(key: "RoR2/DLC2/artifactworld02/dccsArtifactWorld02Monsters_DLC1.asset").WaitForCompletion();
 
             //Yellow Printers should NOT spawn on stage 1.
             // DirectorCardCategorySelection dccsVillageInteractables_DLC2 = Addressables.LoadAssetAsync<DirectorCardCategorySelection>(key: "RoR2/DLC2/village/dccsVillageInteractables_DLC2.asset").WaitForCompletion();
@@ -210,6 +173,8 @@ namespace WolfoFixes
             Addressables.LoadAssetAsync<InteractableSpawnCard>(key: "2eaec01927ea16245822dcb50080cba3").WaitForCompletion().skipSpawnWhenDevotionArtifactEnabled = true;
             //Drone Shop is tagged as "NoSacrifice" probably on accident
             Addressables.LoadAssetAsync<InteractableSpawnCard>(key: "5a86990b032424e48b4b8456f7d684c9").WaitForCompletion().skipSpawnWhenSacrificeArtifactEnabled = false;
+            //DroneShop slightly orient to floor, looks better
+            Addressables.LoadAssetAsync<InteractableSpawnCard>(key: "5a86990b032424e48b4b8456f7d684c9").WaitForCompletion().orientToFloor = true;
 
         }
 
