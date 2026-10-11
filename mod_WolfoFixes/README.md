@@ -116,7 +116,9 @@ A Bulwarks Ambry spawning the wrong Alpha & XI Construct
 Child & Grandparent not spawning during Parent family event.
 
 ## Gameplay Other Fixes
- 
+
+Shrine of Descent requiring exponentially more pages to spawn instead of linearly more in multiplayer.
+
 Newt Altars will no longer be purchasable after the Teleporter. (Like pre SotS)
 
 Drone Combiner no longer spawns with Devotion. *(Other drone interactables dont spawn*)\
@@ -137,8 +139,6 @@ Removed Chance Doll from Simulacrum, as there are no Shrine of Chance.\
 
 
 ## Artifact Fixes
-
-Fixes Honor always choosing the same Elite types for some special bosses. *(Due to static RNG being used)*
 
 Fixes Vengence breaking if someone is a RemoteOp drone. *(Dead players dont spawn Umbras normally, so players playing as Drones either. They would also be awful to fight.)*
 Fixes Vengence + Swarms spawning one of them as not an Umbra/Without any items.\

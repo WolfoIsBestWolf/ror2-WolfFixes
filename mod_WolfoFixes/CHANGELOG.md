@@ -1,4 +1,9 @@
 ```
+v1.4.1
+Fixed Shrine of Descent requiring more pages than intended to spawn in multiplayer.
+Fixed Bandit Default and Bandit Colossus not having it's exhaust pipes on the back.
+Removed the Honor fix because somehow hooking it at all breaks it.
+
 v.1.4.0 - DLC4
 New Fixes:
 * 3 new items descriptions being a bit wrong.

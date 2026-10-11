@@ -1,6 +1,7 @@
 using BepInEx.Configuration;
 using RiskOfOptions;
 using RiskOfOptions.Options;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -104,13 +105,18 @@ namespace WolfoFixes
         }
         public static void AddAllConfigAsRiskConfig()
         {
+            List<ConfigEntryBase> noReset = new List<ConfigEntryBase>()
+            {
+                cfgRemoveContentSourceLimit
+            };
+
             //Would need mod meta data passed along from other mods to work fine so probably better to keep stuff as is
             ConfigEntryBase[] entries = ConfigFile_Client.GetConfigEntries();
             foreach (ConfigEntryBase entry in entries)
             {
                 if (entry.SettingType == typeof(bool))
                 {
-                    ModSettingsManager.AddOption(new CheckBoxOption((ConfigEntry<bool>)entry, true));
+                    ModSettingsManager.AddOption(new CheckBoxOption((ConfigEntry<bool>)entry, !noReset.Contains(entry)));
                 }
                 else if (entry.SettingType == typeof(float))
                 {

@@ -27,7 +27,12 @@ namespace WolfoFixes
 
             On.EntityStates.DroneCombiner.DroneCombinerCombining.OnDeserialize += FixBrokenAH_DroneCombinerCombining_OnDeserialize;
 
-          
+            On.RoR2.DLC4CatastropheProvider.GetTeamBalancedPageCount += FixPageCountRequirement;
+        }
+
+        private static int FixPageCountRequirement(On.RoR2.DLC4CatastropheProvider.orig_GetTeamBalancedPageCount orig)
+        {
+            return Util.GetTotalPageCountFromTeam(TeamIndex.Player, true, true);
         }
 
         public static void MissingDLCRequirements()

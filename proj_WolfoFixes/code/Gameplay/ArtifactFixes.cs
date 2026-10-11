@@ -24,8 +24,7 @@ namespace WolfoFixes
             On.DroneTechController.OnDestroy += MetaMorph_StopDronesFollowingOperatorIfOperatorGone;
 
             //Fix Honor always choosing the same elites for some bosses
-            On.RoR2.Artifacts.EliteOnlyArtifactManager.PromoteIfHonor += EliteOnlyArtifactManager_PromoteIfHonor;
-
+            //On.RoR2.Artifacts.EliteOnlyArtifactManager.PromoteIfHonor += EliteOnlyArtifactManager_PromoteIfHonor;
 
             //One guy would spawn with 0 items.
             IL.RoR2.Artifacts.SwarmsArtifactManager.OnSpawnCardOnSpawnedServerGlobal += SwarmsVengenceGooboFix;
@@ -59,7 +58,11 @@ namespace WolfoFixes
 
         private static void EliteOnlyArtifactManager_PromoteIfHonor(On.RoR2.Artifacts.EliteOnlyArtifactManager.orig_PromoteIfHonor orig, CharacterMaster instanceMaster, Xoroshiro128Plus rng, EliteDef[] eliteDefs)
         {
-            orig(instanceMaster, Run.instance.bossRewardRng, eliteDefs);
+            if (Run.instance.spawnRng != null)
+            {
+                orig(instanceMaster, Run.instance.spawnRng, eliteDefs);
+            }
+            orig(instanceMaster, rng, eliteDefs);
         }
 
         private static void MetaMorph_StopDronesFollowingOperatorIfOperatorGone(On.DroneTechController.orig_OnDestroy orig, DroneTechController self)
