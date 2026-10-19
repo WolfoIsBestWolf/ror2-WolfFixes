@@ -71,7 +71,7 @@ namespace WolfoFixes
             self.followActive = false;
             foreach (DroneInfo droneInfo2 in self.AllDrones)
             {
-                Debug.Log(droneInfo2.droneDef);
+                //Debug.Log(droneInfo2.droneDef);
                 if (droneInfo2.commandReceiver)
                 {
                     droneInfo2.commandReceiver.CommandFollow(false);

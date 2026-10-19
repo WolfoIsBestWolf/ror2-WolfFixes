@@ -55,10 +55,6 @@ namespace WolfoFixes
 
             DLC3Fixes();
  
-  
-            //Fix for other mods, does this ever matter for vanilla?
-            On.EntityStates.Drone.DeathState.OnImpactServer += DontSpawnBrokenDronesForDronesWithRevives;
-
             //What was this for
             //IL.RoR2.CharacterMaster.IsDeadAndOutOfLivesServer += ReplaceDroneCheckWithRemoteOpDroneCheck;
 
@@ -82,15 +78,7 @@ namespace WolfoFixes
             }
         }
 
-        private static void DontSpawnBrokenDronesForDronesWithRevives(On.EntityStates.Drone.DeathState.orig_OnImpactServer orig, EntityStates.Drone.DeathState self, Vector3 contactPoint)
-        {
-            if (self.characterBody.master && !self.characterBody.master.IsDeadAndOutOfLivesServer())
-            {
-                return;
-            }
-            orig(self, contactPoint);
-        }
- 
+
         public static void DLC3Fixes()
         {
             //Broke close to launch; No longer gets into position and just fucking sucks because of it.
@@ -122,6 +110,10 @@ namespace WolfoFixes
         private static bool CharacterBody_CheckDroneHasItems(On.RoR2.CharacterBody.orig_CheckDroneHasItems orig, CharacterBody self)
         {
             bool item = orig(self);
+            if (self.inventory == null)
+            {
+                return item;
+            }
             if ((self.bodyFlags & CharacterBody.BodyFlags.Mechanical) > CharacterBody.BodyFlags.None)
             {
                 if (self.inventory.GetItemCountPermanent(RoR2Content.Items.CaptainDefenseMatrix) > 0 ||
@@ -136,8 +128,7 @@ namespace WolfoFixes
             }
             else if ((self.bodyFlags & CharacterBody.BodyFlags.Devotion) > CharacterBody.BodyFlags.None)
             {
-                if (
-                    self.inventory.GetItemCountPermanent(DLC1Content.Items.DroneWeaponsBoost) > 0 ||
+                if (self.inventory.GetItemCountPermanent(DLC1Content.Items.DroneWeaponsBoost) > 0 ||
                     self.inventory.GetItemCountPermanent(DLC3Content.Items.DroneDynamiteDisplay) > 0
                     )
                 {

@@ -1,4 +1,5 @@
 ﻿using RoR2;
+using UnityEngine;
 
 
 namespace WolfoFixes
@@ -16,11 +17,9 @@ namespace WolfoFixes
         private static void OptionPickup_Fixes(On.RoR2.PickupPickerController.orig_SetOptionsInternal orig, PickupPickerController self, PickupPickerController.Option[] newOptions)
         {
             orig(self, newOptions);
-
             PickupIndexNetworker index = self.GetComponent<PickupIndexNetworker>();
             if (index != null)
             {
-
                 //Void Command Essence lacks particles.
                 if (self.name.StartsWith("Command"))
                 {
@@ -39,14 +38,27 @@ namespace WolfoFixes
                 }
                 else
                 {
-                    //Command does not Spin
-                    //Fix spinning on client.
+                    //Fix Aur fragment not spinning on clients
+                    if (self.transform.childCount == 0)
+                    {
+                        return;
+                    }
                     PickupDisplay pickupDisplay = self.transform.GetChild(0).GetComponent<PickupDisplay>();
-                    pickupDisplay.pickupState = index.pickupState;
-                    pickupDisplay.modelObject = self.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
-                    self.GetComponent<Highlight>().pickupState = index.pickupState;
-                    self.GetComponent<Highlight>().isOn = true;
-
+                    if (pickupDisplay)
+                    {
+                        pickupDisplay.pickupState = index.pickupState;
+                        MeshRenderer mesh = self.GetComponentInChildren<MeshRenderer>();
+                        if (mesh != null)
+                        {
+                            pickupDisplay.modelObject = mesh.gameObject;
+                        }
+                    }
+                    Highlight highlight = self.GetComponent<Highlight>();
+                    if (highlight != null)
+                    {
+                        highlight.pickupState = index.pickupState;
+                        highlight.isOn = true;
+                    }
                 }
 
             }

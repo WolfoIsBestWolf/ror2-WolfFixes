@@ -73,6 +73,9 @@ Captain Beacons being unable to crit.
 Drifter's Tinker being able to apply 3 debuffs that do literally nothing.
 ```
 Player Visuals:
+Bandit skins missing accessories.
+Engineer's DLC4 skin using the wrong model for Grenades.
+
 Railgunners Scope being more opaque than in the past
 
 "DroneBuff" icon not appearing for non-drone mechanical allies, despite those being buffed as well.\

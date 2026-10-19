@@ -1,9 +1,17 @@
 ```
+v1.4.3
+Added nullrefs to fix an error with DroneCommand
+Fixed a fix to Simu Indicators making Sky Meadows rocks light up forever.
+``````
+v1.4.2
+Fixed null ref when using Engi Shield. (Assuming all mechanicals had an inventory)
+Fixed DLC4 Engi Skin using wrong grenade model.
+``````
 v1.4.1
 Fixed Shrine of Descent requiring more pages than intended to spawn in multiplayer.
-Fixed Bandit Default and Bandit Colossus not having it's exhaust pipes on the back.
+Fixed Bandit skins Default, Alt, Colossus not having it's accessories pipes on the back and legs.
 Removed the Honor fix because somehow hooking it at all breaks it.
-
+``````
 v.1.4.0 - DLC4
 New Fixes:
 * 3 new items descriptions being a bit wrong.
@@ -32,11 +40,7 @@ Removed due to age:
 * Access Node on Repurposed Crater after Solus Wing. (Was told this was a bug ages ago but surely would've been fixed by now if needed)
 * Disabled Warped Echo letting you live due to OSP despite Curse ""disabling"" it. (Can still be turned on)
 
-```
-```
-v.1.3.7
-Halcyon shrine fix remove dir
-
+``````
 v1.3.6
 Fixed Eclipse Lobby disconnecting all-players whenever the run ends.
 Fixed Mul-T phantom equipment slot bug.

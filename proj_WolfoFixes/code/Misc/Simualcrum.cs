@@ -37,19 +37,20 @@ namespace WolfoFixes
         private static void DisableIndicatorHelper(On.RoR2.InfiniteTowerWaveController.orig_OnDisable orig, InfiniteTowerWaveController self)
         {
             orig(self);
-            simu_enabledIndicators = false;
             TeamComponent.onJoinTeamGlobal -= FixIndicatorsGettingLostAfterRevive;
         }
 
         private static GameObject simu_indicator;
-        private static bool simu_enabledIndicators = false;
         private static void FixIndicatorsGettingLostAfterRevive(TeamComponent arg1, TeamIndex arg2)
         {
             //If a enemy respawned with Dios they lose the indicator pointing to them.
             //Probably helps Client-Side stuff too
-            if (simu_enabledIndicators && arg1.indicator == null)
+            if (arg1.indicator == null && arg1.teamIndex == TeamIndex.Monster)
             {
-                arg1.RequestDefaultIndicator(simu_indicator);
+                if (arg1.body && arg1.body.master)
+                {
+                    arg1.RequestDefaultIndicator(simu_indicator);
+                }
             }
         }
  
@@ -105,11 +106,9 @@ namespace WolfoFixes
             x => x.MatchCallvirt("RoR2.CombatSquad", "get_readOnlyMembersList") 
             ))
             {
-                
                 c.EmitDelegate<System.Func<InfiniteTowerWaveController, InfiniteTowerWaveController>>((System.Func<InfiniteTowerWaveController, InfiniteTowerWaveController>)((wave) =>
                 {
                     TeamComponent.onJoinTeamGlobal += FixIndicatorsGettingLostAfterRevive;
-                    simu_enabledIndicators = true;
                     simu_indicator = wave.defaultEnemyIndicatorPrefab;
                     if (wave.combatSquad.readOnlyMembersList.Count == 0)
                     {
