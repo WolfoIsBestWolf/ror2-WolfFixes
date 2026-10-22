@@ -18,6 +18,8 @@ Corrects or details various wrong item, survivor, drone, admin command descripti
 
 
 ## Item & EquipmentFixes
+Bolstering Lantern giving 10% more attack speed per buff than intended. *(+20% rather than +10%)*
+
 Warped Echo echoed hits no longer activating Planula & Repulsion Armor Plate. *(It worked in some prior versions)*\
 Warped Echo echoed hits double-dipping some damage *increases* of the attacker. *(i.e. Watch, Lunar Ruin)*\
 

@@ -15,6 +15,7 @@ namespace WolfoFixes
         public static void Start()
         {
 
+            IL.RoR2.CharacterBody.RecalculateStats += FixBolsteringLanternBeingPlus10;
             IL.RoR2.CharacterBody.RecalculateStats += FixStoneFluxBeingAppliedTwice;
 
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += FixChargedPerferatorCrit;
@@ -48,29 +49,25 @@ namespace WolfoFixes
             SpawnAltar.applyFocusConvergence = false;
         }
 
-        private static void Stew_GettingDeletedByCurseRandomly(ILContext il)
+        private static void FixBolsteringLanternBeingPlus10(ILContext il)
         {
             ILCursor c = new ILCursor(il);
             bool a = c.TryGotoNext(MoveType.After,
-            //x => x.MatchCall(typeof(CharacterBody), "get_healthComponent"),
-            x => x.MatchCall(AccessTools.PropertyGetter(typeof(CharacterBody), nameof(CharacterBody.healthComponent))),
-            x => x.MatchLdfld(typeof(HealthComponent), "health"),
-            x => x.MatchLdarg(0),
-            x => x.MatchCall(typeof(CharacterBody), "get_maxHealth"),
-            x => x.MatchLdarg(0),
-            x => x.MatchCall(typeof(CharacterBody), "get_cursePenalty"),
-            x => x.MatchDiv());
-
-            if (a)
+            x => x.MatchLdsfld("RoR2.DLC2Content/Buffs", "AttackSpeedPerNearbyAllyOrEnemyBuff"),
+            x => x.MatchCall("RoR2.CharacterBody", "GetBuffCount"));
+            bool b = c.TryGotoNext(MoveType.After,
+            x => x.MatchLdsfld("RoR2.DLC2Content/Buffs", "AttackSpeedPerNearbyAllyOrEnemyBuff"),
+            x => x.MatchCall("RoR2.CharacterBody", "GetBuffCount"));
+            if (a & b)
             {
-                c.EmitDelegate<Func<float, float>>((body) =>
+                c.EmitDelegate<Func<int, int>>((buffcount) =>
                 {
-                    return Mathf.Floor(body);
+                    return 0;
                 });
             }
             else
             {
-                WolfFixes.log.LogError("IL Failed : STEW getting fucked up by eclipse curse");
+                WolfFixes.log.LogError("IL Failed : FixBolsteringLanternBeingPlus10");
             }
         }
 
@@ -325,8 +322,7 @@ namespace WolfoFixes
                 WolfFixes.log.LogError("IL Failed : Antler_FixWrongAuth");
             }
         }
-           
-
+        
         public static void FixChargedPerferatorCrit(ILContext il)
         {
             ILCursor c = new ILCursor(il);
