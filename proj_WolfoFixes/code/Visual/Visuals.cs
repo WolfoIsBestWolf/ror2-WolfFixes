@@ -75,11 +75,67 @@ namespace WolfoFixes
             //GameObject AffixCollectiveBodyAttachment = Addressables.LoadAssetAsync<GameObject>(key: "479df04eb1a9cb845bdedfaf9ea71cd6").WaitForCompletion();
             //AffixCollectiveBodyAttachment.transform.GetChild(0).GetChild(3).GetComponent<RoR2.UI.MainMenu.PlatformToggle>().Steam = true;
 
-            On.RoR2.GeodeController.ShouldShowOnScanner += GeodeController_ShouldShowOnScanner;
+            On.RoR2.GeodeController.ShouldShowOnScanner += FixGeodesShowingOnScannerAtInvertedOfIntended;
 
+            IL.EntityStates.ShrineHalcyonite.ShrineHalcyoniteBaseState.ModifyVisuals += FixVisualsBeingInconsistent;
+
+            On.RoR2.MeridianEventTriggerInteraction.PreStartClient += FixCauldronLOD;
         }
+
+        private static void FixCauldronLOD(On.RoR2.MeridianEventTriggerInteraction.orig_PreStartClient orig, MeridianEventTriggerInteraction self)
+        {
+            orig(self);
+            if (!SceneInfo.instance)
+            {
+                return;
+            }
+            SceneObjectToggleGroup toggles = SceneInfo.instance.GetComponentInChildren<SceneObjectToggleGroup>();
+            if (toggles)
+            {
+                var temp = toggles.toggleGroups[1].objects;
+                Transform Holder = temp[0].transform.parent.parent;
+
+                //Can't get children directly because there's somehow just extra children while being made??
+                /*Debug.Log(Holder.GetChild(15));
+                Debug.Log(Holder.GetChild(21));
+                Debug.Log(Holder.GetChild(29));*/
+                Object.Destroy(Holder.Find("CauldronLODHolder (1)").GetComponent<LODGroup>()); 
+                Object.Destroy(Holder.Find("CauldronLODHolder (6)").GetComponent<LODGroup>());
+                Object.Destroy(Holder.Find("CauldronLODHolder (14)").GetComponent<LODGroup>());
+
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    temp[i].transform.parent.GetComponent<LODGroup>().enabled = false;
+                }
+        
+            }
+        }
+
+
+        //Visual checks for isDraining when it already only updates when it is draining
+        //But this check adds delay every time players exit
+        //So it never actually fully reaches gold status
+        private static void FixVisualsBeingInconsistent(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (c.TryGotoNext(MoveType.After,
+                x => x.MatchLdfld("RoR2.HalcyoniteShrineInteractable", "isDraining")))
+            {
+                c.EmitDelegate<System.Func<bool, bool>>((target) =>
+                {
+                    return true;
+                });
+            }
+            else
+            {
+                Log.LogError("IL Failed: FixVisualsBeingInconsistent");
+            }
+        }
+
+
         //Checks for !available, dont do that
-        private static bool GeodeController_ShouldShowOnScanner(On.RoR2.GeodeController.orig_ShouldShowOnScanner orig, GeodeController self)
+        private static bool FixGeodesShowingOnScannerAtInvertedOfIntended(On.RoR2.GeodeController.orig_ShouldShowOnScanner orig, GeodeController self)
         {
             return self.available;
         }

@@ -11,7 +11,6 @@ namespace WolfoFixes
         {
             On.RoR2.PickupPickerController.SetOptionsInternal += OptionPickup_Fixes;
 
-
         }
 
         private static void OptionPickup_Fixes(On.RoR2.PickupPickerController.orig_SetOptionsInternal orig, PickupPickerController self, PickupPickerController.Option[] newOptions)

@@ -31,16 +31,6 @@ namespace WolfoFixes
             //Always update hud if rebuild cards
             On.RoR2.ClassicStageInfo.RebuildCards += MarkHudAsDirtyForKin;
 
-            On.RoR2.Chat.PlayerPickupChatMessage.ConstructChatString += PlayerPickupChatMessage_ConstructChatString;
-        }
-
-        private static string PlayerPickupChatMessage_ConstructChatString(On.RoR2.Chat.PlayerPickupChatMessage.orig_ConstructChatString orig, Chat.PlayerPickupChatMessage self)
-        {
-            if (!self.subjectAsNetworkUser && !self.subjectAsCharacterBody)
-            {
-                return null;
-            }
-            return orig(self);
         }
 
         private static void MarkHudAsDirtyForKin(On.RoR2.ClassicStageInfo.orig_RebuildCards orig, ClassicStageInfo self, DirectorCardCategorySelection forcedMonsterCategory, DirectorCardCategorySelection forcedInteractableCategory)

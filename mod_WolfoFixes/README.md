@@ -190,6 +190,8 @@ Broken Flame & Missile Drones often spawning in the ground.
 
 Aurelionite Geodes only appearing on Radar Scanner, *after* they are broken, instead of when unbroken.
 
+Cauldrons on Prime Meridian being invisible on lower LOD settings.
+
 ## Audio
 War Bonds should no longer play the Horn if 0 missiles would be fired.
 

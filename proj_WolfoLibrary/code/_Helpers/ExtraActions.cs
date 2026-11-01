@@ -2,6 +2,7 @@ using MonoMod.Cil;
 using RoR2;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace WolfoLibrary
 {
@@ -14,7 +15,8 @@ namespace WolfoLibrary
         public static Action onSolusHeart;
         public static Action onStagePreStartClient;
         public static Action<DirectorCardCategorySelection> onMonsterDCCS;
-        
+
+        public static event UnityAction onScoreboardClosed;
 
         public static void Start()
         {
@@ -28,6 +30,18 @@ namespace WolfoLibrary
 
             IL.RoR2.ClassicStageInfo.RebuildCards += MonsterDCCSGenerateHook;
 
+            On.RoR2.UI.ScoreboardController.OnDisable += ScoreboardController_OnDisable;
+        }
+
+        private static void ScoreboardController_OnDisable(On.RoR2.UI.ScoreboardController.orig_OnDisable orig, RoR2.UI.ScoreboardController self)
+        {
+            orig(self);
+            UnityAction unityAction = onScoreboardClosed;
+            if (unityAction == null)
+            {
+                return;
+            }
+            unityAction();
         }
 
         private static void Stage_PreStartClient(On.RoR2.Stage.orig_PreStartClient orig, Stage self)

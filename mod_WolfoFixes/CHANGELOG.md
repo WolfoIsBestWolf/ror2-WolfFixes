@@ -1,4 +1,10 @@
 ```
+v1.4.5
+Fixed Cauldrons being invisible on Prime Meridian on low LOD setting.
+Fixed Chat scrolling to top when respawning/reviving.
+Removed Hex of Greed ??? message fix because it accidentally removed Void Fields / Simu item gain message.
+```
+```
 v1.4.4
 Fixed Bolstering Lantern giving 10% more attack speed per buff than intended. (20 instead of 10)
 ```

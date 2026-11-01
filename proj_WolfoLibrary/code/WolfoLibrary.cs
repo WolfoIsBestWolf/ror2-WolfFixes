@@ -35,11 +35,12 @@ namespace WolfoLibrary
 
             Tags.Start();
 
+            FixesAlways.Start();
             VoidElite.VoidAffix();
             VoidSuppressor.SuppresedScrap();
             VoidSuppressor.FixInteractable();
 
-            RoR2.RoR2Application.onLoad += CallLate;
+            RoR2Application.onLoad += CallLate;
              
             Addressables.LoadAssetAsync<GameObject>(key: "RoR2/DLC1/OptionPickup/OptionPickerPanel.prefab").WaitForCompletion().GetComponent<RoR2.UI.PickupPickerPanel>().maxColumnCount = 3; //Hud does not support 5 columns
  

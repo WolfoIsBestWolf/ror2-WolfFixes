@@ -15,6 +15,7 @@ namespace WolfoFixes
         {
 
             //Add unused cool bubbly noise
+            On.RoR2.ShopTerminalBehavior.PreStartClient += LunarCauldronSound;
             On.RoR2.ShopTerminalBehavior.PreStartClient += (orig, self) =>
             {
                 orig(self);
@@ -63,30 +64,16 @@ namespace WolfoFixes
 
         }
 
-        private static void ExtraLifeServerBehavior_FixedUpdate(On.RoR2.CharacterMaster.ExtraLifeServerBehavior.orig_FixedUpdate orig, CharacterMaster.ExtraLifeServerBehavior self)
+        private static void LunarCauldronSound(On.RoR2.ShopTerminalBehavior.orig_PreStartClient orig, ShopTerminalBehavior self)
         {
-            if (self.soundTime.hasPassed)
+            orig(self);
+            if (self.name.StartsWith("LunarCauldron,"))
             {
-                self.soundTime = Run.FixedTimeStamp.positiveInfinity;
-                System.Action action = self.soundCallback;
-                if (action != null)
-                {
-                    action();
-                }
+                Util.PlaySound("Play_ui_obj_lunarPool_idle_loop", self.gameObject);
+                Util.PlaySound("Play_ui_obj_lunarPool_idle_loop", self.gameObject);
+                Util.PlaySound("Play_ui_obj_lunarPool_idle_loop", self.gameObject);
+
             }
-            orig(self);
-        }
-
-        private static void ExtraLifeServerBehavior_Awake(On.RoR2.CharacterMaster.ExtraLifeServerBehavior.orig_Awake orig, CharacterMaster.ExtraLifeServerBehavior self)
-        {
-            orig(self);
-            self.soundTime += 1;
-        }
-
-        private static void CharacterMaster_PlayExtraLifeSFX(On.RoR2.CharacterMaster.orig_PlayExtraLifeSFX orig, CharacterMaster self)
-        {
-            Debug.Log(self.bodyInstanceObject);
-            orig(self);
         }
 
         public static void Start()

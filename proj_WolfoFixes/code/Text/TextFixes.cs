@@ -48,6 +48,14 @@ namespace WolfoFixes
 
             On.RoR2.ClassicStageInfo.BroadcastFamilySelection += NoFamilyAnnouncementOnDissonance;
             IL.RoR2.BossGroup.UpdateObservations += BossSubtitleMissingSpace;
+
+            On.RoR2.UI.ChatBox.OnEnable += FixChatScrollUpOnRespawn;
+        }
+
+        private static void FixChatScrollUpOnRespawn(On.RoR2.UI.ChatBox.orig_OnEnable orig, RoR2.UI.ChatBox self)
+        {
+            orig(self);
+            self.Invoke("ScrollToBottom", 0.025f);
         }
 
         private static void BossSubtitleMissingSpace(MonoMod.Cil.ILContext il)
